@@ -7,17 +7,19 @@ import App from "./App";
 import theme from "./theme";
 import "./assets/styles/index.scss";
 
+import { store } from "./redux/store";
+import { Provider } from "react-redux";
+
 const rootElement = document.getElementById("root");
 const root = createRoot(rootElement);
 
 root.render(
-  <React.StrictMode>
+  <Provider store={store}>
     <ThemeProvider theme={theme}>
-      {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
       <CssBaseline />
       <BrowserRouter>
         <App />
       </BrowserRouter>
     </ThemeProvider>
-  </React.StrictMode>
+  </Provider>
 );
