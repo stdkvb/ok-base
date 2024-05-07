@@ -40,7 +40,6 @@ const Categories = ({ closeDrawer }) => {
             <Typography
               component={RouterLink}
               to="/"
-              className="link"
               onClick={() => onChangeCategory(item.value)}
             >
               {item.value}

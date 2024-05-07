@@ -1,4 +1,12 @@
-import { Autocomplete, Grid, TextField, Typography } from "@mui/material";
+import {
+  Autocomplete,
+  Grid,
+  TextField,
+  Typography,
+  Box,
+  Divider,
+  Stack,
+} from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 
 import { useGetFiltersQuery } from "../redux/okBaseApi";
@@ -34,30 +42,33 @@ const Filters = () => {
 
   if (isLoading) return <Typography>Загрузка..</Typography>;
   return (
-    <Grid container spacing={1} sx={{ mb: 3 }}>
+    <Stack
+      direction="row"
+      divider={<Divider orientation="vertical" flexItem />}
+      spacing={2}
+      sx={{ px: { xs: 2, md: 4 } }}
+    >
       {data.map((filter, i) => (
-        <Grid key={i} item xs={12} md={2}>
-          <Autocomplete
-            id={filter.name}
-            options={filter.value}
-            onChange={(event, newValue) => {
-              onChangeFilter(filter.name, newValue ?? "");
-            }}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                variant="standard"
-                label={filter.title}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                size="medium"
-              />
-            )}
-          />
-        </Grid>
+        <Autocomplete
+          key={i}
+          fullWidth
+          id={filter.name}
+          options={filter.value}
+          onChange={(event, newValue) => {
+            onChangeFilter(filter.name, newValue ?? "");
+          }}
+          sx={{ py: 1, ml: 0 }}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              variant="standard"
+              label={filter.title}
+              sx={{ mb: 2 }}
+            />
+          )}
+        />
       ))}
-    </Grid>
+    </Stack>
   );
 };
 

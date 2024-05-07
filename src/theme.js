@@ -1,7 +1,7 @@
-import { createTheme } from "@mui/material/styles";
+import { createTheme, responsiveFontSizes } from "@mui/material/styles";
 
 // Create a theme instance.
-const theme = createTheme({
+let theme = createTheme({
   breakpoints: {
     values: {
       xs: 0,
@@ -15,10 +15,10 @@ const theme = createTheme({
   palette: {
     mode: "dark",
     primary: {
-      main: "#2b2b2b",
+      main: "#1a1a1a",
     },
     secondary: {
-      main: "#BDBDBD",
+      main: "#FFFFFF",
     },
     error: {
       main: "#fd5361",
@@ -28,7 +28,7 @@ const theme = createTheme({
       paper: "#2b2b2b",
     },
     text: {
-      primary: "#BDBDBD",
+      primary: "#FFFFFF",
     },
   },
   typography: {
@@ -56,23 +56,29 @@ const theme = createTheme({
           // Default state of label.
           "& .MuiFormLabel-root.MuiInputLabel-root.MuiInputLabel-formControl.MuiInputLabel-animated.MuiInputLabel-standard.MuiFormLabel-colorPrimary.MuiInputLabel-root.MuiInputLabel-formControl.MuiInputLabel-animated.MuiInputLabel-standard":
             {
-              color: "#BDBDBD",
+              color: "#FFFFFF",
             },
           // On focus state of underline.
           "& .MuiInputBase-root.MuiInput-root.MuiInput-underline.MuiInputBase-formControl.Mui-focused::after":
             {
-              borderBottom: "1px solid #ffffffb2",
+              borderBottom: "none",
             },
 
           // On hover state of underline.
           "& .MuiInputBase-root.MuiInput-root.MuiInput-underline.MuiInputBase-formControl:hover::before":
             {
-              borderBottom: "1px solid #ffffffb2",
+              borderBottom: "none",
+            },
+          "& .MuiInputBase-root.MuiInput-root.MuiInput-underline.MuiInputBase-formControl::before":
+            {
+              borderBottom: "none",
             },
         },
       },
     },
   },
 });
+
+theme = responsiveFontSizes(theme);
 
 export default theme;

@@ -19,7 +19,9 @@ import {
   Badge,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import { useDispatch } from "react-redux";
+import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
+import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
+import { useSelector, useDispatch } from "react-redux";
 
 import { resetFilters } from "../redux/slices/filterSlice";
 import Categories from "./Categories";
@@ -28,6 +30,7 @@ const drawerWidth = 256;
 
 function Layout(props) {
   //redux states
+  const category = useSelector((state) => state.filtersSlice.filters.category);
   const dispatch = useDispatch();
 
   const { window } = props;
@@ -63,9 +66,10 @@ function Layout(props) {
           OK-BASE
         </Typography>
       </Toolbar>
+      <Divider />
       <Categories closeDrawer={handleDrawerToggle} />
       <List disablePadding sx={{ mt: "auto", mb: 0, pb: 4 }}>
-        {["О проекте", "Избранное", "Добавить материал"].map((text, index) => (
+        {["О проекте"].map((text, index) => (
           <ListItem key={text} disablePadding sx={{ pl: 4 }}>
             <Typography component={RouterLink} to="/">
               {text}
@@ -91,7 +95,8 @@ function Layout(props) {
         <Toolbar
           sx={{
             height: "90px",
-            p: { xs: 2, md: 4 },
+            pl: { xs: 2, md: 4 },
+            pr: 0,
           }}
           disableGutters={true}
         >
@@ -104,9 +109,25 @@ function Layout(props) {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="p">
+          <Typography
+            variant="p"
+            component="div"
+            sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
+          >
             Открытая база знаний для руководителей и менеджеров ИТ-проектов
           </Typography>
+          <Divider orientation="vertical" />
+          <IconButton sx={{ px: { xs: 2, md: 4 } }}>
+            <FavoriteBorderOutlinedIcon />
+          </IconButton>
+          <Divider orientation="vertical" />
+          <IconButton sx={{ px: { xs: 2, md: 4 } }}>
+            <PersonOutlineOutlinedIcon />
+          </IconButton>
+          <Divider orientation="vertical" />
+          <IconButton sx={{ px: { xs: 2, md: 4 } }}>
+            <Typography>Добавить материал</Typography>
+          </IconButton>
         </Toolbar>
       </AppBar>
       <Divider />
@@ -152,11 +173,24 @@ function Layout(props) {
         component="main"
         sx={{
           flexGrow: 1,
-          p: { xs: 2, md: 4 },
           ml: { sm: `${drawerWidth}px` },
           width: { sm: `calc(100% - ${drawerWidth}px)` },
         }}
       >
+        {category && (
+          <>
+            <Typography
+              variant="h2"
+              sx={{
+                py: { xs: 2, md: 8 },
+                px: { xs: 2, md: 4 },
+              }}
+            >
+              {category}
+            </Typography>
+            <Divider />
+          </>
+        )}
         <Outlet />
       </Box>
       <Divider />

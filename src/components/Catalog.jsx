@@ -1,4 +1,21 @@
-import { Grid, Typography, Box } from "@mui/material";
+import {
+  Grid,
+  Typography,
+  Box,
+  Container,
+  Divider,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemIcon,
+} from "@mui/material";
+import {
+  Outlet,
+  Link as RouterLink,
+  useNavigate,
+  useLocation,
+} from "react-router-dom";
+import ArrowOutwardOutlinedIcon from "@mui/icons-material/ArrowOutwardOutlined";
 import { useSelector, useDispatch } from "react-redux";
 
 import Filters from "./Filters";
@@ -18,17 +35,34 @@ const Catalog = () => {
   return (
     <>
       <Filters />
-      <Grid container spacing={2}>
+      <Divider />
+      <List disablePadding>
         {data.totalCount == 0 ? (
-          <Typography>Ничего не найдено :(</Typography>
+          <ListItem sx={{ p: 4 }}>
+            <ListItemText primary={"Ничего не найдено :("}></ListItemText>
+          </ListItem>
         ) : (
-          data.data.map((card, i) => (
-            <Grid key={i} item xs={12} md={6}>
-              <Card id={card.id} name={card.name} imageUrl={card.picture} />
-            </Grid>
+          data.data.map((item, i) => (
+            <>
+              <ListItem
+                key={i}
+                item
+                sx={{ p: 4, gap: 2 }}
+                component={RouterLink}
+                to="/"
+              >
+                <ListItemText
+                  primary={<Typography variant="h5">{item.name}</Typography>}
+                />
+                <ListItemIcon>
+                  <ArrowOutwardOutlinedIcon />
+                </ListItemIcon>
+              </ListItem>
+              <Divider />
+            </>
           ))
         )}
-      </Grid>
+      </List>
     </>
   );
 };
