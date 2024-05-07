@@ -43,7 +43,7 @@ const Filters = () => {
   if (isLoading) return <Typography>Загрузка..</Typography>;
   return (
     <Stack
-      direction="row"
+      direction={{ xs: "column", md: "row" }}
       divider={<Divider orientation="vertical" flexItem />}
       spacing={2}
       sx={{ px: { xs: 2, md: 4 } }}

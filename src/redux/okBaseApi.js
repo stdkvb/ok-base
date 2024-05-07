@@ -16,8 +16,15 @@ export const okBaseApi = createApi({
       query: (filters) =>
         `knowledge-base/get-list?` + `${new URLSearchParams(filters)}`,
     }),
+    getDetailPage: build.query({
+      query: (detailPageId) => `knowledge-base/${detailPageId}`,
+    }),
   }),
 });
 
-export const { useGetCategoriesQuery, useGetListQuery, useGetFiltersQuery } =
-  okBaseApi;
+export const {
+  useGetCategoriesQuery,
+  useGetListQuery,
+  useGetFiltersQuery,
+  useGetDetailPageQuery,
+} = okBaseApi;

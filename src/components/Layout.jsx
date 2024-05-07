@@ -30,7 +30,7 @@ const drawerWidth = 256;
 
 function Layout(props) {
   //redux states
-  const category = useSelector((state) => state.filtersSlice.filters.category);
+
   const dispatch = useDispatch();
 
   const { window } = props;
@@ -177,20 +177,6 @@ function Layout(props) {
           width: { sm: `calc(100% - ${drawerWidth}px)` },
         }}
       >
-        {category && (
-          <>
-            <Typography
-              variant="h2"
-              sx={{
-                py: { xs: 2, md: 8 },
-                px: { xs: 2, md: 4 },
-              }}
-            >
-              {category}
-            </Typography>
-            <Divider />
-          </>
-        )}
         <Outlet />
       </Box>
       <Divider />
@@ -208,12 +194,7 @@ function Layout(props) {
           }}
           disableGutters={true}
         >
-          <Typography>
-            © 2024{" "}
-            <Typography component={RouterLink} to="/">
-              OK-BASE
-            </Typography>
-          </Typography>
+          <Typography>© 2024 OK-BASE</Typography>
         </Toolbar>
       </Box>
     </Box>

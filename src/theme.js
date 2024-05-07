@@ -15,7 +15,7 @@ let theme = createTheme({
   palette: {
     mode: "dark",
     primary: {
-      main: "#1a1a1a",
+      main: "#0497d5",
     },
     secondary: {
       main: "#FFFFFF",
@@ -73,6 +73,13 @@ let theme = createTheme({
             {
               borderBottom: "none",
             },
+        },
+      },
+    },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: 0,
         },
       },
     },

@@ -34,6 +34,20 @@ const Catalog = () => {
 
   return (
     <>
+      {filters.category && (
+        <>
+          <Typography
+            variant="h2"
+            sx={{
+              py: { xs: 2, md: 8 },
+              px: { xs: 2, md: 4 },
+            }}
+          >
+            {filters.category}
+          </Typography>
+          <Divider />
+        </>
+      )}
       <Filters />
       <Divider />
       <List disablePadding>
@@ -49,7 +63,7 @@ const Catalog = () => {
                 item
                 sx={{ p: 4, gap: 2 }}
                 component={RouterLink}
-                to="/"
+                to={`/${item.id}`}
               >
                 <ListItemText
                   primary={<Typography variant="h5">{item.name}</Typography>}
