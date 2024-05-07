@@ -53,18 +53,14 @@ let theme = createTheme({
     MuiTextField: {
       styleOverrides: {
         root: {
-          // Default state of label.
           "& .MuiFormLabel-root.MuiInputLabel-root.MuiInputLabel-formControl.MuiInputLabel-animated.MuiInputLabel-standard.MuiFormLabel-colorPrimary.MuiInputLabel-root.MuiInputLabel-formControl.MuiInputLabel-animated.MuiInputLabel-standard":
             {
               color: "#FFFFFF",
             },
-          // On focus state of underline.
           "& .MuiInputBase-root.MuiInput-root.MuiInput-underline.MuiInputBase-formControl.Mui-focused::after":
             {
               borderBottom: "none",
             },
-
-          // On hover state of underline.
           "& .MuiInputBase-root.MuiInput-root.MuiInput-underline.MuiInputBase-formControl:hover::before":
             {
               borderBottom: "none",

@@ -12,12 +12,7 @@ import {
 } from "@mui/material";
 import ArrowOutwardOutlinedIcon from "@mui/icons-material/ArrowOutwardOutlined";
 import { useParams } from "react-router-dom";
-import {
-  Outlet,
-  Link as RouterLink,
-  useNavigate,
-  useLocation,
-} from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 
 import { useGetDetailPageQuery } from "../redux/okBaseApi";
 
@@ -29,7 +24,7 @@ const DetailPage = () => {
   const { data, isLoading } = useGetDetailPageQuery(detailPageId);
   console.log(data);
   //render
-  if (isLoading) return <Typography>Загрузка..</Typography>;
+  if (isLoading) return;
   return (
     <>
       <Typography
@@ -106,7 +101,7 @@ const DetailPage = () => {
                 item
                 sx={{ px: 4, gap: 2 }}
                 component={RouterLink}
-                to={`/${item.id}`}
+                to={`material/${item.id}`}
               >
                 <ListItemText
                   primary={<Typography variant="h5">{item.name}</Typography>}

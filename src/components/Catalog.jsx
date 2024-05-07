@@ -1,25 +1,16 @@
 import {
-  Grid,
   Typography,
-  Box,
-  Container,
   Divider,
   List,
   ListItem,
   ListItemText,
   ListItemIcon,
 } from "@mui/material";
-import {
-  Outlet,
-  Link as RouterLink,
-  useNavigate,
-  useLocation,
-} from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 import ArrowOutwardOutlinedIcon from "@mui/icons-material/ArrowOutwardOutlined";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 import Filters from "./Filters";
-import Card from "./Card";
 import { useGetListQuery } from "../redux/okBaseApi";
 
 const Catalog = () => {
@@ -29,9 +20,7 @@ const Catalog = () => {
   //get data
   const { data, isLoading } = useGetListQuery(filters);
 
-  //render
-  if (isLoading) return <Typography>Загрузка..</Typography>;
-
+  if (isLoading) return;
   return (
     <>
       {filters.category && (
@@ -63,7 +52,7 @@ const Catalog = () => {
                 item
                 sx={{ p: 4, gap: 2 }}
                 component={RouterLink}
-                to={`/${item.id}`}
+                to={`material/${item.id}`}
               >
                 <ListItemText
                   primary={<Typography variant="h5">{item.name}</Typography>}

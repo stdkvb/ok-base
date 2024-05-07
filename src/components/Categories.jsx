@@ -3,15 +3,10 @@ import {
   ListItem,
   Badge,
   Typography,
-  CircularProgress,
+  LinearProgress,
 } from "@mui/material";
-import {
-  Outlet,
-  Link as RouterLink,
-  useNavigate,
-  useLocation,
-} from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { Link as RouterLink } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 import { useGetCategoriesQuery } from "../redux/okBaseApi";
 import { setCategory, resetFilters } from "../redux/slices/filterSlice";
@@ -31,7 +26,7 @@ const Categories = ({ closeDrawer }) => {
   };
 
   //render
-  if (isLoading) return <CircularProgress />;
+  if (isLoading) return <LinearProgress color="secondary" />;
   return (
     <List disablePadding sx={{ pt: 4 }}>
       {data.map((item, i) => (

@@ -1,10 +1,5 @@
 import { useState } from "react";
-import {
-  Outlet,
-  Link as RouterLink,
-  useNavigate,
-  useLocation,
-} from "react-router-dom";
+import { Outlet, Link as RouterLink } from "react-router-dom";
 import {
   AppBar,
   Box,
@@ -16,12 +11,11 @@ import {
   Toolbar,
   Typography,
   Stack,
-  Badge,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import { resetFilters } from "../redux/slices/filterSlice";
 import Categories from "./Categories";

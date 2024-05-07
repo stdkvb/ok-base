@@ -1,13 +1,5 @@
-import {
-  Autocomplete,
-  Grid,
-  TextField,
-  Typography,
-  Box,
-  Divider,
-  Stack,
-} from "@mui/material";
-import { useSelector, useDispatch } from "react-redux";
+import { Autocomplete, TextField, Divider, Stack } from "@mui/material";
+import { useDispatch } from "react-redux";
 
 import { useGetFiltersQuery } from "../redux/okBaseApi";
 import {
@@ -40,7 +32,7 @@ const Filters = () => {
   //get data
   const { data, isLoading } = useGetFiltersQuery();
 
-  if (isLoading) return <Typography>Загрузка..</Typography>;
+  if (isLoading) return;
   return (
     <Stack
       direction={{ xs: "column", md: "row" }}
