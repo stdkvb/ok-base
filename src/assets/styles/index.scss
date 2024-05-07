@@ -20,9 +20,11 @@ body {
   }
 }
 
-a {
+a,
+.link {
   color: #bdbdbd;
   text-decoration: none;
+  cursor: pointer;
 
   &:hover {
     text-decoration: underline;

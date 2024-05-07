@@ -7,11 +7,17 @@ export const okBaseApi = createApi({
     getCategories: build.query({
       query: () => `knowledge-base/get-categories`,
     }),
+
+    getFilters: build.query({
+      query: () => `knowledge-base/get-filter`,
+    }),
+
     getList: build.query({
-      query: (category) =>
-        `knowledge-base/get-list?${category && `category=${category}`}`,
+      query: (filters) =>
+        `knowledge-base/get-list?` + `${new URLSearchParams(filters)}`,
     }),
   }),
 });
 
-export const { useGetCategoriesQuery, useGetListQuery } = okBaseApi;
+export const { useGetCategoriesQuery, useGetListQuery, useGetFiltersQuery } =
+  okBaseApi;

@@ -19,12 +19,17 @@ import {
   Badge,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
+import { useDispatch } from "react-redux";
 
+import { resetFilters } from "../redux/slices/filterSlice";
 import Categories from "./Categories";
 
 const drawerWidth = 256;
 
 function Layout(props) {
+  //redux states
+  const dispatch = useDispatch();
+
   const { window } = props;
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
@@ -47,21 +52,26 @@ function Layout(props) {
   const drawer = (
     <Stack sx={{ height: "100%" }}>
       <Toolbar sx={{ height: "90px", pl: 4 }} disableGutters={true}>
-        <Typography component={RouterLink} to="/">
+        <Typography
+          component={RouterLink}
+          to="/"
+          onClick={() => {
+            dispatch(resetFilters());
+            handleDrawerToggle();
+          }}
+        >
           OK-BASE
         </Typography>
       </Toolbar>
-      <Categories />
+      <Categories closeDrawer={handleDrawerToggle} />
       <List disablePadding sx={{ mt: "auto", mb: 0, pb: 4 }}>
-        {["О проекте", "Добавить в избранное", "Добавить материал"].map(
-          (text, index) => (
-            <ListItem key={text} disablePadding sx={{ pl: 4 }}>
-              <Typography component={RouterLink} to="/">
-                {text}
-              </Typography>
-            </ListItem>
-          )
-        )}
+        {["О проекте", "Избранное", "Добавить материал"].map((text, index) => (
+          <ListItem key={text} disablePadding sx={{ pl: 4 }}>
+            <Typography component={RouterLink} to="/">
+              {text}
+            </Typography>
+          </ListItem>
+        ))}
       </List>
     </Stack>
   );

@@ -1,12 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { okBaseApi } from "./okBaseApi";
 
-import categories from "./slices/categoriesSlice";
+import filtersSlice from "./slices/filterSlice";
 
 export const store = configureStore({
   reducer: {
     [okBaseApi.reducerPath]: okBaseApi.reducer,
-    categories,
+    filtersSlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(okBaseApi.middleware),
