@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Autocomplete,
   TextField,
@@ -7,8 +8,12 @@ import {
   AccordionDetails,
   AccordionSummary,
   Typography,
+  Drawer,
+  IconButton,
 } from "@mui/material";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import { useSelector, useDispatch } from "react-redux";
 
 import { useGetFiltersQuery } from "../redux/okBaseApi";
@@ -27,50 +32,92 @@ const Filters = () => {
   //get data
   const { data, isLoading } = useGetFiltersQuery(category);
 
+  //user device
+  const desktop = useMediaQuery("(min-width:1200px)");
+
+  const [open, setOpen] = useState(false);
+  const toggleDrawer = (newOpen) => () => {
+    setOpen(newOpen);
+  };
+
   if (isLoading) return;
   return (
     <>
-      <Accordion disableGutters={true} defaultExpanded>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          sx={{ px: { xs: 2, md: 4 }, display: { xs: "flex", md: "none" } }}
+      <Typography
+        onClick={toggleDrawer(true)}
+        variant="h6"
+        sx={{
+          display: { xs: "flex", lg: "none" },
+          gap: 1,
+          alignItems: "center",
+          justifyContent: "space-between",
+          p: { xs: 2, md: 4 },
+        }}
+      >
+        Фильтры
+        <IconButton sx={{ p: 0 }}>
+          <ArrowForwardIosIcon fontSize="small" />
+        </IconButton>
+      </Typography>
+      <Drawer
+        variant={desktop && "permanent"}
+        open={open}
+        onClose={toggleDrawer(false)}
+        anchor="right"
+        sx={{
+          height: { lg: "fit-content" },
+          "& .MuiDrawer-paper": {
+            position: "unset",
+            boxSizing: "border-box",
+          },
+        }}
+      >
+        <Typography
+          variant="h6"
+          onClick={toggleDrawer(false)}
+          sx={{
+            display: { xs: "flex", lg: "none" },
+            gap: 1,
+            alignItems: "center",
+            p: { xs: 2, md: 4 },
+          }}
         >
-          <Typography>Фильтры</Typography>
-        </AccordionSummary>
+          <IconButton sx={{ p: 0 }}>
+            <ArrowBackIosNewIcon fontSize="small" />
+          </IconButton>
+          Назад
+        </Typography>
         <Divider />
-        <AccordionDetails sx={{ p: 0 }}>
-          <Stack
-            direction={{ xs: "column", md: "row" }}
-            divider={<Divider orientation="vertical" flexItem />}
-            sx={{ px: { xs: 2, md: 4 }, gap: { xs: 0, md: 2 } }}
-          >
-            {data.map((filter, i) => (
-              <>
-                <Autocomplete
-                  key={i}
-                  fullWidth
-                  id={filter.name}
-                  options={filter.value}
-                  onChange={(event, newValue) => {
-                    onChangeFilter(filter.name, newValue ?? "");
-                  }}
-                  sx={{ py: 1, ml: 0 }}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      variant="standard"
-                      label={filter.title}
-                      sx={{ mb: 2 }}
-                    />
-                  )}
-                />
-                <Divider />
-              </>
-            ))}
-          </Stack>
-        </AccordionDetails>
-        <Divider />
-      </Accordion>
+        <Stack
+          direction={{ xs: "column", lg: "row" }}
+          divider={<Divider orientation="vertical" flexItem />}
+          sx={{ p: 0, gap: 0 }}
+        >
+          {data.map((filter, i) => (
+            <>
+              <Autocomplete
+                key={i}
+                fullWidth
+                id={filter.name}
+                options={filter.value}
+                onChange={(event, newValue) => {
+                  onChangeFilter(filter.name, newValue ?? "");
+                }}
+                sx={{ py: 1, ml: 0, px: { xs: 2, md: 4 } }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    variant="standard"
+                    label={filter.title}
+                    sx={{ mb: 2 }}
+                  />
+                )}
+              />
+              <Divider />
+            </>
+          ))}
+        </Stack>
+      </Drawer>
     </>
   );
 };
