@@ -16,6 +16,8 @@ import MenuIcon from "@mui/icons-material/Menu";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import AddIcon from "@mui/icons-material/Add";
+import SearchIcon from "@mui/icons-material/Search";
+import CloseIcon from "@mui/icons-material/Close";
 import { useDispatch } from "react-redux";
 
 import { resetFilters } from "../redux/slices/filterSlice";
@@ -48,7 +50,7 @@ function Layout(props) {
   };
 
   const drawer = (
-    <Stack sx={{ height: "100%" }}>
+    <Stack sx={{ height: "100%" }} onClick={() => handleDrawerClose()}>
       <Toolbar
         sx={{ height: { xs: "60px", md: "90px" }, pl: 4 }}
         disableGutters={true}
@@ -62,9 +64,19 @@ function Layout(props) {
         >
           OK-BASE
         </Typography>
+        <Divider
+          orientation="vertical"
+          sx={{ display: { sm: "none" }, ml: "auto" }}
+        />
+        <IconButton
+          onClick={handleDrawerToggle}
+          sx={{ display: { sm: "none" }, px: { xs: 2, md: 4 } }}
+        >
+          <CloseIcon />
+        </IconButton>
       </Toolbar>
       <Divider />
-      <Categories closeDrawer={handleDrawerToggle} />
+      <Categories />
       <List disablePadding sx={{ mt: "auto", mb: 0, pb: 4 }}>
         {["О проекте"].map((text, index) => (
           <ListItem key={text} disablePadding sx={{ pl: 4 }}>
@@ -102,13 +114,23 @@ function Layout(props) {
             aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: "none" } }}
+            sx={{ display: { sm: "none" }, px: { xs: 2, md: 4 } }}
           >
             <MenuIcon />
           </IconButton>
+          <Divider
+            orientation="vertical"
+            sx={{ display: { sm: "none" }, mr: 2 }}
+          />
+          <Typography
+            variant="p"
+            sx={{ flexGrow: 1, display: { xs: "none", md: "block" } }}
+          >
+            Открытая база знаний для руководителей и менеджеров ИТ-проектов
+          </Typography>
           <Typography
             variant="h4"
-            sx={{ flexGrow: 1 }}
+            sx={{ flexGrow: 1, display: { xs: "block", md: "none" } }}
             component={RouterLink}
             to="/"
             onClick={() => {
@@ -117,6 +139,10 @@ function Layout(props) {
           >
             OKB
           </Typography>
+          <Divider orientation="vertical" />
+          <IconButton sx={{ px: { xs: 2, md: 4 } }}>
+            <SearchIcon />
+          </IconButton>
           <Divider orientation="vertical" />
           <IconButton sx={{ px: { xs: 2, md: 4 } }}>
             <FavoriteBorderOutlinedIcon />
@@ -192,7 +218,7 @@ function Layout(props) {
       >
         <Toolbar
           sx={{
-            height: "90px",
+            height: { xs: "60px", md: "90px" },
             p: { xs: 2, md: 4 },
           }}
           disableGutters={true}

@@ -40,8 +40,7 @@ const MaterialDetail = () => {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          px: { xs: 2, md: 4 },
-          pb: 2,
+          p: { xs: 2, md: 4 },
         }}
       >
         <Button
@@ -59,10 +58,9 @@ const MaterialDetail = () => {
       <Stack
         direction={{ xs: "column", md: "row" }}
         divider={<Divider orientation="vertical" flexItem />}
-        spacing={2}
-        sx={{ px: { xs: 2, md: 4 } }}
+        spacing={0}
       >
-        <Typography sx={{ py: 2 }}>{data.description}</Typography>
+        <Typography sx={{ p: { xs: 2, md: 4 } }}>{data.description}</Typography>
         <Box
           sx={{
             flexGrow: "1",
@@ -72,7 +70,7 @@ const MaterialDetail = () => {
             height: "fit-content",
             alignItems: "flex-start",
             flexWrap: "wrap",
-            py: 2,
+            p: { xs: 2, md: 4 },
           }}
         >
           {data.tags.map((tag, i) => (
@@ -82,14 +80,14 @@ const MaterialDetail = () => {
       </Stack>
       <Divider />
       <List disablePadding sx={{ pb: 2 }}>
-        <ListItem sx={{ px: 4, py: 2 }}>
+        <ListItem sx={{ p: { xs: 2, md: 4 } }}>
           <ListItemText
             primary={<Typography variant="h3">Другие материалы:</Typography>}
           ></ListItemText>
         </ListItem>
 
         {data.recommendation.length == 0 ? (
-          <ListItem sx={{ px: 4 }}>
+          <ListItem sx={{ p: { xs: 2, md: 4 } }}>
             <ListItemText primary={"Ничего не найдено :("}></ListItemText>
           </ListItem>
         ) : (
@@ -98,14 +96,14 @@ const MaterialDetail = () => {
               <ListItem
                 key={i}
                 item
-                sx={{ p: 4, gap: 2 }}
+                sx={{ p: { xs: 2, md: 4 }, gap: 2 }}
                 component={RouterLink}
                 to={`/material/${item.id}`}
               >
                 <ListItemText
                   primary={<Typography variant="h5">{item.name}</Typography>}
                 />
-                <ListItemIcon>
+                <ListItemIcon sx={{ minWidth: "unset" }}>
                   <ArrowOutwardOutlinedIcon />
                 </ListItemIcon>
               </ListItem>

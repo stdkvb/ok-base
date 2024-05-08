@@ -11,7 +11,7 @@ import { useDispatch } from "react-redux";
 import { useGetCategoriesQuery } from "../redux/okBaseApi";
 import { setCategory, resetFilters } from "../redux/slices/filterSlice";
 
-const Categories = ({ closeDrawer }) => {
+const Categories = () => {
   //redux states
   const dispatch = useDispatch();
 
@@ -20,7 +20,6 @@ const Categories = ({ closeDrawer }) => {
 
   //change category
   const onChangeCategory = (value) => {
-    closeDrawer();
     dispatch(resetFilters());
     dispatch(setCategory(value));
   };
