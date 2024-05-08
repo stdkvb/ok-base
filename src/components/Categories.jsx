@@ -9,7 +9,7 @@ import { Link as RouterLink } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
 import { useGetCategoriesQuery } from "../redux/okBaseApi";
-import { setCategory, resetFilters } from "../redux/slices/filterSlice";
+import { setFilter, resetFilters } from "../redux/slices/filterSlice";
 
 const Categories = () => {
   //redux states
@@ -20,8 +20,9 @@ const Categories = () => {
 
   //change category
   const onChangeCategory = (value) => {
+    let name = "category";
     dispatch(resetFilters());
-    dispatch(setCategory(value));
+    dispatch(setFilter({ name, value }));
   };
 
   if (isLoading) return <LinearProgress color="secondary" />;

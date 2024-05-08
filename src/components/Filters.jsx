@@ -12,13 +12,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useDispatch } from "react-redux";
 
 import { useGetFiltersQuery } from "../redux/okBaseApi";
-import {
-  setCompany,
-  setPeople,
-  setTheme,
-  setEvent,
-  setGrade,
-} from "../redux/slices/filterSlice";
+import { setFilter } from "../redux/slices/filterSlice";
 
 const Filters = () => {
   //redux states
@@ -26,17 +20,7 @@ const Filters = () => {
 
   //handle change
   const onChangeFilter = (name, value) => {
-    dispatch(
-      name == "company"
-        ? setCompany(value)
-        : name == "theme"
-        ? setTheme(value)
-        : name == "people"
-        ? setPeople(value)
-        : name == "event"
-        ? setEvent(value)
-        : name == "grade" && setGrade(value)
-    );
+    dispatch(setFilter({ name, value }));
   };
 
   //get data
