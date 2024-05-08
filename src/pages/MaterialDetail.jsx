@@ -14,6 +14,8 @@ import ArrowOutwardOutlinedIcon from "@mui/icons-material/ArrowOutwardOutlined";
 import { useParams } from "react-router-dom";
 import { Link as RouterLink } from "react-router-dom";
 
+import Tags from "../components/Tags";
+
 import { useGetDetailPageQuery } from "../redux/okBaseApi";
 
 const MaterialDetail = () => {
@@ -61,31 +63,13 @@ const MaterialDetail = () => {
         spacing={0}
       >
         <Typography sx={{ p: { xs: 2, md: 4 } }}>{data.description}</Typography>
-        <Box
-          sx={{
-            flexGrow: "1",
-            display: "flex",
-            gap: 1,
-            minWidth: "30%",
-            height: "fit-content",
-            alignItems: "flex-start",
-            flexWrap: "wrap",
-            p: { xs: 2, md: 4 },
-          }}
-        >
-          {data.tags.map((tag, i) => (
-            <Chip key={i} label={tag} />
-          ))}
-        </Box>
+        <Tags data={data} />
       </Stack>
       <Divider />
       <List disablePadding sx={{ pb: 2 }}>
-        <ListItem sx={{ p: { xs: 2, md: 4 } }}>
-          <ListItemText
-            primary={<Typography variant="h3">Другие материалы:</Typography>}
-          ></ListItemText>
+        <ListItem sx={{ p: { xs: 2, md: 4 }, pt: { xs: 1.5, md: 4 } }}>
+          <Typography variant="h3">Другие материалы:</Typography>
         </ListItem>
-
         {data.recommendation.length == 0 ? (
           <ListItem sx={{ p: { xs: 2, md: 4 } }}>
             <ListItemText primary={"Ничего не найдено :("}></ListItemText>
@@ -100,9 +84,7 @@ const MaterialDetail = () => {
                 component={RouterLink}
                 to={`/material/${item.id}`}
               >
-                <ListItemText
-                  primary={<Typography variant="h5">{item.name}</Typography>}
-                />
+                <Typography variant="h5">{item.name}</Typography>
                 <ListItemIcon sx={{ minWidth: "unset" }}>
                   <ArrowOutwardOutlinedIcon />
                 </ListItemIcon>

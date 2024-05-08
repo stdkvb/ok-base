@@ -23,7 +23,7 @@ const Catalog = () => {
   if (isLoading) return;
   return (
     <>
-      {filters.category && (
+      {filters.category && !filters.tag && (
         <>
           <Typography
             variant="h2"
@@ -37,7 +37,22 @@ const Catalog = () => {
           <Divider />
         </>
       )}
-      <Filters />
+      {filters.tag && (
+        <>
+          <Typography
+            variant="h2"
+            sx={{
+              py: { xs: 2, md: 8 },
+              px: { xs: 2, md: 4 },
+            }}
+          >
+            #{filters.tag}
+          </Typography>
+          <Divider />
+        </>
+      )}
+      {!filters.tag && <Filters />}
+
       <Divider />
       <List disablePadding>
         {data.totalCount == 0 ? (

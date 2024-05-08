@@ -8,6 +8,7 @@ const initialState = {
     people: "",
     event: "",
     grade: "",
+    tag: "",
   },
 };
 
@@ -22,9 +23,12 @@ export const filtersSlice = createSlice({
     resetFilters(state) {
       state.filters = initialState.filters;
     },
+    setTag(state, action) {
+      state.filters.tag = action.payload;
+    },
   },
 });
 
-export const { setFilter, resetFilters } = filtersSlice.actions;
+export const { setFilter, setTag, resetFilters } = filtersSlice.actions;
 
 export default filtersSlice.reducer;
