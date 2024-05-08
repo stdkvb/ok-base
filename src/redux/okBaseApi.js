@@ -9,7 +9,7 @@ export const okBaseApi = createApi({
     }),
 
     getFilters: build.query({
-      query: () => `knowledge-base/get-filter`,
+      query: (category) => `knowledge-base/get-filter?category=${category}`,
     }),
 
     getList: build.query({

@@ -9,13 +9,14 @@ import {
   Typography,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import { useGetFiltersQuery } from "../redux/okBaseApi";
 import { setFilter } from "../redux/slices/filterSlice";
 
 const Filters = () => {
   //redux states
+  const category = useSelector((state) => state.filtersSlice.filters.category);
   const dispatch = useDispatch();
 
   //handle change
@@ -24,7 +25,7 @@ const Filters = () => {
   };
 
   //get data
-  const { data, isLoading } = useGetFiltersQuery();
+  const { data, isLoading } = useGetFiltersQuery(category);
 
   if (isLoading) return;
   return (
