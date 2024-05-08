@@ -50,14 +50,14 @@ const Catalog = () => {
               <ListItem
                 key={i}
                 item
-                sx={{ p: 4, gap: 2 }}
+                sx={{ p: { xs: 2, md: 4 }, gap: 2 }}
                 component={RouterLink}
                 to={`material/${item.id}`}
               >
                 <ListItemText
                   primary={<Typography variant="h5">{item.name}</Typography>}
                 />
-                <ListItemIcon>
+                <ListItemIcon sx={{ minWidth: "unset" }}>
                   <ArrowOutwardOutlinedIcon />
                 </ListItemIcon>
               </ListItem>

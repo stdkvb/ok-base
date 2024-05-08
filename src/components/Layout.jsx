@@ -15,6 +15,7 @@ import {
 import MenuIcon from "@mui/icons-material/Menu";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
+import AddIcon from "@mui/icons-material/Add";
 import { useDispatch } from "react-redux";
 
 import { resetFilters } from "../redux/slices/filterSlice";
@@ -48,13 +49,15 @@ function Layout(props) {
 
   const drawer = (
     <Stack sx={{ height: "100%" }}>
-      <Toolbar sx={{ height: "90px", pl: 4 }} disableGutters={true}>
+      <Toolbar
+        sx={{ height: { xs: "60px", md: "90px" }, pl: 4 }}
+        disableGutters={true}
+      >
         <Typography
           component={RouterLink}
           to="/"
           onClick={() => {
             dispatch(resetFilters());
-            handleDrawerToggle();
           }}
         >
           OK-BASE
@@ -77,7 +80,7 @@ function Layout(props) {
   return (
     <Box sx={{ flexGrow: 1, display: "flex", flexDirection: "column" }}>
       <AppBar
-        position="static"
+        position="fixed"
         sx={{
           height: "fit-content",
           width: { sm: `calc(100% - ${drawerWidth}px)` },
@@ -88,7 +91,7 @@ function Layout(props) {
       >
         <Toolbar
           sx={{
-            height: "90px",
+            height: { xs: "60px", md: "90px" },
             pl: { xs: 2, md: 4 },
             pr: 0,
           }}
@@ -104,11 +107,15 @@ function Layout(props) {
             <MenuIcon />
           </IconButton>
           <Typography
-            variant="p"
-            component="div"
-            sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
+            variant="h4"
+            sx={{ flexGrow: 1 }}
+            component={RouterLink}
+            to="/"
+            onClick={() => {
+              dispatch(resetFilters());
+            }}
           >
-            Открытая база знаний для руководителей и менеджеров ИТ-проектов
+            OKB
           </Typography>
           <Divider orientation="vertical" />
           <IconButton sx={{ px: { xs: 2, md: 4 } }}>
@@ -120,11 +127,12 @@ function Layout(props) {
           </IconButton>
           <Divider orientation="vertical" />
           <IconButton sx={{ px: { xs: 2, md: 4 } }}>
-            <Typography>Добавить материал</Typography>
+            <AddIcon />
           </IconButton>
         </Toolbar>
+        <Divider />
       </AppBar>
-      <Divider />
+
       <Box
         component="nav"
         sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
@@ -169,6 +177,7 @@ function Layout(props) {
           flexGrow: 1,
           ml: { sm: `${drawerWidth}px` },
           width: { sm: `calc(100% - ${drawerWidth}px)` },
+          pt: { xs: "60px", md: "90px" },
         }}
       >
         <Outlet />

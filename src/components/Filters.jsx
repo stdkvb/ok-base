@@ -1,4 +1,14 @@
-import { Autocomplete, TextField, Divider, Stack } from "@mui/material";
+import {
+  Autocomplete,
+  TextField,
+  Divider,
+  Stack,
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Typography,
+} from "@mui/material";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useDispatch } from "react-redux";
 
 import { useGetFiltersQuery } from "../redux/okBaseApi";
@@ -34,33 +44,49 @@ const Filters = () => {
 
   if (isLoading) return;
   return (
-    <Stack
-      direction={{ xs: "column", md: "row" }}
-      divider={<Divider orientation="vertical" flexItem />}
-      spacing={2}
-      sx={{ px: { xs: 2, md: 4 } }}
-    >
-      {data.map((filter, i) => (
-        <Autocomplete
-          key={i}
-          fullWidth
-          id={filter.name}
-          options={filter.value}
-          onChange={(event, newValue) => {
-            onChangeFilter(filter.name, newValue ?? "");
-          }}
-          sx={{ py: 1, ml: 0 }}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              variant="standard"
-              label={filter.title}
-              sx={{ mb: 2 }}
-            />
-          )}
-        />
-      ))}
-    </Stack>
+    <>
+      <Accordion disableGutters={true} defaultExpanded>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          sx={{ px: { xs: 2, md: 4 }, display: { xs: "flex", md: "none" } }}
+        >
+          <Typography>Фильтры</Typography>
+        </AccordionSummary>
+        <Divider />
+        <AccordionDetails sx={{ p: 0 }}>
+          <Stack
+            direction={{ xs: "column", md: "row" }}
+            divider={<Divider orientation="vertical" flexItem />}
+            sx={{ px: { xs: 2, md: 4 }, gap: { xs: 0, md: 2 } }}
+          >
+            {data.map((filter, i) => (
+              <>
+                <Autocomplete
+                  key={i}
+                  fullWidth
+                  id={filter.name}
+                  options={filter.value}
+                  onChange={(event, newValue) => {
+                    onChangeFilter(filter.name, newValue ?? "");
+                  }}
+                  sx={{ py: 1, ml: 0 }}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      variant="standard"
+                      label={filter.title}
+                      sx={{ mb: 2 }}
+                    />
+                  )}
+                />
+                <Divider />
+              </>
+            ))}
+          </Stack>
+        </AccordionDetails>
+        <Divider />
+      </Accordion>
+    </>
   );
 };
 

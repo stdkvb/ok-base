@@ -25,7 +25,6 @@ const Categories = ({ closeDrawer }) => {
     dispatch(setCategory(value));
   };
 
-  //render
   if (isLoading) return <LinearProgress color="secondary" />;
   return (
     <List disablePadding sx={{ pt: 4 }}>

@@ -79,6 +79,13 @@ let theme = createTheme({
         },
       },
     },
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          backgroundImage: "unset",
+        },
+      },
+    },
   },
 });
 

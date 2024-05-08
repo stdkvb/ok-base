@@ -16,14 +16,13 @@ import { Link as RouterLink } from "react-router-dom";
 
 import { useGetDetailPageQuery } from "../redux/okBaseApi";
 
-const DetailPage = () => {
+const MaterialDetail = () => {
   //get detail page id
   let { detailPageId } = useParams();
 
   //get data
   const { data, isLoading } = useGetDetailPageQuery(detailPageId);
-  console.log(data);
-  //render
+
   if (isLoading) return;
   return (
     <>
@@ -45,7 +44,6 @@ const DetailPage = () => {
           pb: 2,
         }}
       >
-        <Typography color="text.secondary">{data.date}</Typography>
         <Button
           variant="contained"
           component="a"
@@ -55,6 +53,7 @@ const DetailPage = () => {
         >
           {data.linkText == "" ? "Перейти по ссылке" : data.linkText}
         </Button>
+        <Typography color="text.secondary">{data.date}</Typography>
       </Box>
       <Divider />
       <Stack
@@ -85,7 +84,7 @@ const DetailPage = () => {
       <List disablePadding sx={{ pb: 2 }}>
         <ListItem sx={{ px: 4, py: 2 }}>
           <ListItemText
-            primary={<Typography variant="h5">Похожие материалы:</Typography>}
+            primary={<Typography variant="h3">Другие материалы:</Typography>}
           ></ListItemText>
         </ListItem>
 
@@ -99,9 +98,9 @@ const DetailPage = () => {
               <ListItem
                 key={i}
                 item
-                sx={{ px: 4, gap: 2 }}
+                sx={{ p: 4, gap: 2 }}
                 component={RouterLink}
-                to={`material/${item.id}`}
+                to={`/material/${item.id}`}
               >
                 <ListItemText
                   primary={<Typography variant="h5">{item.name}</Typography>}
@@ -110,6 +109,7 @@ const DetailPage = () => {
                   <ArrowOutwardOutlinedIcon />
                 </ListItemIcon>
               </ListItem>
+              <Divider />
             </>
           ))
         )}
@@ -118,4 +118,4 @@ const DetailPage = () => {
   );
 };
 
-export default DetailPage;
+export default MaterialDetail;
