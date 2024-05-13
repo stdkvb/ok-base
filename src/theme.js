@@ -1,3 +1,4 @@
+import { BorderColor } from "@mui/icons-material";
 import { createTheme, responsiveFontSizes } from "@mui/material/styles";
 
 // Create a theme instance.
@@ -23,9 +24,12 @@ let theme = createTheme({
     error: {
       main: "#fd5361",
     },
+    success: {
+      main: "#009b00",
+    },
     background: {
-      default: "#2b2b2b",
-      paper: "#2b2b2b",
+      default: "#1a1a1a",
+      paper: "#1a1a1a",
     },
     text: {
       primary: "#FFFFFF",
@@ -33,9 +37,6 @@ let theme = createTheme({
   },
   typography: {
     fontFamily: "system-ui, sans-serif",
-    allVariants: {
-      fontWeight: 500,
-    },
   },
   components: {
     MuiBadge: {
@@ -76,6 +77,19 @@ let theme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: 0,
+          minHeight: "50px",
+        },
+      },
+    },
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: {
+          borderRadius: 0,
+          // "&.Mui-error": {
+          //   "& .MuiOutlinedInput-notchedOutline": {
+          //     borderColor: "white !important",
+          //   },
+          // },
         },
       },
     },

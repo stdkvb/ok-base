@@ -16,14 +16,14 @@ import { Link as RouterLink } from "react-router-dom";
 
 import Tags from "../components/Tags";
 
-import { useGetDetailPageQuery } from "../redux/okBaseApi";
+import { useGetMaterialDetailQuery } from "../redux/okBaseApi";
 
 const MaterialDetail = () => {
   //get detail page id
-  let { detailPageId } = useParams();
+  let { materialDetailId } = useParams();
 
   //get data
-  const { data, isLoading } = useGetDetailPageQuery(detailPageId);
+  const { data, isLoading } = useGetMaterialDetailQuery(materialDetailId);
 
   if (isLoading) return;
   return (

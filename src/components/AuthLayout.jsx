@@ -23,16 +23,17 @@ const AuthLayout = () => {
           alignItems: "center",
         }}
       >
-        <Typography variant="h4">OK-Base</Typography>
         <Box
           sx={{
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            justifyContent: "center",
+            justifyContent: "flex-start",
             width: "100%",
-            maxWidth: "552px",
-            gap: 6,
+            maxWidth: "450px",
+            minHeight: "450px",
+            gap: 2,
+            alignItems: { xs: "center", sm: "flex-start" },
           }}
         >
           <Outlet />
