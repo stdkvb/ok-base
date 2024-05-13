@@ -11,6 +11,7 @@ import ArrowOutwardOutlinedIcon from "@mui/icons-material/ArrowOutwardOutlined";
 import { useSelector } from "react-redux";
 
 import Filters from "./Filters";
+import Pagination from "./Pagination";
 import { useGetListQuery } from "../redux/okBaseApi";
 
 const Catalog = () => {
@@ -81,6 +82,7 @@ const Catalog = () => {
           ))
         )}
       </List>
+      <Pagination totalCount={data.totalCount} />
     </>
   );
 };

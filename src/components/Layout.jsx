@@ -204,6 +204,8 @@ function Layout(props) {
           ml: { sm: `${drawerWidth}px` },
           width: { sm: `calc(100% - ${drawerWidth}px)` },
           pt: { xs: "60px", md: "90px" },
+          display: "flex",
+          flexDirection: "column",
         }}
       >
         <Outlet />
