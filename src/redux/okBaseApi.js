@@ -36,6 +36,14 @@ export const okBaseApi = createApi({
       }),
     }),
 
+    logIn: build.mutation({
+      query: (body) => ({
+        url: "auth/login",
+        method: "POST",
+        body,
+      }),
+    }),
+
     getCategories: build.query({
       query: () => `knowledge-base/get-categories`,
     }),
@@ -63,4 +71,5 @@ export const {
   useRegRepeatCodeMutation,
   useRegCheckCodeMutation,
   useRegFinishMutation,
+  useLogInMutation,
 } = okBaseApi;

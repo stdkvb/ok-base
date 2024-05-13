@@ -1,17 +1,19 @@
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { Button, TextField, Box, Typography, Link } from "@mui/material";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 
-import { useRegStartMutation } from "../redux/okBaseApi";
+import { useLogInMutation } from "../redux/okBaseApi";
 
 const fields = [
   { label: "Логин", name: "login" },
-  { label: "Пароль", name: "password" },
+  { label: "Пароль", name: "password", type: "password" },
 ];
 
 const LogIn = () => {
-  const [startReg, { isError }] = useRegStartMutation();
+  const navigate = useNavigate();
+
+  const [logIn, { error, isSuccess }] = useLogInMutation();
 
   const validationSchema = yup.object({
     login: yup.string("Введите логин").required("Введите логин"),
@@ -25,9 +27,14 @@ const LogIn = () => {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      startReg(values).unwrap();
+      console.log(values);
+      logIn(values).unwrap();
     },
   });
+
+  if (isSuccess) {
+    navigate("/");
+  }
 
   return (
     <>
@@ -55,6 +62,7 @@ const LogIn = () => {
       >
         {fields.map((field, i) => (
           <TextField
+            key={i}
             fullWidth
             id={field.name}
             name={field.name}
@@ -67,8 +75,10 @@ const LogIn = () => {
             }
             helperText={formik.touched[field.name] && formik.errors[field.name]}
             required
+            type={field.type ?? "text"}
           />
         ))}
+        {error && <Typography color="error">{error.data.message}</Typography>}
         <Button
           color="primary"
           variant="contained"
