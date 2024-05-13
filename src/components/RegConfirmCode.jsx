@@ -2,7 +2,7 @@ import { Typography, Link } from "@mui/material";
 
 import { useRegRepeatCodeMutation } from "../redux/okBaseApi";
 
-const SignUpRepeat = ({ data }) => {
+const RegConfirmCode = ({ userId }) => {
   //query
   const [repeatCode, { error, isSuccess }] = useRegRepeatCodeMutation();
 
@@ -14,7 +14,7 @@ const SignUpRepeat = ({ data }) => {
       </Typography>
       <Typography color="text.secondary">
         Письмо не пришло?{" "}
-        <Link color="primary.main" onClick={() => repeatCode(data)}>
+        <Link color="primary.main" onClick={() => repeatCode(userId)}>
           Отправить еще раз
         </Link>
       </Typography>
@@ -28,4 +28,4 @@ const SignUpRepeat = ({ data }) => {
   );
 };
 
-export default SignUpRepeat;
+export default RegConfirmCode;

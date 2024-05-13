@@ -4,7 +4,7 @@ import { Button, TextField, Box, Typography, Link, Stack } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 
 import { useRegStartMutation } from "../redux/okBaseApi";
-import SignUpRepeat from "../components/SignUpRepeat";
+import RegConfirmCode from "../components/RegConfirmCode";
 
 const fields = [
   { label: "Email", name: "email" },
@@ -12,7 +12,7 @@ const fields = [
   { label: "Фамилия", name: "lastName" },
 ];
 
-const SignUpStart = () => {
+const RegStart = () => {
   //query
   const [startReg, { error, isSuccess, data }] = useRegStartMutation();
 
@@ -45,7 +45,7 @@ const SignUpStart = () => {
       </Typography>
       {isSuccess ? (
         <>
-          <SignUpRepeat data={data} />
+          <RegConfirmCode userId={data} />
         </>
       ) : (
         <>
@@ -108,4 +108,4 @@ const SignUpStart = () => {
   );
 };
 
-export default SignUpStart;
+export default RegStart;

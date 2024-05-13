@@ -3,16 +3,16 @@ import AuthLayout from "./components/AuthLayout";
 import Layout from "./components/Layout";
 import Catalog from "./components/Catalog";
 import MaterialDetail from "./pages/MaterialDetail";
-import SignUpStart from "./pages/SignUpStart";
 import LogIn from "./pages/LogIn";
-import SignUpFinish from "./pages/SignUpFinish";
+import RegFinish from "./pages/RegFinish";
+import RegStart from "./pages/RegStart";
 
 export default function App() {
   return (
     <Routes>
       <Route path="/" element={<AuthLayout />}>
-        <Route path="/sign-up" element={<SignUpStart />} />
-        <Route path="/confirm-registration" element={<SignUpFinish />} />
+        <Route path="/sign-up" element={<RegStart />} />
+        <Route path="/confirm-registration" element={<RegFinish />} />
         <Route path="/log-in" element={<LogIn />} />
       </Route>
       <Route path="/" element={<Layout />}>

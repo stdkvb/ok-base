@@ -28,6 +28,14 @@ export const okBaseApi = createApi({
       }),
     }),
 
+    regFinish: build.mutation({
+      query: (body) => ({
+        url: "auth/reg-finish",
+        method: "POST",
+        body,
+      }),
+    }),
+
     getCategories: build.query({
       query: () => `knowledge-base/get-categories`,
     }),
@@ -54,4 +62,5 @@ export const {
   useRegStartMutation,
   useRegRepeatCodeMutation,
   useRegCheckCodeMutation,
+  useRegFinishMutation,
 } = okBaseApi;
