@@ -27,7 +27,6 @@ const AuthLayout = () => {
           sx={{
             display: "flex",
             flexDirection: "column",
-            alignItems: "center",
             justifyContent: "flex-start",
             width: "100%",
             maxWidth: "450px",

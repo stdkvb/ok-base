@@ -6,6 +6,7 @@ import MaterialDetail from "./pages/MaterialDetail";
 import LogIn from "./pages/LogIn";
 import RegFinish from "./pages/RegFinish";
 import RegStart from "./pages/RegStart";
+import RecoveryPass from "./pages/RecoveryPass";
 
 export default function App() {
   return (
@@ -14,6 +15,7 @@ export default function App() {
         <Route path="/sign-up" element={<RegStart />} />
         <Route path="/confirm-registration" element={<RegFinish />} />
         <Route path="/log-in" element={<LogIn />} />
+        <Route path="/recovery-pass" element={<RecoveryPass />} />
       </Route>
       <Route path="/" element={<Layout />}>
         <Route index path="/" element={<Catalog />} />

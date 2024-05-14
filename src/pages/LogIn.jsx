@@ -27,7 +27,6 @@ const LogIn = () => {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      console.log(values);
       logIn(values).unwrap();
     },
   });
@@ -78,6 +77,14 @@ const LogIn = () => {
             type={field.type ?? "text"}
           />
         ))}
+        <Link
+          component={RouterLink}
+          to="/recovery-pass"
+          color="primary.main"
+          sx={{ textAlign: { xs: "center", md: "left" } }}
+        >
+          Забыли пароль?
+        </Link>
         {error && <Typography color="error">{error.data.message}</Typography>}
         <Button
           color="primary"

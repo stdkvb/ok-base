@@ -36,6 +36,14 @@ export const okBaseApi = createApi({
       }),
     }),
 
+    recoveryPassStart: build.mutation({
+      query: (body) => ({
+        url: "auth/recovery-pass-start",
+        method: "POST",
+        body,
+      }),
+    }),
+
     logIn: build.mutation({
       query: (body) => ({
         url: "auth/login",
@@ -72,4 +80,5 @@ export const {
   useRegCheckCodeMutation,
   useRegFinishMutation,
   useLogInMutation,
+  useRecoveryPassStartMutation,
 } = okBaseApi;
