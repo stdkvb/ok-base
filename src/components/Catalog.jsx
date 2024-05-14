@@ -10,7 +10,6 @@ import {
 import { Link as RouterLink } from "react-router-dom";
 import ArrowOutwardOutlinedIcon from "@mui/icons-material/ArrowOutwardOutlined";
 import { useSelector, useDispatch } from "react-redux";
-import { setFilter } from "../redux/slices/filterSlice";
 
 import Filters from "./Filters";
 import Pagination from "./Pagination";

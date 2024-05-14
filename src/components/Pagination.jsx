@@ -65,13 +65,14 @@ const Pagination = ({ totalCount }) => {
       <Stack direction="row" sx={{ alignItems: "center" }}>
         <Typography mr={2}>Показывать по:</Typography>
         <ToggleButtonGroup
-          color="primary"
+          color="secondary"
           value={limit}
           exclusive
           onChange={handleChangeLimit}
           aria-label="Platform"
           sx={{
             alignItems: "center",
+            gap: 1,
           }}
         >
           <ToggleButton size="small" value="5">

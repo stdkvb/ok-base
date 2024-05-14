@@ -23,7 +23,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { resetFilters } from "../redux/slices/filterSlice";
 import Categories from "./Categories";
 
-const drawerWidth = 256;
+const drawerWidth = 200;
 
 function Layout(props) {
   //redux states
@@ -79,13 +79,11 @@ function Layout(props) {
       <Divider />
       <Categories />
       <List disablePadding sx={{ mt: "auto", mb: 0, pb: 4 }}>
-        {["О проекте"].map((text, index) => (
-          <ListItem key={text} disablePadding sx={{ pl: 4 }}>
-            <Typography component={RouterLink} to="/">
-              {text}
-            </Typography>
-          </ListItem>
-        ))}
+        <ListItem disablePadding sx={{ pl: 4 }}>
+          <Typography component={RouterLink} to="/about">
+            О проекте
+          </Typography>
+        </ListItem>
       </List>
     </Stack>
   );
@@ -126,6 +124,7 @@ function Layout(props) {
           <Typography
             variant="p"
             sx={{ flexGrow: 1, display: { xs: "none", md: "block" } }}
+            color="text.secondary"
           >
             Открытая база знаний для руководителей и менеджеров ИТ-проектов
           </Typography>

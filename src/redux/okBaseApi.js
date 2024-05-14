@@ -80,8 +80,13 @@ export const okBaseApi = createApi({
       query: (filters) =>
         `knowledge-base/get-list?` + `${new URLSearchParams(filters)}`,
     }),
+
     getMaterialDetail: build.query({
       query: (materialDetailId) => `knowledge-base/${materialDetailId}`,
+    }),
+
+    getAbout: build.query({
+      query: () => `content/about`,
     }),
   }),
 });
@@ -99,4 +104,5 @@ export const {
   useRecoveryPassStartMutation,
   useRecoveryPassCheckCodeMutation,
   useRecoveryPassFinishMutation,
+  useGetAboutQuery,
 } = okBaseApi;

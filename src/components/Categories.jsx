@@ -29,7 +29,16 @@ const Categories = () => {
     <List disablePadding sx={{ pt: 4 }}>
       {data.map((item, i) => (
         <ListItem key={i} disablePadding sx={{ pl: 4, pb: 1 }}>
-          <Badge badgeContent={item.count} max={999} showZero>
+          <Badge
+            badgeContent={item.count}
+            max={999}
+            showZero
+            sx={{
+              "& .MuiBadge-badge": {
+                color: "text.secondary",
+              },
+            }}
+          >
             <Typography
               component={RouterLink}
               to="/"

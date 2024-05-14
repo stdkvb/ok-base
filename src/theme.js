@@ -33,6 +33,7 @@ let theme = createTheme({
     },
     text: {
       primary: "#FFFFFF",
+      secondary: "#9b9b9b",
     },
   },
   typography: {
@@ -97,6 +98,16 @@ let theme = createTheme({
       styleOverrides: {
         root: {
           backgroundImage: "unset",
+        },
+      },
+    },
+    MuiToggleButton: {
+      styleOverrides: {
+        root: {
+          border: "none",
+          borderRadius: "4px !important",
+          width: "32px",
+          height: "32px",
         },
       },
     },
