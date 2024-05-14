@@ -1,8 +1,10 @@
 import { Button, TextField, Box, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
-import { useRegFinishMutation } from "../redux/okBaseApi";
-import { Password } from "@mui/icons-material";
+import {
+  useRegFinishMutation,
+  useRecoveryPassFinishMutation,
+} from "../redux/okBaseApi";
 import { useFormik } from "formik";
 import * as yup from "yup";
 
@@ -11,11 +13,15 @@ const fields = [
   { label: "Повторите пароль", name: "confirmPassword" },
 ];
 
-const RegCreatePassword = ({ urlParams }) => {
+const CreatePassword = ({ urlParams, endpoint }) => {
+  console.log(urlParams);
   //navigate
   const navigate = useNavigate();
-  //query
-  const [finishReg, { error, isSuccess }] = useRegFinishMutation();
+
+  const [createPassword, { error, isSuccess }] =
+    endpoint === "reg"
+      ? useRegFinishMutation()
+      : useRecoveryPassFinishMutation();
 
   const validationSchema = yup.object({
     password: yup
@@ -37,7 +43,7 @@ const RegCreatePassword = ({ urlParams }) => {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      finishReg({ ...values, ...urlParams }).unwrap();
+      createPassword({ ...values, ...urlParams }).unwrap();
     },
   });
 
@@ -47,9 +53,6 @@ const RegCreatePassword = ({ urlParams }) => {
 
   return (
     <>
-      <Typography variant="h2" component="h1">
-        Регистрация
-      </Typography>
       <Typography>Задайте пароль для вашего аккаунта</Typography>
       <Box
         component="form"
@@ -88,11 +91,11 @@ const RegCreatePassword = ({ urlParams }) => {
           type="submit"
           sx={{ width: { xs: "100%", sm: "fit-content" }, mt: 3 }}
         >
-          Зарегистрироваться
+          Отправить
         </Button>
       </Box>
     </>
   );
 };
 
-export default RegCreatePassword;
+export default CreatePassword;

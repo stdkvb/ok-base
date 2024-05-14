@@ -2,18 +2,18 @@ import { useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { CircularProgress, Typography } from "@mui/material";
 
-import { useRegCheckCodeMutation } from "../redux/okBaseApi";
+import { useRecoveryPassCheckCodeMutation } from "../redux/okBaseApi";
 import CreatePassword from "../components/CreatePassword";
 
-const RegFinish = () => {
+const RecoveryPassFinish = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   let urlParams = Object.fromEntries(searchParams.entries());
 
   //confirmation query
-  const [regCheckCode, { error, isSuccess, isLoading }] =
-    useRegCheckCodeMutation();
+  const [recoveryPassCheckCode, { error, isSuccess, isLoading }] =
+    useRecoveryPassCheckCodeMutation();
   useEffect(() => {
-    regCheckCode(urlParams);
+    recoveryPassCheckCode(urlParams);
   }, []);
 
   if (isLoading)
@@ -39,11 +39,11 @@ const RegFinish = () => {
     return (
       <>
         <Typography variant="h2" component="h1">
-          Регистрация
+          Забыли пароль
         </Typography>
-        <CreatePassword urlParams={urlParams} endpoint={"reg"} />
+        <CreatePassword urlParams={urlParams} endpoint={"recovery"} />
       </>
     );
 };
 
-export default RegFinish;
+export default RecoveryPassFinish;

@@ -9,7 +9,7 @@ import { useState } from "react";
 
 const fields = [{ label: "Email", name: "email" }];
 
-const RecoveryPass = () => {
+const RecoveryPassStart = () => {
   const [recoveryPassStart, { error, isSuccess }] =
     useRecoveryPassStartMutation();
 
@@ -97,4 +97,4 @@ const RecoveryPass = () => {
   );
 };
 
-export default RecoveryPass;
+export default RecoveryPassStart;
