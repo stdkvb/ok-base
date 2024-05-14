@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Pagination as MuiPagination,
   Typography,
@@ -6,6 +6,7 @@ import {
   IconButton,
   ToggleButtonGroup,
   ToggleButton,
+  Button,
 } from "@mui/material";
 
 import { useSelector, useDispatch } from "react-redux";
@@ -14,7 +15,7 @@ import { Link } from "react-router-dom";
 
 const Pagination = ({ totalCount }) => {
   //redux states
-  const filters = useSelector((state) => state.filtersSlice.filters.page);
+  const filters = useSelector((state) => state.filtersSlice.filters);
   const dispatch = useDispatch();
 
   const handleChangePage = (event, value) => {
@@ -22,41 +23,71 @@ const Pagination = ({ totalCount }) => {
     dispatch(setFilter({ name, value }));
   };
 
-  const [limit, setLimit] = useState(filters.limit);
+  const [limit, setLimit] = useState("5");
+
   const handleChangeLimit = (event, newLimit) => {
     setLimit(newLimit);
     console.log(newLimit);
+    let value = newLimit.toString();
+    console.log(value);
     let name = "limit";
-    dispatch(setFilter({ name, newLimit }));
+    dispatch(setFilter({ name, value }));
+  };
+
+  //show more
+  const handleShowMore = (event) => {
+    let name = "limit";
+    let value = (Math.floor(filters.limit) + 10).toString();
+
+    dispatch(setFilter({ name, value }));
   };
 
   return (
     <Stack
-      direction="row"
       sx={{
         mt: "auto",
         mb: 0,
         p: { xs: 2, md: 4 },
         alignItems: "center",
         justifyContent: "space-between",
+        flexDirection: { md: "column", lg: "row" },
+        gap: 1,
       }}
     >
       <MuiPagination
-        count={Math.ceil(totalCount / 10)}
+        count={Math.ceil(totalCount / filters.limit)}
         page={filters.page}
         onChange={handleChangePage}
+        shape="rounded"
+        hidePrevButton
+        hideNextButton
       />
-      {/* <ToggleButtonGroup
-        color="primary"
-        value={limit}
-        exclusive
-        onChange={handleChangeLimit}
-        aria-label="Platform"
-      >
-        <ToggleButton value="5">5</ToggleButton>
-        <ToggleButton value="10">10</ToggleButton>
-        <ToggleButton value="20">20</ToggleButton>
-      </ToggleButtonGroup> */}
+      <Button variant="text" onClick={handleShowMore}>
+        Показать еще
+      </Button>
+      <Stack direction="row" sx={{ alignItems: "center" }}>
+        <Typography mr={2}>Показывать по:</Typography>
+        <ToggleButtonGroup
+          color="primary"
+          value={limit}
+          exclusive
+          onChange={handleChangeLimit}
+          aria-label="Platform"
+          sx={{
+            alignItems: "center",
+          }}
+        >
+          <ToggleButton size="small" value="5">
+            5
+          </ToggleButton>
+          <ToggleButton size="small" value="10">
+            10
+          </ToggleButton>
+          <ToggleButton size="small" value="20">
+            20
+          </ToggleButton>
+        </ToggleButtonGroup>
+      </Stack>
     </Stack>
   );
 };

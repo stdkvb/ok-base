@@ -9,8 +9,9 @@ const initialState = {
     event: "",
     grade: "",
     tag: "",
-    limit: "10",
-    page: "1",
+    limit: "5",
+    page: 1,
+    totalCount: "",
   },
 };
 

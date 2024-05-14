@@ -5,10 +5,12 @@ import {
   ListItem,
   ListItemText,
   ListItemIcon,
+  Button,
 } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 import ArrowOutwardOutlinedIcon from "@mui/icons-material/ArrowOutwardOutlined";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { setFilter } from "../redux/slices/filterSlice";
 
 import Filters from "./Filters";
 import Pagination from "./Pagination";
@@ -17,6 +19,7 @@ import { useGetListQuery } from "../redux/okBaseApi";
 const Catalog = () => {
   //redux states
   const filters = useSelector((state) => state.filtersSlice.filters);
+  const dispatch = useDispatch();
 
   //get data
   const { data, isLoading } = useGetListQuery(filters);
@@ -53,7 +56,6 @@ const Catalog = () => {
         </>
       )}
       {!filters.tag && <Filters />}
-
       <Divider />
       <List disablePadding>
         {data.totalCount == 0 ? (
@@ -82,6 +84,7 @@ const Catalog = () => {
           ))
         )}
       </List>
+
       <Pagination totalCount={data.totalCount} />
     </>
   );
