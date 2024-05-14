@@ -14,13 +14,15 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
-import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
+import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
+import NightlightOutlinedIcon from "@mui/icons-material/NightlightOutlined";
 import AddIcon from "@mui/icons-material/Add";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
 import { useSelector, useDispatch } from "react-redux";
 
 import { resetFilters } from "../redux/slices/filterSlice";
+import { toggleDarkMode } from "../redux/slices/themeSlice";
 import Categories from "./Categories";
 
 const drawerWidth = 200;
@@ -28,6 +30,7 @@ const drawerWidth = 200;
 function Layout(props) {
   //redux states
   const auth = useSelector((state) => state.authSlice.auth);
+  const darkMode = useSelector((state) => state.themeSlice.darkMode);
 
   const dispatch = useDispatch();
 
@@ -79,6 +82,11 @@ function Layout(props) {
       <Divider />
       <Categories />
       <List disablePadding sx={{ mt: "auto", mb: 0, pb: 4 }}>
+        <ListItem disablePadding sx={{ pl: 4 }}>
+          <Typography component={RouterLink} to="/favorites">
+            Избранное
+          </Typography>
+        </ListItem>
         <ListItem disablePadding sx={{ pl: 4 }}>
           <Typography component={RouterLink} to="/about">
             О проекте
@@ -146,10 +154,11 @@ function Layout(props) {
           <Divider orientation="vertical" />
           <IconButton
             sx={{ px: { xs: 2, md: 4 } }}
-            component={RouterLink}
-            to={auth ? "/favorites" : "/log-in"}
+            onClick={() => {
+              dispatch(toggleDarkMode());
+            }}
           >
-            <FavoriteBorderOutlinedIcon />
+            {darkMode ? <LightModeOutlinedIcon /> : <NightlightOutlinedIcon />}
           </IconButton>
           <Divider orientation="vertical" />
           <IconButton
