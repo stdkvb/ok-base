@@ -37,7 +37,10 @@ const Tags = ({ data }) => {
                 key={i}
                 label={tag}
                 component={RouterLink}
-                to="/"
+                to={{
+                  pathname: "/",
+                  search: `${tag}`,
+                }}
                 onClick={() => onTagClick(key, tag)}
               />
             ))}
