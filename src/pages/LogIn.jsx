@@ -2,8 +2,10 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import { Button, TextField, Box, Typography, Link } from "@mui/material";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 import { useLogInMutation } from "../redux/okBaseApi";
+import { setAuth } from "../redux/slices/authSlice";
 
 const fields = [
   { label: "Логин", name: "login" },
@@ -11,6 +13,9 @@ const fields = [
 ];
 
 const LogIn = () => {
+  //redux states
+  const dispatch = useDispatch();
+
   const navigate = useNavigate();
 
   const [logIn, { error, isSuccess }] = useLogInMutation();
@@ -32,6 +37,7 @@ const LogIn = () => {
   });
 
   if (isSuccess) {
+    dispatch(setAuth(true));
     navigate("/");
   }
 

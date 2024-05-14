@@ -8,6 +8,8 @@ import RegFinish from "./pages/RegFinish";
 import RegStart from "./pages/RegStart";
 import RecoveryPassStart from "./pages/RecoveryPassStart";
 import RecoveryPassFinish from "./pages/RecoveryPassFinish";
+import Profile from "./pages/Profile";
+import Favorites from "./pages/Favorites";
 
 export default function App() {
   return (
@@ -25,6 +27,8 @@ export default function App() {
           path="/material/:materialDetailId"
           element={<MaterialDetail />}
         />
+        <Route index path="/profile" element={<Profile />} />
+        <Route index path="/favorites" element={<Favorites />} />
       </Route>
     </Routes>
   );

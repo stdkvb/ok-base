@@ -18,7 +18,7 @@ import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlin
 import AddIcon from "@mui/icons-material/Add";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import { resetFilters } from "../redux/slices/filterSlice";
 import Categories from "./Categories";
@@ -27,6 +27,7 @@ const drawerWidth = 256;
 
 function Layout(props) {
   //redux states
+  const auth = useSelector((state) => state.authSlice.auth);
 
   const dispatch = useDispatch();
 
@@ -144,11 +145,19 @@ function Layout(props) {
             <SearchIcon />
           </IconButton>
           <Divider orientation="vertical" />
-          <IconButton sx={{ px: { xs: 2, md: 4 } }}>
+          <IconButton
+            sx={{ px: { xs: 2, md: 4 } }}
+            component={RouterLink}
+            to={auth ? "/favorites" : "/log-in"}
+          >
             <FavoriteBorderOutlinedIcon />
           </IconButton>
           <Divider orientation="vertical" />
-          <IconButton sx={{ px: { xs: 2, md: 4 } }}>
+          <IconButton
+            sx={{ px: { xs: 2, md: 4 } }}
+            component={RouterLink}
+            to={auth ? "/profile" : "/log-in"}
+          >
             <PersonOutlineOutlinedIcon />
           </IconButton>
           <Divider orientation="vertical" />
