@@ -20,9 +20,8 @@ const Categories = () => {
 
   //change category
   const onChangeCategory = (value) => {
-    let name = "category";
     dispatch(resetFilters());
-    dispatch(setFilter({ name, value }));
+    dispatch(setFilter({ name: "category", value }));
   };
 
   if (isLoading) return <LinearProgress color="secondary" />;

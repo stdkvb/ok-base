@@ -19,27 +19,24 @@ const Pagination = ({ totalCount }) => {
   const dispatch = useDispatch();
 
   const handleChangePage = (event, value) => {
-    let name = "page";
-    dispatch(setFilter({ name, value }));
+    dispatch(setFilter({ name: "page", value }));
   };
 
   const [limit, setLimit] = useState("5");
 
   const handleChangeLimit = (event, newLimit) => {
     setLimit(newLimit);
-    console.log(newLimit);
-    let value = newLimit.toString();
-    console.log(value);
-    let name = "limit";
-    dispatch(setFilter({ name, value }));
+    dispatch(setFilter({ name: "limit", value: newLimit.toString() }));
   };
 
   //show more
   const handleShowMore = (event) => {
-    let name = "limit";
-    let value = (Math.floor(filters.limit) + 10).toString();
-
-    dispatch(setFilter({ name, value }));
+    dispatch(
+      setFilter({
+        name: "limit",
+        value: (Math.floor(filters.limit) + 10).toString(),
+      })
+    );
   };
 
   return (
