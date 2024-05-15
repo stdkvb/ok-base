@@ -14,7 +14,6 @@ import {
   Stack,
   Snackbar,
   SnackbarContent,
-  Button,
   Link,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -163,7 +162,6 @@ function Layout(props) {
           disableGutters={true}
         >
           <IconButton
-            color="inherit"
             aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}

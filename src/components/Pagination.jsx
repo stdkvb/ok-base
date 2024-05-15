@@ -75,9 +75,6 @@ const Pagination = ({ totalCount }) => {
             gap: 1,
           }}
         >
-          <ToggleButton size="small" value="5">
-            5
-          </ToggleButton>
           <ToggleButton size="small" value="10">
             10
           </ToggleButton>

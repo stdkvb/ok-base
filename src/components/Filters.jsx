@@ -66,6 +66,7 @@ const Filters = () => {
           "& .MuiDrawer-paper": {
             position: "unset",
             boxSizing: "border-box",
+            border: "none",
           },
         }}
       >
