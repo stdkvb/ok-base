@@ -1,7 +1,7 @@
 import { createTheme, responsiveFontSizes } from "@mui/material/styles";
 
 // Create a theme instance.
-export const darkTheme = createTheme({
+export let darkTheme = createTheme({
   breakpoints: {
     values: {
       xs: 0,
@@ -39,6 +39,14 @@ export const darkTheme = createTheme({
     fontFamily: "system-ui, sans-serif",
   },
   components: {
+    MuiLink: {
+      styleOverrides: {
+        root: {
+          color: "#FFFFFF",
+          textDecoration: "none",
+        },
+      },
+    },
     MuiBadge: {
       styleOverrides: {
         badge: {
@@ -56,7 +64,7 @@ export const darkTheme = createTheme({
         root: {
           "& .MuiFormLabel-root.MuiInputLabel-root.MuiInputLabel-formControl.MuiInputLabel-animated.MuiInputLabel-standard.MuiFormLabel-colorPrimary.MuiInputLabel-root.MuiInputLabel-formControl.MuiInputLabel-animated.MuiInputLabel-standard":
             {
-              color: "#FFFFFF",
+              color: "#9b9b9b",
             },
           "& .MuiInputBase-root.MuiInput-root.MuiInput-underline.MuiInputBase-formControl.Mui-focused::after":
             {
@@ -70,6 +78,9 @@ export const darkTheme = createTheme({
             {
               borderBottom: "none",
             },
+          "& .MuiSvgIcon-root": {
+            color: "#9b9b9b",
+          },
         },
       },
     },
@@ -108,7 +119,7 @@ export const darkTheme = createTheme({
   },
 });
 
-export const lightTheme = createTheme({
+export let lightTheme = createTheme({
   breakpoints: {
     values: {
       xs: 0,
@@ -135,13 +146,28 @@ export const lightTheme = createTheme({
     },
     text: {
       primary: "#1a1a1a",
-      secondary: "#9b9b9b",
+      secondary: "#3d3d3d",
     },
   },
   typography: {
     fontFamily: "system-ui, sans-serif",
   },
   components: {
+    MuiLink: {
+      styleOverrides: {
+        root: {
+          color: "#1a1a1a",
+          textDecoration: "none",
+        },
+      },
+    },
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          backgroundColor: "#FFFFFF",
+        },
+      },
+    },
     MuiBadge: {
       styleOverrides: {
         badge: {
@@ -159,7 +185,7 @@ export const lightTheme = createTheme({
         root: {
           "& .MuiFormLabel-root.MuiInputLabel-root.MuiInputLabel-formControl.MuiInputLabel-animated.MuiInputLabel-standard.MuiFormLabel-colorPrimary.MuiInputLabel-root.MuiInputLabel-formControl.MuiInputLabel-animated.MuiInputLabel-standard":
             {
-              color: "#FFFFFF",
+              color: "#3d3d3d",
             },
           "& .MuiInputBase-root.MuiInput-root.MuiInput-underline.MuiInputBase-formControl.Mui-focused::after":
             {
@@ -191,13 +217,6 @@ export const lightTheme = createTheme({
         },
       },
     },
-    MuiPaper: {
-      styleOverrides: {
-        root: {
-          backgroundImage: "unset",
-        },
-      },
-    },
     MuiToggleButton: {
       styleOverrides: {
         root: {
@@ -211,6 +230,5 @@ export const lightTheme = createTheme({
   },
 });
 
-// theme = responsiveFontSizes(theme);
-
-// export default { darkTheme, lightTheme };
+darkTheme = responsiveFontSizes(darkTheme);
+lightTheme = responsiveFontSizes(lightTheme);

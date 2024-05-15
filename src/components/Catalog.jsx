@@ -6,6 +6,7 @@ import {
   ListItemText,
   ListItemIcon,
   Button,
+  Link,
 } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 import ArrowOutwardOutlinedIcon from "@mui/icons-material/ArrowOutwardOutlined";
@@ -67,13 +68,15 @@ const Catalog = () => {
               <ListItem
                 key={i}
                 item
-                sx={{ p: { xs: 2, md: 4 }, gap: 2 }}
-                component={RouterLink}
-                to={`material/${item.id}`}
+                sx={{
+                  p: { xs: 2, md: 4 },
+                  gap: 2,
+                  justifyContent: "space-between",
+                }}
               >
-                <ListItemText
-                  primary={<Typography variant="h5">{item.name}</Typography>}
-                />
+                <Link component={RouterLink} to={`material/${item.id}`}>
+                  <Typography variant="h5">{item.name}</Typography>
+                </Link>
                 <ListItemIcon sx={{ minWidth: "unset" }}>
                   <ArrowOutwardOutlinedIcon />
                 </ListItemIcon>

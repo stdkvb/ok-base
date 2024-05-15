@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Outlet, Link as RouterLink } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import {
   AppBar,
   Box,
@@ -11,6 +12,10 @@ import {
   Toolbar,
   Typography,
   Stack,
+  Snackbar,
+  SnackbarContent,
+  Button,
+  Link,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
@@ -19,7 +24,6 @@ import NightlightOutlinedIcon from "@mui/icons-material/NightlightOutlined";
 import AddIcon from "@mui/icons-material/Add";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
-import { useSelector, useDispatch } from "react-redux";
 
 import { resetFilters } from "../redux/slices/filterSlice";
 import { toggleDarkMode } from "../redux/slices/themeSlice";
@@ -29,7 +33,7 @@ const drawerWidth = 200;
 
 function Layout(props) {
   //redux states
-  const auth = useSelector((state) => state.authSlice.auth);
+  const loggedIn = useSelector((state) => state.authSlice.loggedIn);
   const darkMode = useSelector((state) => state.themeSlice.darkMode);
 
   const dispatch = useDispatch();
@@ -53,13 +57,25 @@ function Layout(props) {
     }
   };
 
+  //snackbar
+  const [openSnackBar, setOpenSnackBar] = useState(false);
+  const handleOpenSnackBar = () => {
+    setOpenSnackBar(true);
+  };
+  const handleCloseSnackBar = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenSnackBar(false);
+  };
+
   const drawer = (
     <Stack sx={{ height: "100%" }} onClick={() => handleDrawerClose()}>
       <Toolbar
-        sx={{ height: { xs: "60px", md: "90px" }, pl: 4 }}
+        sx={{ height: { xs: "50px", md: "90px" }, pl: 4 }}
         disableGutters={true}
       >
-        <Typography
+        <Link
           component={RouterLink}
           to="/"
           onClick={() => {
@@ -67,7 +83,7 @@ function Layout(props) {
           }}
         >
           OK-BASE
-        </Typography>
+        </Link>
         <Divider
           orientation="vertical"
           sx={{ display: { sm: "none" }, ml: "auto" }}
@@ -83,14 +99,44 @@ function Layout(props) {
       <Categories />
       <List disablePadding sx={{ mt: "auto", mb: 0, pb: 4 }}>
         <ListItem disablePadding sx={{ pl: 4 }}>
-          <Typography component={RouterLink} to="/favorites">
+          <Link
+            component={RouterLink}
+            to={loggedIn && "/favorites"}
+            onClick={!loggedIn && handleOpenSnackBar}
+          >
             Избранное
-          </Typography>
+          </Link>
+          <Snackbar open={openSnackBar} onClose={handleCloseSnackBar}>
+            <SnackbarContent
+              message={
+                <Typography>
+                  <Link
+                    component={RouterLink}
+                    to="/log-in"
+                    color="primary.main"
+                  >
+                    Авторизуйтесь
+                  </Link>{" "}
+                  для просмотра избранного
+                </Typography>
+              }
+              action={
+                <IconButton
+                  size="small"
+                  aria-label="close"
+                  color="inherit"
+                  onClick={handleCloseSnackBar}
+                >
+                  <CloseIcon fontSize="small" />
+                </IconButton>
+              }
+            />
+          </Snackbar>
         </ListItem>
         <ListItem disablePadding sx={{ pl: 4 }}>
-          <Typography component={RouterLink} to="/about">
+          <Link component={RouterLink} to="/about">
             О проекте
-          </Typography>
+          </Link>
         </ListItem>
       </List>
     </Stack>
@@ -110,7 +156,7 @@ function Layout(props) {
       >
         <Toolbar
           sx={{
-            height: { xs: "60px", md: "90px" },
+            height: { xs: "50px", md: "90px" },
             pl: { xs: 2, md: 4 },
             pr: 0,
           }}
@@ -136,7 +182,7 @@ function Layout(props) {
           >
             Открытая база знаний для руководителей и менеджеров ИТ-проектов
           </Typography>
-          <Typography
+          <Link
             variant="h4"
             sx={{ flexGrow: 1, display: { xs: "block", md: "none" } }}
             component={RouterLink}
@@ -146,14 +192,14 @@ function Layout(props) {
             }}
           >
             OKB
-          </Typography>
+          </Link>
           <Divider orientation="vertical" />
-          <IconButton sx={{ px: { xs: 2, md: 4 } }}>
+          <IconButton sx={{ mx: { xs: 1.1, md: 4 } }}>
             <SearchIcon />
           </IconButton>
           <Divider orientation="vertical" />
           <IconButton
-            sx={{ px: { xs: 2, md: 4 } }}
+            sx={{ mx: { xs: 1.1, md: 4 } }}
             onClick={() => {
               dispatch(toggleDarkMode());
             }}
@@ -162,9 +208,9 @@ function Layout(props) {
           </IconButton>
           <Divider orientation="vertical" />
           <IconButton
-            sx={{ px: { xs: 2, md: 4 } }}
+            sx={{ mx: { xs: 1.1, md: 4 } }}
             component={RouterLink}
-            to={auth ? "/profile" : "/log-in"}
+            to={loggedIn ? "/profile" : "/log-in"}
           >
             <PersonOutlineOutlinedIcon />
           </IconButton>

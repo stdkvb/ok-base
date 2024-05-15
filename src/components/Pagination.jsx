@@ -22,7 +22,7 @@ const Pagination = ({ totalCount }) => {
     dispatch(setFilter({ name: "page", value }));
   };
 
-  const [limit, setLimit] = useState("5");
+  const [limit, setLimit] = useState("10");
 
   const handleChangeLimit = (event, newLimit) => {
     setLimit(newLimit);

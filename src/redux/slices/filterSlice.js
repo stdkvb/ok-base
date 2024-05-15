@@ -9,7 +9,7 @@ const initialState = {
     event: "",
     grade: "",
     tag: "",
-    limit: "5",
+    limit: "10",
     page: 1,
     totalCount: "",
   },

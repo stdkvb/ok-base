@@ -4,6 +4,7 @@ import {
   Badge,
   Typography,
   LinearProgress,
+  Link,
 } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -39,13 +40,13 @@ const Categories = () => {
               },
             }}
           >
-            <Typography
+            <Link
               component={RouterLink}
               to="/"
               onClick={() => onChangeCategory(item.value)}
             >
               {item.value}
-            </Typography>
+            </Link>
           </Badge>
         </ListItem>
       ))}
