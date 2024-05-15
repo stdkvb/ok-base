@@ -17,6 +17,7 @@ import RecoveryPassFinish from "./pages/RecoveryPassFinish";
 import Profile from "./pages/Profile";
 import Favorites from "./pages/Favorites";
 import About from "./pages/About";
+import CreateMaterial from "./pages/CreateMaterial";
 
 export default function App() {
   const darkMode = useSelector((state) => state.themeSlice.darkMode);
@@ -42,6 +43,7 @@ export default function App() {
           <Route index path="/profile" element={<Profile />} />
           <Route index path="/favorites" element={<Favorites />} />
           <Route index path="/about" element={<About />} />
+          <Route index path="/create-material" element={<CreateMaterial />} />
         </Route>
       </Routes>
     </ThemeProvider>

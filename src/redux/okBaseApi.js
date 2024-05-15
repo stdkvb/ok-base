@@ -2,7 +2,17 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const okBaseApi = createApi({
   reducerPath: "okBaseApi",
-  baseQuery: fetchBaseQuery({ baseUrl: "https://ok-base.wptt.ru/api/" }),
+  baseQuery: fetchBaseQuery({
+    baseUrl: "https://ok-base.wptt.ru/api/",
+    prepareHeaders: (headers, { getState }) => {
+      const token = getState().authSlice.token;
+      // If we have a token set in state, let's assume that we should be passing it.
+      if (token) {
+        headers.set("authorization", `Bearer ${token}`);
+      }
+      return headers;
+    },
+  }),
   endpoints: (build) => ({
     regStart: build.mutation({
       query: (body) => ({
@@ -88,6 +98,18 @@ export const okBaseApi = createApi({
     getAbout: build.query({
       query: () => `content/about`,
     }),
+
+    getFormProperties: build.query({
+      query: () => `knowledge-base/form-properties`,
+    }),
+
+    createMaterial: build.mutation({
+      query: (body) => ({
+        url: "knowledge-base/create",
+        method: "POST",
+        body,
+      }),
+    }),
   }),
 });
 
@@ -105,4 +127,6 @@ export const {
   useRecoveryPassCheckCodeMutation,
   useRecoveryPassFinishMutation,
   useGetAboutQuery,
+  useGetFormPropertiesQuery,
+  useCreateMaterialMutation,
 } = okBaseApi;

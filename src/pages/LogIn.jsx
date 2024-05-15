@@ -5,7 +5,7 @@ import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
 import { useLogInMutation } from "../redux/okBaseApi";
-import { setAuth } from "../redux/slices/authSlice";
+import { setAuth, setToken } from "../redux/slices/authSlice";
 
 const fields = [
   { label: "Логин", name: "login" },
@@ -18,7 +18,7 @@ const LogIn = () => {
 
   const navigate = useNavigate();
 
-  const [logIn, { error, isSuccess }] = useLogInMutation();
+  const [logIn, { error, isSuccess, data }] = useLogInMutation();
 
   const validationSchema = yup.object({
     login: yup.string("Введите логин").required("Введите логин"),
@@ -38,6 +38,7 @@ const LogIn = () => {
 
   if (isSuccess) {
     dispatch(setAuth(true));
+    dispatch(setToken(data.token));
     navigate("/");
   }
 

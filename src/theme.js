@@ -161,7 +161,7 @@ export let lightTheme = createTheme({
     },
     text: {
       primary: "#1a1a1a",
-      secondary: "#3d3d3d",
+      secondary: "#b4b4b4;",
     },
     background: {
       default: "#f9f9fb",

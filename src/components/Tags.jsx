@@ -35,7 +35,7 @@ const Tags = ({ data }) => {
             value.map((tag, i) => (
               <Chip
                 key={i}
-                label={tag}
+                label={`#${tag}`}
                 component={RouterLink}
                 to={{
                   pathname: "/",

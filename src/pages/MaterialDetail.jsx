@@ -62,7 +62,9 @@ const MaterialDetail = () => {
         divider={<Divider orientation="vertical" flexItem />}
         spacing={0}
       >
-        <Typography sx={{ p: { xs: 2, md: 4 } }}>{data.description}</Typography>
+        <Typography sx={{ p: { xs: 2, md: 4 }, width: "100%" }}>
+          {data.description}
+        </Typography>
         <Tags data={data} />
       </Stack>
       <Divider />

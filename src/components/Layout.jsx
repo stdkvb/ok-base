@@ -213,7 +213,11 @@ function Layout(props) {
             <PersonOutlineOutlinedIcon />
           </IconButton>
           <Divider orientation="vertical" />
-          <IconButton sx={{ px: { xs: 2, md: 4 } }}>
+          <IconButton
+            sx={{ px: { xs: 2, md: 4 } }}
+            component={RouterLink}
+            to="/create-material"
+          >
             <AddIcon />
           </IconButton>
         </Toolbar>
