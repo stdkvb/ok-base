@@ -98,7 +98,7 @@ function Layout(props) {
       <Divider />
       <Categories />
       <List disablePadding sx={{ mt: "auto", mb: 0, pb: 4 }}>
-        <ListItem disablePadding sx={{ pl: 4 }}>
+        <ListItem disablePadding sx={{ pl: 4, pb: 1 }}>
           <Link
             component={RouterLink}
             to={loggedIn && "/favorites"}

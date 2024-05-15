@@ -59,13 +59,28 @@ export let darkTheme = createTheme({
         },
       },
     },
+    // MuiAutocomplete: {
+    //   styleOverrides: {
+    //     root: {
+    //       "&.Mui-Expanded .MuiFormLabel-root.MuiInputLabel-root.MuiInputLabel-formControl.MuiInputLabel-animated.MuiInputLabel-standard.MuiFormLabel-colorPrimary.MuiInputLabel-root.MuiInputLabel-formControl.MuiInputLabel-animated.MuiInputLabel-standard":
+    //         {
+    //           color: "#9b9b9b",
+    //         },
+    //     },
+    //   },
+    // },
     MuiTextField: {
       styleOverrides: {
         root: {
           "& .MuiFormLabel-root.MuiInputLabel-root.MuiInputLabel-formControl.MuiInputLabel-animated.MuiInputLabel-standard.MuiFormLabel-colorPrimary.MuiInputLabel-root.MuiInputLabel-formControl.MuiInputLabel-animated.MuiInputLabel-standard":
             {
+              color: "#FFFFFF",
+            },
+          "& .MuiFormLabel-root.MuiInputLabel-root.MuiInputLabel-formControl.MuiInputLabel-animated.MuiInputLabel-standard.MuiFormLabel-colorPrimary.MuiInputLabel-root.MuiInputLabel-formControl.MuiInputLabel-animated.MuiInputLabel-standard.Mui-focused":
+            {
               color: "#9b9b9b",
             },
+
           "& .MuiInputBase-root.MuiInput-root.MuiInput-underline.MuiInputBase-formControl.Mui-focused::after":
             {
               borderBottom: "none",
@@ -148,6 +163,10 @@ export let lightTheme = createTheme({
       primary: "#1a1a1a",
       secondary: "#3d3d3d",
     },
+    background: {
+      default: "#f9f9fb",
+      paper: "#f9f9fb",
+    },
   },
   typography: {
     fontFamily: "system-ui, sans-serif",
@@ -164,7 +183,7 @@ export let lightTheme = createTheme({
     MuiAppBar: {
       styleOverrides: {
         root: {
-          backgroundColor: "#FFFFFF",
+          backgroundColor: "#f9f9fb",
         },
       },
     },
