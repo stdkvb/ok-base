@@ -27,7 +27,7 @@ export default function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Routes>
-        <Route path="/" element={<AuthLayout />}>
+        <Route path="/" element={<Layout />}>
           <Route path="/sign-up" element={<RegStart />} />
           <Route path="/confirm-registration" element={<RegFinish />} />
           <Route path="/log-in" element={<LogIn />} />

@@ -62,7 +62,7 @@ const CreatePassword = ({ urlParams, endpoint }) => {
           flexDirection: "column",
           gap: 2,
           alignItems: { xs: "center", sm: "flex-start" },
-          width: { xs: "100%", sm: "450px" },
+          width: { xs: "100%", md: "450px" },
         }}
       >
         {fields.map((field, i) => (

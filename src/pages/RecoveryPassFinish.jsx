@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
-import { CircularProgress, Typography } from "@mui/material";
+import { CircularProgress, Typography, Container } from "@mui/material";
 
 import { useRecoveryPassCheckCodeMutation } from "../redux/okBaseApi";
 import CreatePassword from "../components/CreatePassword";
@@ -37,12 +37,23 @@ const RecoveryPassFinish = () => {
     );
   if (isSuccess)
     return (
-      <>
+      <Container
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "flex-start",
+          width: "100%",
+          gap: 2,
+          alignItems: "center",
+          my: "auto",
+          mx: 0,
+        }}
+      >
         <Typography variant="h2" component="h1">
           Забыли пароль
         </Typography>
         <CreatePassword urlParams={urlParams} endpoint={"recovery"} />
-      </>
+      </Container>
     );
 };
 

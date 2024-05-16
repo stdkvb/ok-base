@@ -1,6 +1,13 @@
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { Button, TextField, Box, Typography, Link } from "@mui/material";
+import {
+  Button,
+  TextField,
+  Box,
+  Typography,
+  Link,
+  Container,
+} from "@mui/material";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
@@ -42,7 +49,18 @@ const LogIn = () => {
   }
 
   return (
-    <>
+    <Container
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "flex-start",
+        width: "100%",
+        gap: 2,
+        alignItems: "center",
+        my: "auto",
+        mx: 0,
+      }}
+    >
       <Typography variant="h2">Авторизация</Typography>
       <Typography
         color="text.secondary"
@@ -62,7 +80,7 @@ const LogIn = () => {
           flexDirection: "column",
           gap: 2,
           alignItems: { xs: "center", sm: "flex-start" },
-          width: { xs: "100%", sm: "450px" },
+          width: { xs: "100%", md: "450px" },
         }}
       >
         {fields.map((field, i) => (
@@ -101,7 +119,7 @@ const LogIn = () => {
           Войти
         </Button>
       </Box>
-    </>
+    </Container>
   );
 };
 

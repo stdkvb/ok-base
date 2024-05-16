@@ -1,7 +1,6 @@
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { Button, TextField, Box, Typography, Link } from "@mui/material";
-import { Link as RouterLink } from "react-router-dom";
+import { Button, TextField, Box, Typography, Container } from "@mui/material";
 
 import { useRecoveryPassStartMutation } from "../redux/okBaseApi";
 import RecoveryPassConfirmCode from "../components/RecoveryPassConfirmCode";
@@ -34,7 +33,18 @@ const RecoveryPassStart = () => {
   });
 
   return (
-    <>
+    <Container
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "flex-start",
+        width: "100%",
+        gap: 2,
+        alignItems: "center",
+        my: "auto",
+        mx: 0,
+      }}
+    >
       <Typography variant="h2">Забыли пароль</Typography>
       {isSuccess ? (
         <RecoveryPassConfirmCode email={email} />
@@ -55,7 +65,7 @@ const RecoveryPassStart = () => {
               flexDirection: "column",
               gap: 2,
               alignItems: { xs: "center", sm: "flex-start" },
-              width: { xs: "100%", sm: "450px" },
+              width: { xs: "100%", md: "450px" },
             }}
           >
             {fields.map((field, i) => (
@@ -93,7 +103,7 @@ const RecoveryPassStart = () => {
           </Box>
         </>
       )}
-    </>
+    </Container>
   );
 };
 
