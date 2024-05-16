@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 import ArrowOutwardOutlinedIcon from "@mui/icons-material/ArrowOutwardOutlined";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 import Filters from "./Filters";
 import Pagination from "./Pagination";
@@ -19,8 +19,6 @@ import { useGetListQuery } from "../redux/okBaseApi";
 const Catalog = () => {
   //redux states
   const filters = useSelector((state) => state.filtersSlice.filters);
-  const dispatch = useDispatch();
-
   //get data
   const { data, isLoading } = useGetListQuery(filters);
 
@@ -59,22 +57,35 @@ const Catalog = () => {
       <Divider />
       <List disablePadding>
         {data.totalCount == 0 ? (
-          <ListItem sx={{ p: 4 }}>
-            <ListItemText primary={"Ничего не найдено :("}></ListItemText>
-          </ListItem>
+          <>
+            <ListItem sx={{ p: { xs: 2, md: 4 } }}>
+              <ListItemText primary={"Ничего не найдено :("}></ListItemText>
+            </ListItem>
+            {filters.my && (
+              <ListItem sx={{ p: { xs: 2, md: 4 } }}>
+                <Button
+                  variant="contained"
+                  component={RouterLink}
+                  to={"/create-material"}
+                  sx={{ width: { xs: "100%", md: "fit-content" } }}
+                >
+                  Добавить материал
+                </Button>
+              </ListItem>
+            )}
+          </>
         ) : (
           data.data.map((item, i) => (
-            <>
+            <div key={i}>
               <ListItem
                 key={i}
-                item
                 sx={{
                   p: { xs: 2, md: 4 },
                   gap: 2,
                   justifyContent: "space-between",
                 }}
               >
-                <Link component={RouterLink} to={`material/${item.id}`}>
+                <Link component={RouterLink} to={`/material/${item.id}`}>
                   <Typography variant="h5">{item.name}</Typography>
                 </Link>
                 <ListItemIcon sx={{ minWidth: "unset" }}>
@@ -82,7 +93,7 @@ const Catalog = () => {
                 </ListItemIcon>
               </ListItem>
               <Divider />
-            </>
+            </div>
           ))
         )}
       </List>

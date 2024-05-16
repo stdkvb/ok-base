@@ -24,7 +24,8 @@ import AddIcon from "@mui/icons-material/Add";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
 
-import { resetFilters } from "../redux/slices/filterSlice";
+import { clearToken } from "../redux/slices/authSlice";
+import { setFilter, resetFilters } from "../redux/slices/filterSlice";
 import { toggleDarkMode } from "../redux/slices/themeSlice";
 import Categories from "./Categories";
 
@@ -96,8 +97,32 @@ function Layout(props) {
       </Toolbar>
       <Divider />
       <Categories />
-      <List disablePadding sx={{ mt: "auto", mb: 0, pb: 4 }}>
-        <ListItem disablePadding sx={{ pl: 4, pb: 1 }}>
+      <List
+        disablePadding
+        sx={{
+          mt: "auto",
+          mb: 0,
+          pb: 4,
+          display: "flex",
+          flexDirection: "column",
+          gap: 1,
+        }}
+      >
+        {loggedIn && (
+          <ListItem disablePadding sx={{ pl: 4 }}>
+            <Link
+              component={RouterLink}
+              to="/my-materials"
+              onClick={() => {
+                dispatch(resetFilters());
+                dispatch(setFilter({ name: "my", value: true }));
+              }}
+            >
+              Мои материалы
+            </Link>
+          </ListItem>
+        )}
+        <ListItem disablePadding sx={{ pl: 4 }}>
           <Link
             component={RouterLink}
             to={loggedIn && "/favorites"}
@@ -105,38 +130,23 @@ function Layout(props) {
           >
             Избранное
           </Link>
-          <Snackbar open={openSnackBar} onClose={handleCloseSnackBar}>
-            <SnackbarContent
-              message={
-                <Typography>
-                  <Link
-                    component={RouterLink}
-                    to="/log-in"
-                    color="primary.main"
-                  >
-                    Авторизуйтесь
-                  </Link>{" "}
-                  для просмотра избранного
-                </Typography>
-              }
-              action={
-                <IconButton
-                  size="small"
-                  aria-label="close"
-                  color="inherit"
-                  onClick={handleCloseSnackBar}
-                >
-                  <CloseIcon fontSize="small" />
-                </IconButton>
-              }
-            />
-          </Snackbar>
         </ListItem>
         <ListItem disablePadding sx={{ pl: 4 }}>
           <Link component={RouterLink} to="/about">
             О проекте
           </Link>
         </ListItem>
+        {loggedIn && (
+          <ListItem disablePadding sx={{ pl: 4 }}>
+            <Link
+              component={RouterLink}
+              to="/"
+              onClick={() => dispatch(clearToken())}
+            >
+              Выйти
+            </Link>
+          </ListItem>
+        )}
       </List>
     </Stack>
   );
@@ -216,10 +226,41 @@ function Layout(props) {
           <IconButton
             sx={{ px: { xs: 2, md: 4 } }}
             component={RouterLink}
-            to="/create-material"
+            to={loggedIn && "/create-material"}
+            onClick={!loggedIn && handleOpenSnackBar}
           >
             <AddIcon />
           </IconButton>
+          <Snackbar
+            anchorOrigin={{ vertical: "top", horizontal: "center" }}
+            open={openSnackBar}
+            onClose={handleCloseSnackBar}
+          >
+            <SnackbarContent
+              message={
+                <Typography>
+                  Необходимо{" "}
+                  <Link
+                    component={RouterLink}
+                    to="/log-in"
+                    color="primary.main"
+                  >
+                    авторизоваться
+                  </Link>{" "}
+                </Typography>
+              }
+              action={
+                <IconButton
+                  size="small"
+                  aria-label="close"
+                  color="inherit"
+                  onClick={handleCloseSnackBar}
+                >
+                  <CloseIcon fontSize="small" />
+                </IconButton>
+              }
+            />
+          </Snackbar>
         </Toolbar>
         <Divider />
       </AppBar>

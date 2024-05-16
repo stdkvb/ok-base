@@ -5,7 +5,7 @@ import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
 import { useLogInMutation } from "../redux/okBaseApi";
-import { setAuth, setToken } from "../redux/slices/authSlice";
+import { setToken } from "../redux/slices/authSlice";
 
 const fields = [
   { label: "Логин", name: "login" },
@@ -37,7 +37,6 @@ const LogIn = () => {
   });
 
   if (isSuccess) {
-    dispatch(setAuth(true));
     dispatch(setToken(data.token));
     navigate("/");
   }

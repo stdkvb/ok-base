@@ -1,5 +1,7 @@
 import { useFormik } from "formik";
 import * as yup from "yup";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import {
   Typography,
   Divider,
@@ -8,43 +10,61 @@ import {
   TextField,
   FormControlLabel,
   Checkbox,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  OutlinedInput,
+  CircularProgress,
 } from "@mui/material";
 
-import CustomSelect from "../components/Select";
 import {
   useGetFormPropertiesQuery,
   useCreateMaterialMutation,
 } from "../redux/okBaseApi";
+import { setFilter } from "../redux/slices/filterSlice";
 
 const CreateMaterial = () => {
+  const navigate = useNavigate();
+  //redux states
+  const dispatch = useDispatch();
+
   //get data
   const { data, isLoading } = useGetFormPropertiesQuery();
 
   //query
-  const [createMaterial, { error, isSuccess }] = useCreateMaterialMutation();
+  const [createMaterial, { error, isSuccess, data: createdMaterial }] =
+    useCreateMaterialMutation();
 
   //form validation
   const validationSchema = yup.object({
-    name: yup.string("Введите название").required("Введите название"),
     link: yup.string("Введите ссылку").required("Введите ссылку"),
   });
 
   const formik = useFormik({
     initialValues: {
-      name: "",
       link: "",
-      grade: "",
-      theme: "",
-      company: "",
-      people: "",
+      name: "",
       description: "",
-      forEveryone: "",
+      category: [],
+      grade: [],
+      theme: [],
+      company: [],
+      people: [],
+      event: [],
+      myTags: "",
+      forEveryone: false,
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
       createMaterial(values).unwrap();
     },
   });
+
+  if (isSuccess) {
+    dispatch(setFilter({ name: "my", value: true }));
+    navigate(`/material/${createdMaterial.id}`);
+  }
 
   return (
     <>
@@ -71,7 +91,10 @@ const CreateMaterial = () => {
           p: { xs: 2, md: 4 },
         }}
       >
-        {!isLoading &&
+        {isLoading ? (
+          <CircularProgress></CircularProgress>
+        ) : (
+          data &&
           data.data.map((field, i) => {
             if (field.type == "input") {
               return (
@@ -97,14 +120,50 @@ const CreateMaterial = () => {
             }
             if (field.type == "select") {
               return (
-                <CustomSelect
-                  key={i}
-                  label={field.title}
-                  name={field.name}
-                  options={field.value}
-                  required={field.required}
-                  multiple={field.multiple}
-                />
+                <FormControl fullWidth key={i}>
+                  <InputLabel id="select-label">{field.title}</InputLabel>
+                  <Select
+                    labelId="select-label"
+                    id={field.name}
+                    name={field.name}
+                    multiple={field.multiple}
+                    value={formik.values[field.name]}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={
+                      formik.touched[field.name] &&
+                      Boolean(formik.errors[field.name])
+                    }
+                    required={field.required}
+                    renderValue={
+                      field.multiple ? (selected) => selected.join(", ") : null
+                    }
+                    input={
+                      <OutlinedInput
+                        label={field.title}
+                        sx={{
+                          [`& .MuiInputBase-input`]: {
+                            whiteSpace: "break-spaces !important",
+                          },
+                        }}
+                      />
+                    }
+                    MenuProps={{
+                      PaperProps: {
+                        style: {
+                          maxHeight: 48 * 4.5 + 8,
+                          width: 250,
+                        },
+                      },
+                    }}
+                  >
+                    {field.value.map((option) => (
+                      <MenuItem key={option} value={option}>
+                        {option}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
               );
             }
             if (field.type == "textarea") {
@@ -126,17 +185,34 @@ const CreateMaterial = () => {
                     formik.touched[field.name] && formik.errors[field.name]
                   }
                   required={field.required}
-                  multiline="true"
+                  multiline={true}
                   minRows={2}
+                  sx={{ mb: 4 }}
                 />
               );
             }
             if (field.type == "checkbox") {
               return (
-                <FormControlLabel control={<Checkbox />} label={field.title} />
+                <FormControlLabel
+                  key={i}
+                  control={
+                    <Checkbox
+                      value={formik.values[field.name]}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      error={
+                        formik.touched[field.name] &&
+                        Boolean(formik.errors[field.name])
+                      }
+                      required={field.required}
+                    />
+                  }
+                  label={field.title}
+                />
               );
             }
-          })}
+          })
+        )}
         {error && <Typography color="error">{error.data.message}</Typography>}
         <Button
           color="primary"

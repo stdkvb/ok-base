@@ -14,7 +14,6 @@ const fields = [
 ];
 
 const CreatePassword = ({ urlParams, endpoint }) => {
-  console.log(urlParams);
   //navigate
   const navigate = useNavigate();
 

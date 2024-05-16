@@ -36,6 +36,7 @@ export default function App() {
         </Route>
         <Route path="/" element={<Layout />}>
           <Route index path="/" element={<Catalog />} />
+          <Route index path="/my-materials" element={<Catalog />} />
           <Route
             path="/material/:materialDetailId"
             element={<MaterialDetail />}

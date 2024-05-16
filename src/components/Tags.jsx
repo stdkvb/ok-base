@@ -29,23 +29,21 @@ const Tags = ({ data }) => {
         p: { xs: 2, md: 4 },
       }}
     >
-      {Object.entries(data.tags).map(([key, value], i) => (
-        <>
-          {value[0] !== null &&
-            value.map((tag, i) => (
-              <Chip
-                key={i}
-                label={`#${tag}`}
-                component={RouterLink}
-                to={{
-                  pathname: "/",
-                  search: `${tag}`,
-                }}
-                onClick={() => onTagClick(key, tag)}
-              />
-            ))}
-        </>
-      ))}
+      {Object.keys(data.tags).map((key) =>
+        data.tags[key].map((tag, index) => (
+          <Chip
+            key={`${key}-${index}`}
+            label={`#${tag}`}
+            variant={key === "myTags" ? "outlined" : "default"}
+            component={RouterLink}
+            to={{
+              pathname: "/",
+              search: `${tag}`,
+            }}
+            onClick={() => onTagClick(key, tag)}
+          />
+        ))
+      )}
     </Box>
   );
 };

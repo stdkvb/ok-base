@@ -87,12 +87,15 @@ export const okBaseApi = createApi({
     }),
 
     getList: build.query({
-      query: (filters) =>
-        `knowledge-base/get-list?` + `${new URLSearchParams(filters)}`,
+      query: (filters) => {
+        const queryString = new URLSearchParams(filters).toString();
+        return `knowledge-base/get-list?${queryString}`;
+      },
     }),
 
     getMaterialDetail: build.query({
-      query: (materialDetailId) => `knowledge-base/${materialDetailId}`,
+      query: ({ materialDetailId, filters }) =>
+        `knowledge-base/${materialDetailId}?my=${filters.my}`,
     }),
 
     getAbout: build.query({

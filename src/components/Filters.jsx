@@ -91,8 +91,8 @@ const Filters = () => {
           divider={<Divider orientation="vertical" flexItem />}
           sx={{ p: 0, gap: 0 }}
         >
-          {data.map((filter, i) => (
-            <>
+          {data &&
+            data.map((filter, i) => (
               <Autocomplete
                 key={i}
                 fullWidth
@@ -111,9 +111,7 @@ const Filters = () => {
                   />
                 )}
               />
-              <Divider />
-            </>
-          ))}
+            ))}
         </Stack>
       </Drawer>
     </>
