@@ -85,10 +85,20 @@ const MaterialDetail = () => {
             >
               {data.linkText == "" ? "Перейти по ссылке" : data.linkText}
             </Button>
-            <Button type="text">Редактировать</Button>
-            <Button type="text" onClick={handleDeleteMaterial}>
-              Удалить
-            </Button>
+            {filters.my && (
+              <>
+                <Button
+                  type="text"
+                  component={RouterLink}
+                  to={`/edit-material/${materialDetailId}`}
+                >
+                  Редактировать
+                </Button>
+                <Button type="text" onClick={handleDeleteMaterial}>
+                  Удалить
+                </Button>
+              </>
+            )}
           </Stack>
           <Typography color="text.secondary" ml="auto">
             {data.date}

@@ -86,7 +86,9 @@ const Catalog = () => {
                 }}
               >
                 <Link component={RouterLink} to={`/material/${item.id}`}>
-                  <Typography variant="h5">{item.name}</Typography>
+                  <Typography variant="h5">
+                    {item.name !== "" ? item.name : item.link}
+                  </Typography>
                 </Link>
                 <ListItemIcon sx={{ minWidth: "unset" }}>
                   <ArrowOutwardOutlinedIcon />

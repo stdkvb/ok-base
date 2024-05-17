@@ -18,6 +18,7 @@ import Profile from "./pages/Profile";
 import Favorites from "./pages/Favorites";
 import About from "./pages/About";
 import CreateMaterial from "./pages/CreateMaterial";
+import EditMaterial from "./pages/EditMaterial";
 
 export default function App() {
   const darkMode = useSelector((state) => state.themeSlice.darkMode);
@@ -45,6 +46,11 @@ export default function App() {
           <Route index path="/favorites" element={<Favorites />} />
           <Route index path="/about" element={<About />} />
           <Route index path="/create-material" element={<CreateMaterial />} />
+          <Route
+            index
+            path="/edit-material/:materialDetailId"
+            element={<EditMaterial />}
+          />
         </Route>
       </Routes>
     </ThemeProvider>

@@ -95,7 +95,7 @@ export const okBaseApi = createApi({
 
     getMaterialDetail: build.query({
       query: ({ materialDetailId, filters }) =>
-        `knowledge-base/${materialDetailId}?my=${filters.my}`,
+        `knowledge-base/${materialDetailId}?my=${filters && filters.my}`,
     }),
 
     getAbout: build.query({
@@ -109,6 +109,14 @@ export const okBaseApi = createApi({
     createMaterial: build.mutation({
       query: (body) => ({
         url: "knowledge-base/create",
+        method: "POST",
+        body,
+      }),
+    }),
+
+    editMaterial: build.mutation({
+      query: (body) => ({
+        url: "knowledge-base/change",
         method: "POST",
         body,
       }),
@@ -140,5 +148,6 @@ export const {
   useGetAboutQuery,
   useGetFormPropertiesQuery,
   useCreateMaterialMutation,
+  useEditMaterialMutation,
   useDeleteMaterialMutation,
 } = okBaseApi;
