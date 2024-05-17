@@ -4,9 +4,23 @@ import { useGetAboutQuery } from "../redux/okBaseApi";
 
 const About = () => {
   //get data
-  const { data, isLoading } = useGetAboutQuery();
-  console.log(data);
+  const { data, isLoading, error } = useGetAboutQuery();
+
   if (isLoading) return;
+  if (error)
+    return (
+      <Typography
+        color="error"
+        sx={{
+          width: "100%",
+          textAlign: "center",
+          py: { xs: 2, md: 8 },
+          px: { xs: 2, md: 4 },
+        }}
+      >
+        {error.data.message}
+      </Typography>
+    );
   return (
     <>
       <Typography

@@ -85,7 +85,8 @@ const MaterialForm = ({ initialValues }) => {
 
   if (isSuccess) {
     dispatch(setFilter({ name: "my", value: true }));
-    navigate(`/material/${createdMaterial.id}`);
+    // navigate(`/material/${createdMaterial.id}`);
+    navigate("/my-materials");
   }
 
   return (

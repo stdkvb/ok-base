@@ -1,3 +1,4 @@
+import { useMemo, useEffect } from "react";
 import {
   Typography,
   Divider,
@@ -19,6 +20,7 @@ import { useGetListQuery } from "../redux/okBaseApi";
 const Catalog = () => {
   //redux states
   const filters = useSelector((state) => state.filtersSlice.filters);
+
   //get data
   const { data, isLoading } = useGetListQuery(filters);
 
@@ -53,7 +55,7 @@ const Catalog = () => {
           <Divider />
         </>
       )}
-      {!filters.tag && <Filters />}
+      {!filters.tag && !filters.my && <Filters />}
       <Divider />
       <List disablePadding>
         {data.totalCount == 0 ? (
