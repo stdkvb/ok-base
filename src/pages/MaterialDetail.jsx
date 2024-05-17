@@ -12,14 +12,18 @@ import {
 } from "@mui/material";
 import ArrowOutwardOutlinedIcon from "@mui/icons-material/ArrowOutwardOutlined";
 import { useParams } from "react-router-dom";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import Tags from "../components/Tags";
 
-import { useGetMaterialDetailQuery } from "../redux/okBaseApi";
+import {
+  useGetMaterialDetailQuery,
+  useDeleteMaterialMutation,
+} from "../redux/okBaseApi";
 
 const MaterialDetail = () => {
+  const navigate = useNavigate();
   const filters = useSelector((state) => state.filtersSlice.filters);
 
   //get detail page id
@@ -30,6 +34,17 @@ const MaterialDetail = () => {
     materialDetailId,
     filters,
   });
+
+  //delete material
+  const [deleteMaterial, { error, isSuccess }] = useDeleteMaterialMutation();
+  const handleDeleteMaterial = () => {
+    deleteMaterial({ id: materialDetailId });
+  };
+
+  //redirect after delete
+  if (isSuccess) {
+    navigate("/my-materials");
+  }
 
   if (isLoading) return;
   if (data)
@@ -48,20 +63,36 @@ const MaterialDetail = () => {
           sx={{
             display: "flex",
             justifyContent: "space-between",
-            alignItems: "center",
+            alignItems: { xs: "flex-start", md: "center" },
             p: { xs: 2, md: 4 },
+            flexDirection: { xs: "column-reverse", md: "row" },
+            gap: 1,
           }}
         >
-          <Button
-            variant="contained"
-            component="a"
-            href={data.link}
-            target="_blank"
-            color="primary"
+          <Stack
+            sx={{
+              flexDirection: { xs: "column", md: "row" },
+              gap: { xs: 0, md: 2 },
+              width: { xs: "100%", sm: "fit-content" },
+            }}
           >
-            {data.linkText == "" ? "Перейти по ссылке" : data.linkText}
-          </Button>
-          <Typography color="text.secondary">{data.date}</Typography>
+            <Button
+              variant="contained"
+              component="a"
+              href={data.link}
+              target="_blank"
+              color="primary"
+            >
+              {data.linkText == "" ? "Перейти по ссылке" : data.linkText}
+            </Button>
+            <Button type="text">Редактировать</Button>
+            <Button type="text" onClick={handleDeleteMaterial}>
+              Удалить
+            </Button>
+          </Stack>
+          <Typography color="text.secondary" ml="auto">
+            {data.date}
+          </Typography>
         </Box>
         <Divider />
         <Stack

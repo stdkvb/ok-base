@@ -113,6 +113,14 @@ export const okBaseApi = createApi({
         body,
       }),
     }),
+
+    deleteMaterial: build.mutation({
+      query: (body) => ({
+        url: "knowledge-base/remove",
+        method: "POST",
+        body,
+      }),
+    }),
   }),
 });
 
@@ -132,4 +140,5 @@ export const {
   useGetAboutQuery,
   useGetFormPropertiesQuery,
   useCreateMaterialMutation,
+  useDeleteMaterialMutation,
 } = okBaseApi;

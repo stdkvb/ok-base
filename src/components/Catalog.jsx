@@ -59,7 +59,7 @@ const Catalog = () => {
         {data.totalCount == 0 ? (
           <>
             <ListItem sx={{ p: { xs: 2, md: 4 } }}>
-              <ListItemText primary={"Ничего не найдено :("}></ListItemText>
+              <ListItemText primary={"Пока материалов нет"}></ListItemText>
             </ListItem>
             {filters.my && (
               <ListItem sx={{ p: { xs: 2, md: 4 } }}>
