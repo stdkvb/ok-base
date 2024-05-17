@@ -28,6 +28,7 @@ import { clearToken } from "../redux/slices/authSlice";
 import { setFilter, resetFilters } from "../redux/slices/filterSlice";
 import { toggleDarkMode } from "../redux/slices/themeSlice";
 import Categories from "./Categories";
+import Footer from "./Footer";
 
 const drawerWidth = 200;
 
@@ -324,15 +325,7 @@ function Layout(props) {
           ml: { sm: `${drawerWidth}px` },
         }}
       >
-        <Toolbar
-          sx={{
-            height: { xs: "60px", md: "90px" },
-            p: { xs: 2, md: 4 },
-          }}
-          disableGutters={true}
-        >
-          <Typography>© 2024 OK-BASE</Typography>
-        </Toolbar>
+        <Footer />
       </Box>
     </Box>
   );

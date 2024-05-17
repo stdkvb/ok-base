@@ -1,10 +1,18 @@
 import { useEffect } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { Typography, Divider, Box, TextField } from "@mui/material";
+import { Typography, Divider, Box, TextField, Button } from "@mui/material";
+import { useNavigate, Link as RouterLink } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
-import { useGetUserQuery } from "../redux/okBaseApi";
+import { clearToken } from "../redux/slices/authSlice";
+import { resetFilters } from "../redux/slices/filterSlice";
+import { useGetUserQuery, useLogOutQuery } from "../redux/okBaseApi";
+
 const Profile = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   //get data
   const { data, isLoading, error } = useGetUserQuery();
 
@@ -119,6 +127,36 @@ const Profile = () => {
       >
         Сохранить
       </Button> */}
+      </Box>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: { xs: "column", md: "row" },
+          gap: 2,
+          p: { xs: 2, md: 4 },
+        }}
+      >
+        <Button
+          variant="contained"
+          component={RouterLink}
+          to="/create-material"
+        >
+          Добавить материал
+        </Button>
+        <Button variant="text" component={RouterLink} to="/my-materials">
+          Мои материалы
+        </Button>
+        <Button
+          variant="text"
+          component={RouterLink}
+          to="/"
+          onClick={() => {
+            dispatch(clearToken());
+            dispatch(resetFilters());
+          }}
+        >
+          Выйти
+        </Button>
       </Box>
     </>
   );

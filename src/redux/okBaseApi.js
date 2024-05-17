@@ -78,6 +78,11 @@ export const okBaseApi = createApi({
         method: "POST",
         body,
       }),
+      invalidatesTags: [{ type: "Materials", id: "LIST" }],
+    }),
+
+    logOut: build.query({
+      query: () => `auth/logout`,
     }),
 
     getUser: build.query({
@@ -86,10 +91,12 @@ export const okBaseApi = createApi({
 
     getCategories: build.query({
       query: () => `knowledge-base/get-categories`,
+      invalidatesTags: [{ type: "Materials", id: "LIST" }],
     }),
 
     getFilters: build.query({
       query: (category) => `knowledge-base/get-filter?category=${category}`,
+      invalidatesTags: [{ type: "Materials", id: "LIST" }],
     }),
 
     getList: build.query({
@@ -151,6 +158,18 @@ export const okBaseApi = createApi({
         body,
       }),
     }),
+
+    getPrivacyPolicy: build.query({
+      query: () => `content/privacy-policy`,
+    }),
+
+    getTermsUse: build.query({
+      query: () => `content/terms-use`,
+    }),
+
+    getLegalInformation: build.query({
+      query: () => `content/legal-information`,
+    }),
   }),
 });
 
@@ -164,6 +183,7 @@ export const {
   useRegCheckCodeMutation,
   useRegFinishMutation,
   useLogInMutation,
+  useLogOutQuery,
   useRecoveryPassStartMutation,
   useRecoveryPassCheckCodeMutation,
   useRecoveryPassFinishMutation,
@@ -173,4 +193,7 @@ export const {
   useEditMaterialMutation,
   useDeleteMaterialMutation,
   useGetUserQuery,
+  useGetPrivacyPolicyQuery,
+  useGetTermsUseQuery,
+  useGetLegalInformationQuery,
 } = okBaseApi;
