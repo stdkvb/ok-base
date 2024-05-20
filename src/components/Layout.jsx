@@ -213,6 +213,7 @@ function Layout(props) {
           <IconButton sx={{ mx: { xs: 1.1, md: 4 } }}>
             <SearchIcon />
           </IconButton>
+
           <Divider orientation="vertical" />
           <IconButton
             sx={{ mx: { xs: 1.1, md: 4 } }}
@@ -243,6 +244,7 @@ function Layout(props) {
             anchorOrigin={{ vertical: "top", horizontal: "center" }}
             open={openSnackBar}
             onClose={handleCloseSnackBar}
+            autoHideDuration={3000}
           >
             <SnackbarContent
               message={

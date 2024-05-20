@@ -5,6 +5,7 @@ import { Routes, Route } from "react-router-dom";
 import { darkTheme, lightTheme } from "./theme";
 import { useSelector } from "react-redux";
 
+import ScrollToTop from "./utils/scrollToTop";
 import Layout from "./components/Layout";
 import Catalog from "./components/Catalog";
 import MaterialDetail from "./pages/MaterialDetail";
@@ -26,6 +27,7 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route path="/sign-up" element={<RegStart />} />

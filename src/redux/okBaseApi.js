@@ -4,7 +4,7 @@ export const okBaseApi = createApi({
   reducerPath: "okBaseApi",
   tagTypes: ["Materials", "Material", "Categories"],
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://ok-base.wptt.ru/api/",
+    baseUrl: "https://ok-base.ru/api/",
     prepareHeaders: (headers, { getState }) => {
       const token = getState().authSlice.token;
       // If we have a token set in state, let's assume that we should be passing it.
