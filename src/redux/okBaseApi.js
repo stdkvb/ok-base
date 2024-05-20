@@ -179,7 +179,10 @@ export const okBaseApi = createApi({
         method: "POST",
         body,
       }),
-      invalidatesTags: [{ type: "Material", id: "LIST" }],
+      invalidatesTags: [
+        { type: "Materials", id: "LIST" },
+        { type: "Material", id: "LIST" },
+      ],
     }),
 
     removeFavorites: build.mutation({
@@ -188,7 +191,10 @@ export const okBaseApi = createApi({
         method: "POST",
         body,
       }),
-      invalidatesTags: [{ type: "Material", id: "LIST" }],
+      invalidatesTags: [
+        { type: "Materials", id: "LIST" },
+        { type: "Material", id: "LIST" },
+      ],
     }),
   }),
 });

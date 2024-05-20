@@ -97,7 +97,7 @@ const Catalog = () => {
           ))
         )}
       </List>
-      {!data.totalCount == 0 && <Pagination totalCount={data.totalCount} />}
+      {data.totalCount >= 10 && <Pagination totalCount={data.totalCount} />}
     </>
   );
 };
