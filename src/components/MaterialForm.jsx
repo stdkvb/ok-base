@@ -5,12 +5,12 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import {
   Typography,
-  Divider,
   Box,
   Button,
   TextField,
   FormControlLabel,
   Checkbox,
+  FormGroup,
   FormControl,
   InputLabel,
   MenuItem,
@@ -207,22 +207,25 @@ const MaterialForm = ({ initialValues }) => {
           }
           if (field.type == "checkbox") {
             return (
-              <FormControlLabel
-                key={i}
-                control={
-                  <Checkbox
-                    value={formik.values[field.name]}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    error={
-                      formik.touched[field.name] &&
-                      Boolean(formik.errors[field.name])
-                    }
-                    required={field.required}
-                  />
-                }
-                label={field.title}
-              />
+              <FormGroup>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      id={field.name}
+                      name={field.name}
+                      checked={formik.values[field.name]}
+                      onChange={formik.handleChange}
+                      required={field.required}
+                    />
+                  }
+                  label={field.title}
+                />
+                {formik.touched[field.name] && formik.errors[field.name] && (
+                  <Typography color="error">
+                    {formik.errors[field.name]}
+                  </Typography>
+                )}
+              </FormGroup>
             );
           }
         })

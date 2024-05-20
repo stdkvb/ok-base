@@ -7,6 +7,9 @@ import {
   Typography,
   Link,
   Container,
+  FormGroup,
+  FormControlLabel,
+  Checkbox,
 } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 
@@ -14,9 +17,14 @@ import { useRegStartMutation } from "../redux/okBaseApi";
 import RegConfirmCode from "../components/RegConfirmCode";
 
 const fields = [
-  { label: "Email", name: "email" },
-  { label: "Имя", name: "firstName" },
-  { label: "Фамилия", name: "lastName" },
+  { label: "Email", name: "email", type: "input" },
+  { label: "Имя", name: "firstName", type: "input" },
+  { label: "Фамилия", name: "lastName", type: "input" },
+  {
+    label: "Я соглашаюсь с политикой конфиденциальности",
+    name: "policy",
+    type: "checbox",
+  },
 ];
 
 const RegStart = () => {
@@ -30,6 +38,7 @@ const RegStart = () => {
       .required("Введите email"),
     firstName: yup.string("Введите имя").required("Введите имя"),
     lastName: yup.string("Введите фамилию").required("Введите фамилию"),
+    policy: yup.boolean().oneOf([true], "Согласие обязательно"),
   });
 
   //form validation
@@ -38,6 +47,7 @@ const RegStart = () => {
       email: "",
       firstName: "",
       lastName: "",
+      policy: false,
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
@@ -88,26 +98,54 @@ const RegStart = () => {
               width: { xs: "100%", md: "450px" },
             }}
           >
-            {fields.map((field, i) => (
-              <TextField
-                key={i}
-                fullWidth
-                id={field.name}
-                name={field.name}
-                label={field.label}
-                value={formik.values[field.name]}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                error={
-                  formik.touched[field.name] &&
-                  Boolean(formik.errors[field.name])
-                }
-                helperText={
-                  formik.touched[field.name] && formik.errors[field.name]
-                }
-                required
-              />
-            ))}
+            {fields.map((field, i) => {
+              if (field.type == "input") {
+                return (
+                  <TextField
+                    key={i}
+                    fullWidth
+                    id={field.name}
+                    name={field.name}
+                    label={field.label}
+                    value={formik.values[field.name]}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={
+                      formik.touched[field.name] &&
+                      Boolean(formik.errors[field.name])
+                    }
+                    helperText={
+                      formik.touched[field.name] && formik.errors[field.name]
+                    }
+                    required
+                  />
+                );
+              }
+              if (field.type == "checbox") {
+                return (
+                  <FormGroup>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          id={field.name}
+                          name={field.name}
+                          checked={formik.values[field.name]}
+                          onChange={formik.handleChange}
+                          required={field.required}
+                        />
+                      }
+                      label={field.label}
+                    />
+                    {formik.touched[field.name] &&
+                      formik.errors[field.name] && (
+                        <Typography color="error">
+                          {formik.errors[field.name]}
+                        </Typography>
+                      )}
+                  </FormGroup>
+                );
+              }
+            })}
             {error && (
               <Typography color="error">{error.data.message}</Typography>
             )}
