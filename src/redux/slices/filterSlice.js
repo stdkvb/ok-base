@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   filters: {
     my: false,
+    favorites: false,
     category: "",
     company: "",
     theme: "",

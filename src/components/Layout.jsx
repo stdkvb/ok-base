@@ -127,7 +127,14 @@ function Layout(props) {
           <Link
             component={RouterLink}
             to={loggedIn && "/favorites"}
-            onClick={!loggedIn && handleOpenSnackBar}
+            onClick={
+              loggedIn
+                ? () => {
+                    dispatch(resetFilters());
+                    dispatch(setFilter({ name: "favorites", value: true }));
+                  }
+                : handleOpenSnackBar
+            }
           >
             Избранное
           </Link>
@@ -271,7 +278,6 @@ function Layout(props) {
         sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
         aria-label="mailbox folders"
       >
-        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
         <Drawer
           variant="temporary"
           open={mobileOpen}

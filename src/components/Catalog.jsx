@@ -1,4 +1,3 @@
-import { useMemo, useEffect } from "react";
 import {
   Typography,
   Divider,
@@ -18,10 +17,8 @@ import Pagination from "./Pagination";
 import { useGetListQuery } from "../redux/okBaseApi";
 
 const Catalog = () => {
-  //redux states
   const filters = useSelector((state) => state.filtersSlice.filters);
 
-  //get data
   const { data, isLoading } = useGetListQuery(filters);
 
   if (isLoading) return;
@@ -55,8 +52,7 @@ const Catalog = () => {
           <Divider />
         </>
       )}
-      {!filters.tag && !filters.my && <Filters />}
-      <Divider />
+      {!filters.tag && !filters.my && !filters.favorites && <Filters />}
       <List disablePadding>
         {data.totalCount == 0 ? (
           <>
@@ -101,8 +97,7 @@ const Catalog = () => {
           ))
         )}
       </List>
-
-      <Pagination totalCount={data.totalCount} />
+      {!data.totalCount == 0 && <Pagination totalCount={data.totalCount} />}
     </>
   );
 };

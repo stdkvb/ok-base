@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const okBaseApi = createApi({
   reducerPath: "okBaseApi",
-  tagTypes: ["Materials", "Material"],
+  tagTypes: ["Materials", "Material", "Categories"],
   baseQuery: fetchBaseQuery({
     baseUrl: "https://ok-base.wptt.ru/api/",
     prepareHeaders: (headers, { getState }) => {
@@ -91,7 +91,13 @@ export const okBaseApi = createApi({
 
     getCategories: build.query({
       query: () => `knowledge-base/get-categories`,
-      invalidatesTags: [{ type: "Materials", id: "LIST" }],
+      providesTags: (result) =>
+        result
+          ? [
+              { type: "Categories", id: result.id },
+              { type: "Categories", id: "LIST" },
+            ]
+          : [{ type: "Categories", id: "LIST" }],
     }),
 
     getFilters: build.query({
@@ -111,6 +117,7 @@ export const okBaseApi = createApi({
               { type: "Materials", id: "LIST" },
             ]
           : [{ type: "Materials", id: "LIST" }],
+      invalidatesTags: [{ type: "Categories", id: "LIST" }],
     }),
 
     getMaterialDetail: build.query({
@@ -119,7 +126,7 @@ export const okBaseApi = createApi({
       providesTags: (result) =>
         result
           ? [
-              { type: "Material", id: result.id }, // Поле `id` в объекте `result`
+              { type: "Material", id: result.id },
               { type: "Material", id: "LIST" },
             ]
           : [{ type: "Material", id: "LIST" }],
@@ -139,7 +146,10 @@ export const okBaseApi = createApi({
         method: "POST",
         body,
       }),
-      invalidatesTags: [{ type: "Material", id: "LIST" }],
+      invalidatesTags: [
+        { type: "Material", id: "LIST" },
+        { type: "Categories", id: "LIST" },
+      ],
     }),
 
     editMaterial: build.mutation({
@@ -163,12 +173,22 @@ export const okBaseApi = createApi({
       query: () => `content/privacy-policy`,
     }),
 
-    getTermsUse: build.query({
-      query: () => `content/terms-use`,
+    addFavorites: build.mutation({
+      query: (body) => ({
+        url: "user/add-favorites",
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: [{ type: "Material", id: "LIST" }],
     }),
 
-    getLegalInformation: build.query({
-      query: () => `content/legal-information`,
+    removeFavorites: build.mutation({
+      query: (body) => ({
+        url: "user/remove-favorites",
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: [{ type: "Material", id: "LIST" }],
     }),
   }),
 });
@@ -194,6 +214,6 @@ export const {
   useDeleteMaterialMutation,
   useGetUserQuery,
   useGetPrivacyPolicyQuery,
-  useGetTermsUseQuery,
-  useGetLegalInformationQuery,
+  useAddFavoritesMutation,
+  useRemoveFavoritesMutation,
 } = okBaseApi;

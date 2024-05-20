@@ -20,11 +20,14 @@ import Tags from "../components/Tags";
 import {
   useGetMaterialDetailQuery,
   useDeleteMaterialMutation,
+  useAddFavoritesMutation,
+  useRemoveFavoritesMutation,
 } from "../redux/okBaseApi";
 
 const MaterialDetail = () => {
   const navigate = useNavigate();
   const filters = useSelector((state) => state.filtersSlice.filters);
+  const loggedIn = useSelector((state) => state.authSlice.loggedIn);
 
   //get detail page id
   let { materialDetailId } = useParams();
@@ -36,15 +39,33 @@ const MaterialDetail = () => {
   });
 
   //delete material
-  const [deleteMaterial, { error, isSuccess }] = useDeleteMaterialMutation();
+  const [
+    deleteMaterial,
+    { isSuccess: successDeleteMaterial, error: errorDeleteMaterial },
+  ] = useDeleteMaterialMutation();
   const handleDeleteMaterial = () => {
     deleteMaterial({ id: materialDetailId });
   };
-
   //redirect after delete
-  if (isSuccess) {
+  if (successDeleteMaterial) {
     navigate("/my-materials");
   }
+
+  //add to favorites
+  const [
+    addFavorites,
+    { isSuccess: successAddFavorites, error: errorAddFavorites },
+  ] = useAddFavoritesMutation();
+  const [
+    removeFavorites,
+    { isSuccess: successRemoveFavorites, error: errorRemoveFavorites },
+  ] = useRemoveFavoritesMutation();
+
+  const toggleFavorites = (isFavorite) => {
+    isFavorite
+      ? removeFavorites({ id: materialDetailId })
+      : addFavorites({ id: materialDetailId });
+  };
 
   if (isLoading) return;
   if (data)
@@ -85,6 +106,18 @@ const MaterialDetail = () => {
             >
               {data.linkText == "" ? "Перейти по ссылке" : data.linkText}
             </Button>
+            {loggedIn && (
+              <Button
+                type="text"
+                onClick={() => {
+                  toggleFavorites(data.favorites);
+                }}
+              >
+                {data.favorites
+                  ? "Удалить из избранного"
+                  : "Добавить в избранное"}
+              </Button>
+            )}
             {filters.my && (
               <>
                 <Button

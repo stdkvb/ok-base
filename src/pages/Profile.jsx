@@ -6,7 +6,7 @@ import { useNavigate, Link as RouterLink } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
 import { clearToken } from "../redux/slices/authSlice";
-import { resetFilters } from "../redux/slices/filterSlice";
+import { resetFilters, setFilter } from "../redux/slices/filterSlice";
 import { useGetUserQuery, useLogOutQuery } from "../redux/okBaseApi";
 
 const Profile = () => {
@@ -143,7 +143,15 @@ const Profile = () => {
         >
           Добавить материал
         </Button>
-        <Button variant="text" component={RouterLink} to="/my-materials">
+        <Button
+          variant="text"
+          component={RouterLink}
+          to="/my-materials"
+          onClick={() => {
+            dispatch(resetFilters());
+            dispatch(setFilter({ name: "my", value: true }));
+          }}
+        >
           Мои материалы
         </Button>
         <Button

@@ -35,6 +35,7 @@ export default function App() {
           <Route path="/change-password" element={<RecoveryPassFinish />} />
           <Route path="/" element={<Catalog />} />
           <Route path="/my-materials" element={<Catalog />} />
+          <Route path="/favorites" element={<Catalog />} />
           <Route
             path="/material/:materialDetailId"
             element={<MaterialDetail />}

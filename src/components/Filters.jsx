@@ -114,6 +114,7 @@ const Filters = () => {
             ))}
         </Stack>
       </Drawer>
+      <Divider />
     </>
   );
 };
