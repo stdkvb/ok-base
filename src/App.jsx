@@ -1,10 +1,10 @@
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider } from "@mui/material/styles";
 import { Routes, Route } from "react-router-dom";
-// import theme from "./theme";
 import { darkTheme, lightTheme } from "./theme";
 import { useSelector } from "react-redux";
 
+import useCheckAppVersion from "./utils/checkAppVersion";
 import ScrollToTop from "./utils/scrollToTop";
 import Layout from "./components/Layout";
 import Catalog from "./components/Catalog";
@@ -21,8 +21,8 @@ import CreateMaterial from "./pages/CreateMaterial";
 import EditMaterial from "./pages/EditMaterial";
 
 export default function App() {
+  useCheckAppVersion();
   const darkMode = useSelector((state) => state.themeSlice.darkMode);
-
   const theme = darkMode ? darkTheme : lightTheme;
   return (
     <ThemeProvider theme={theme}>
