@@ -1,18 +1,14 @@
-const APP_VERSION = "1.0.7"; //update version on each release!!
+const APP_VERSION = "1.0.10"; // update version on each release!!
 
 export const loadState = () => {
   try {
     const serializedState = localStorage.getItem("state");
     if (serializedState === null) {
-      console.log("No state found in localStorage.");
       return undefined;
     }
     const state = JSON.parse(serializedState);
 
     if (state.appVersion !== APP_VERSION) {
-      console.log(
-        `Version mismatch: localStorage (${state.appVersion}), expected (${APP_VERSION})`
-      );
       return undefined;
     }
 

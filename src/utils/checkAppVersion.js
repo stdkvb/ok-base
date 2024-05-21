@@ -2,33 +2,20 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { okBaseApi } from "../redux/okBaseApi";
 
+const APP_VERSION = "1.0.10"; //update version on each release!!
+
 const useCheckAppVersion = () => {
-  const dispatch = useDispatch();
-
   useEffect(() => {
-    const checkVersion = async () => {
-      try {
-        const response = await fetch("/index.html");
-        const text = await response.text();
-        const doc = new DOMParser().parseFromString(text, "text/html");
-        const meta = doc.querySelector('meta[name="application-version"]');
-        const latestVersion = meta ? meta.getAttribute("content") : null;
-
-        const currentVersion = localStorage.getItem("appVersion");
-
-        if (currentVersion !== latestVersion) {
-          localStorage.setItem("appVersion", latestVersion);
-          localStorage.removeItem("state"); // Очистка сохраненного состояния
-          dispatch(okBaseApi.util.resetApiState());
-          window.location.reload();
-        }
-      } catch (error) {
-        console.error("Failed to check app version", error);
+    try {
+      const storedVersion = localStorage.getItem("appVersion");
+      if (storedVersion !== APP_VERSION) {
+        localStorage.clear();
+        localStorage.setItem("appVersion", APP_VERSION);
       }
-    };
-
-    checkVersion();
-  }, [dispatch]);
+    } catch (error) {
+      console.error("Error checking app version:", error);
+    }
+  }, []);
 };
 
 export default useCheckAppVersion;
