@@ -4,6 +4,7 @@ const initialState = {
   filters: {
     my: false,
     favorites: false,
+    search: "",
     category: "",
     company: "",
     theme: "",

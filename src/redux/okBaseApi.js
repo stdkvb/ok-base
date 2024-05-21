@@ -4,7 +4,7 @@ export const okBaseApi = createApi({
   reducerPath: "okBaseApi",
   tagTypes: ["Materials", "Material", "Categories"],
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://ok-base.ru/api/",
+    baseUrl: "https://ok-base.wptt.ru/api/",
     prepareHeaders: (headers, { getState }) => {
       const token = getState().authSlice.token;
       if (token) {

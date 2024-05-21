@@ -157,6 +157,17 @@ const Profile = () => {
         <Button
           variant="text"
           component={RouterLink}
+          to="/favorites"
+          onClick={() => {
+            dispatch(resetFilters());
+            dispatch(setFilter({ name: "favorites", value: true }));
+          }}
+        >
+          Избранное
+        </Button>
+        <Button
+          variant="text"
+          component={RouterLink}
           to="/"
           onClick={() => {
             dispatch(clearToken());

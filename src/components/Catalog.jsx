@@ -12,6 +12,7 @@ import { Link as RouterLink } from "react-router-dom";
 import ArrowOutwardOutlinedIcon from "@mui/icons-material/ArrowOutwardOutlined";
 import { useSelector } from "react-redux";
 
+import PageTitle from "./PageTitle";
 import Filters from "./Filters";
 import Pagination from "./Pagination";
 import { useGetListQuery } from "../redux/okBaseApi";
@@ -24,35 +25,10 @@ const Catalog = () => {
   if (isLoading) return;
   return (
     <>
-      {filters.category && !filters.tag && (
-        <>
-          <Typography
-            variant="h2"
-            sx={{
-              py: { xs: 2, md: 8 },
-              px: { xs: 2, md: 4 },
-            }}
-          >
-            {filters.category}
-          </Typography>
-          <Divider />
-        </>
+      <PageTitle />
+      {!filters.tag && !filters.my && !filters.favorites && !filters.search && (
+        <Filters />
       )}
-      {filters.tag && (
-        <>
-          <Typography
-            variant="h2"
-            sx={{
-              py: { xs: 2, md: 8 },
-              px: { xs: 2, md: 4 },
-            }}
-          >
-            #{filters.tag}
-          </Typography>
-          <Divider />
-        </>
-      )}
-      {!filters.tag && !filters.my && !filters.favorites && <Filters />}
       <List disablePadding>
         {data.totalCount == 0 ? (
           <>

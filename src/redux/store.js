@@ -6,7 +6,7 @@ import filtersSlice from "./slices/filterSlice";
 import authSlice from "./slices/authSlice";
 import themeSlice from "./slices/themeSlice";
 
-const preloadedState = loadState();
+const preloadedState = loadState() || {};
 
 const store = configureStore({
   reducer: {

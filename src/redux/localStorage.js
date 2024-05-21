@@ -1,12 +1,4 @@
-const APP_VERSION_KEY = "appVersion"; // Ключ для хранения версии приложения
-
-export const getAppVersion = () => {
-  return localStorage.getItem(APP_VERSION_KEY);
-};
-
-export const setAppVersion = (version) => {
-  localStorage.setItem(APP_VERSION_KEY, version);
-};
+const APP_VERSION = "1.0.1";
 
 export const loadState = () => {
   try {
@@ -16,23 +8,27 @@ export const loadState = () => {
     }
     const state = JSON.parse(serializedState);
 
-    // Проверяем версию приложения
-    if (getAppVersion() !== APP_VERSION) {
-      return undefined; // Возвращаем undefined, если версии не совпадают
+    if (state.appVersion !== APP_VERSION) {
+      return undefined;
     }
 
-    return state;
+    const { appVersion, ...restState } = state;
+    return restState;
   } catch (err) {
+    console.error("Could not load state from localStorage:", err);
     return undefined;
   }
 };
 
 export const saveState = (state) => {
   try {
-    const serializedState = JSON.stringify(state);
+    const stateToSave = {
+      ...state,
+      appVersion: APP_VERSION,
+    };
+    const serializedState = JSON.stringify(stateToSave);
     localStorage.setItem("state", serializedState);
-    setAppVersion(APP_VERSION); // Сохраняем версию приложения отдельно
   } catch (err) {
-    // Игнорируем ошибки
+    console.error("Could not save state to localStorage:", err);
   }
 };

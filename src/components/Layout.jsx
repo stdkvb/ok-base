@@ -21,44 +21,40 @@ import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined
 import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 import NightlightOutlinedIcon from "@mui/icons-material/NightlightOutlined";
 import AddIcon from "@mui/icons-material/Add";
-import SearchIcon from "@mui/icons-material/Search";
+
 import CloseIcon from "@mui/icons-material/Close";
 
 import { clearToken } from "../redux/slices/authSlice";
 import { setFilter, resetFilters } from "../redux/slices/filterSlice";
 import { toggleDarkMode } from "../redux/slices/themeSlice";
+import SearchBar from "./SearchBar";
 import Categories from "./Categories";
 import Footer from "./Footer";
 
 const drawerWidth = 200;
 
-function Layout(props) {
-  //redux states
+function Layout() {
+  const dispatch = useDispatch();
   const loggedIn = useSelector((state) => state.authSlice.loggedIn);
   const darkMode = useSelector((state) => state.themeSlice.darkMode);
 
-  const dispatch = useDispatch();
-
-  const { window } = props;
+  //nav drawer
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
-
   const handleDrawerClose = () => {
     setIsClosing(true);
     setMobileOpen(false);
   };
-
   const handleDrawerTransitionEnd = () => {
     setIsClosing(false);
   };
-
   const handleDrawerToggle = () => {
     if (!isClosing) {
       setMobileOpen(!mobileOpen);
     }
   };
 
-  //snackbar
+  //snackbar for auth
   const [openSnackBar, setOpenSnackBar] = useState(false);
   const handleOpenSnackBar = () => {
     setOpenSnackBar(true);
@@ -210,9 +206,7 @@ function Layout(props) {
             OKB
           </Link>
           <Divider orientation="vertical" />
-          <IconButton sx={{ mx: { xs: 1.1, md: 4 } }}>
-            <SearchIcon />
-          </IconButton>
+          <SearchBar />
 
           <Divider orientation="vertical" />
           <IconButton
@@ -233,7 +227,7 @@ function Layout(props) {
           </IconButton>
           <Divider orientation="vertical" />
           <IconButton
-            sx={{ px: { xs: 2, md: 4 } }}
+            sx={{ mx: { xs: 1.1, md: 4 } }}
             component={RouterLink}
             to={loggedIn && "/create-material"}
             onClick={!loggedIn && handleOpenSnackBar}
@@ -312,6 +306,7 @@ function Layout(props) {
           {drawer}
         </Drawer>
       </Box>
+
       <Box
         component="main"
         sx={{
@@ -326,6 +321,7 @@ function Layout(props) {
         <Outlet />
       </Box>
       <Divider />
+
       <Box
         component="footer"
         sx={{
