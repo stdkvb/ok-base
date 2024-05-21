@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Box,
   Drawer,
@@ -13,6 +14,7 @@ import { useDispatch } from "react-redux";
 import { resetFilters, setFilter } from "../redux/slices/filterSlice";
 
 const SearchBar = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   //search drawer
   const [searchDrawer, setSearchDrawer] = useState(false);
@@ -28,6 +30,7 @@ const SearchBar = () => {
     event.preventDefault();
     dispatch(resetFilters());
     dispatch(setFilter({ name: "search", value: searchValue }));
+    navigate("/");
     setSearchValue("");
   };
 
