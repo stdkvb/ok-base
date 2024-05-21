@@ -7,6 +7,8 @@ import {
   ListItemIcon,
   Button,
   Link,
+  Chip,
+  Box,
 } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 import ArrowOutwardOutlinedIcon from "@mui/icons-material/ArrowOutwardOutlined";
@@ -59,18 +61,41 @@ const Catalog = () => {
                 key={i}
                 sx={{
                   p: { xs: 2, md: 4 },
+                  flexDirection: "column",
                   gap: 2,
-                  justifyContent: "space-between",
                 }}
               >
-                <Link component={RouterLink} to={`/material/${item.id}`}>
-                  <Typography variant="h5">
-                    {item.name !== "" ? item.name : item.link}
-                  </Typography>
-                </Link>
-                <ListItemIcon sx={{ minWidth: "unset" }}>
-                  <ArrowOutwardOutlinedIcon />
-                </ListItemIcon>
+                <Box
+                  sx={{
+                    width: "100%",
+                    display: "flex",
+                    gap: 2,
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  <Link component={RouterLink} to={`/material/${item.id}`}>
+                    <Typography variant="h5">
+                      {item.name !== "" ? item.name : item.link}
+                    </Typography>
+                  </Link>
+                  <ListItemIcon sx={{ minWidth: "unset" }}>
+                    <ArrowOutwardOutlinedIcon />
+                  </ListItemIcon>
+                </Box>
+                <Box
+                  sx={{
+                    width: "100%",
+                    display: "flex",
+                    gap: 1,
+                    alignItems: "center",
+                    flexWrap: "wrap",
+                  }}
+                >
+                  {item.tags.map((tag, i) => (
+                    <Chip key={i} label={tag} />
+                  ))}
+                </Box>
               </ListItem>
               <Divider />
             </div>

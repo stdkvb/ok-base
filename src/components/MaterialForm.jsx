@@ -56,6 +56,7 @@ const MaterialForm = ({ initialValues }) => {
       event: [],
       myTags: [],
       forEveryone: false,
+      note: "",
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
@@ -78,6 +79,7 @@ const MaterialForm = ({ initialValues }) => {
         event: initialValues.event,
         myTags: initialValues.myTags,
         forEveryone: initialValues.forEveryone,
+        note: initialValues.note,
       };
       formik.setValues(newInitialValues);
     }

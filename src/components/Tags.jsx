@@ -33,7 +33,7 @@ const Tags = ({ data }) => {
         data.tags[key].map((tag, index) => (
           <Chip
             key={`${key}-${index}`}
-            label={`#${tag}`}
+            label={tag}
             variant={key === "myTags" ? "outlined" : "default"}
             component={RouterLink}
             to={{

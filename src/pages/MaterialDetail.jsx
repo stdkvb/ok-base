@@ -16,6 +16,7 @@ import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import Tags from "../components/Tags";
+import Note from "../components/Note";
 
 import {
   useGetMaterialDetailQuery,
@@ -149,6 +150,10 @@ const MaterialDetail = () => {
           <Tags data={data} />
         </Stack>
         <Divider />
+        {loggedIn && (filters.my || filters.favorites) && (
+          <Note initialValue={data.note} materialId={materialDetailId} />
+        )}
+
         {!filters.my && (
           <List disablePadding sx={{ pb: 2 }}>
             <ListItem sx={{ p: { xs: 2, md: 4 }, pt: { xs: 1.5, md: 4 } }}>

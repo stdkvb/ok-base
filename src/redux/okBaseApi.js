@@ -4,7 +4,7 @@ export const okBaseApi = createApi({
   reducerPath: "okBaseApi",
   tagTypes: ["Materials", "Material", "Categories"],
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://ok-base.ru/api/",
+    baseUrl: "https://ok-base.wptt.ru/api/",
     prepareHeaders: (headers, { getState }) => {
       const token = getState().authSlice.token;
       if (token) {
@@ -195,6 +195,24 @@ export const okBaseApi = createApi({
         { type: "Material", id: "LIST" },
       ],
     }),
+
+    addNote: build.mutation({
+      query: (body) => ({
+        url: "knowledge-base/add-note",
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: [{ type: "Material", id: "LIST" }],
+    }),
+
+    changeNote: build.mutation({
+      query: (body) => ({
+        url: "knowledge-base/change-note",
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: [{ type: "Material", id: "LIST" }],
+    }),
   }),
 });
 
@@ -221,4 +239,6 @@ export const {
   useGetPrivacyPolicyQuery,
   useAddFavoritesMutation,
   useRemoveFavoritesMutation,
+  useAddNoteMutation,
+  useChangeNoteMutation,
 } = okBaseApi;
