@@ -23,6 +23,7 @@ import {
   useDeleteMaterialMutation,
   useAddFavoritesMutation,
   useRemoveFavoritesMutation,
+  useLinkClickMutation,
 } from "../redux/okBaseApi";
 
 const MaterialDetail = () => {
@@ -68,6 +69,9 @@ const MaterialDetail = () => {
       : addFavorites({ id: materialDetailId });
   };
 
+  //link click listener
+  const [linkClick] = useLinkClickMutation();
+
   if (isLoading) return;
   if (data)
     return (
@@ -104,6 +108,7 @@ const MaterialDetail = () => {
               href={data.link}
               target="_blank"
               color="primary"
+              onClick={() => linkClick({ id: materialDetailId })}
             >
               {data.linkText == "" ? "Перейти по ссылке" : data.linkText}
             </Button>

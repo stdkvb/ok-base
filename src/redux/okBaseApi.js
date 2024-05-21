@@ -213,6 +213,14 @@ export const okBaseApi = createApi({
       }),
       invalidatesTags: [{ type: "Material", id: "LIST" }],
     }),
+
+    linkClick: build.mutation({
+      query: (body) => ({
+        url: "knowledge-base/click-on-links",
+        method: "POST",
+        body,
+      }),
+    }),
   }),
 });
 
@@ -241,4 +249,5 @@ export const {
   useRemoveFavoritesMutation,
   useAddNoteMutation,
   useChangeNoteMutation,
+  useLinkClickMutation,
 } = okBaseApi;
