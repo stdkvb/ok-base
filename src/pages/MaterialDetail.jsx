@@ -11,6 +11,7 @@ import {
   Link,
 } from "@mui/material";
 import ArrowOutwardOutlinedIcon from "@mui/icons-material/ArrowOutwardOutlined";
+import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import { useParams } from "react-router-dom";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -139,7 +140,22 @@ const MaterialDetail = () => {
               </>
             )}
           </Stack>
-          <Typography color="text.secondary" ml="auto">
+          <Typography
+            color="text.secondary"
+            sx={{
+              display: "flex",
+              gap: 4,
+            }}
+          >
+            <Typography
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: 1,
+              }}
+            >
+              <RemoveRedEyeIcon /> {data.showCount}
+            </Typography>{" "}
             {data.date}
           </Typography>
         </Box>

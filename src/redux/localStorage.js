@@ -1,4 +1,4 @@
-const APP_VERSION = "1.0.6";
+const APP_VERSION = "1.0.7"; //update version on each release!!
 
 export const loadState = () => {
   try {
