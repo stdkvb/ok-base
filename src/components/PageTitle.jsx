@@ -11,6 +11,10 @@ const PageTitle = () => {
       return `#${filters.tag}`;
     } else if (filters.search) {
       return `Результаты поиска по запросу: ${filters.search}`;
+    } else if (filters.favorites) {
+      return "Избранное";
+    } else if (filters.my) {
+      return "Мои материалы";
     }
     return null;
   };
@@ -31,7 +35,6 @@ const PageTitle = () => {
           >
             {title}
           </Typography>
-          <Divider />
         </>
       )}
     </>

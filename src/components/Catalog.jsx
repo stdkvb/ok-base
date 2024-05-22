@@ -28,9 +28,7 @@ const Catalog = () => {
   return (
     <>
       <PageTitle />
-      {!filters.tag && !filters.my && !filters.favorites && !filters.search && (
-        <Filters />
-      )}
+      <Filters />
       <List disablePadding>
         {data.totalCount == 0 ? (
           <>
