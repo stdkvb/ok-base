@@ -21,7 +21,6 @@ import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined
 import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 import NightlightOutlinedIcon from "@mui/icons-material/NightlightOutlined";
 import AddIcon from "@mui/icons-material/Add";
-
 import CloseIcon from "@mui/icons-material/Close";
 
 import { clearToken } from "../redux/slices/authSlice";

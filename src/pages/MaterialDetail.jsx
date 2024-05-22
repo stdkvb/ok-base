@@ -1,16 +1,16 @@
+import { useState } from "react";
 import {
   Typography,
   Divider,
   Stack,
   Box,
   Button,
-  List,
-  ListItem,
-  ListItemText,
   ListItemIcon,
   Link,
   Chip,
   IconButton,
+  Snackbar,
+  SnackbarContent,
 } from "@mui/material";
 import ArrowOutwardOutlinedIcon from "@mui/icons-material/ArrowOutwardOutlined";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
@@ -22,7 +22,10 @@ import ContentCopyOutlinedIcon from "@mui/icons-material/ContentCopyOutlined";
 import { useParams } from "react-router-dom";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { Helmet } from "react-helmet";
+import CloseIcon from "@mui/icons-material/Close";
 
+import metaImage from "../assets/images/ok-base.jpg";
 import Tags from "../components/Tags";
 import Note from "../components/Note";
 
@@ -86,10 +89,74 @@ const MaterialDetail = () => {
     navigator.clipboard.writeText(url);
   };
 
+  //snackbar for auth
+  const [openSnackBar, setOpenSnackBar] = useState(false);
+  const handleOpenSnackBar = () => {
+    setOpenSnackBar(true);
+  };
+  const handleCloseSnackBar = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenSnackBar(false);
+  };
+
   if (isLoading) return;
   if (data)
     return (
       <>
+        <Helmet>
+          <title>{data.name}</title>
+          <meta name="description" content={data.description} />
+          <meta
+            name="keywords"
+            content={Object.values(data.tags).flat().filter(Boolean).join(", ")}
+          />
+          <meta name="apple-mobile-web-app-title" content="ok-base.ru" />
+          <meta name="application-name" content="ok-base.ru" />
+          <meta property="og:title" content={data.name} />
+          <meta property="og:description" content={data.description} />
+          <meta property="og:type" content="website" />
+          <meta property="og:url" content="https://ok-base.ru" />
+          <meta
+            property="og:image"
+            content={`https://ok-base.ru${metaImage}`}
+          />
+          <meta
+            property="og:image:secure_url"
+            content={`https://ok-base.ru${metaImage}`}
+          />
+          <meta property="og:image:type" content="image/jpg" />
+          <meta property="og:image:width" content="400" />
+          <meta property="og:image:height" content="300" />
+        </Helmet>
+        <Snackbar
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          open={openSnackBar}
+          onClose={handleCloseSnackBar}
+          autoHideDuration={3000}
+        >
+          <SnackbarContent
+            message={
+              <Typography>
+                Необходимо{" "}
+                <Link component={RouterLink} to="/log-in" color="primary.main">
+                  авторизоваться
+                </Link>{" "}
+              </Typography>
+            }
+            action={
+              <IconButton
+                size="small"
+                aria-label="close"
+                color="inherit"
+                onClick={handleCloseSnackBar}
+              >
+                <CloseIcon fontSize="small" />
+              </IconButton>
+            }
+          />
+        </Snackbar>
         <Typography
           variant="h3"
           sx={{
@@ -128,18 +195,18 @@ const MaterialDetail = () => {
             >
               {data.linkText == "" ? "Перейти по ссылке" : data.linkText}
             </Button>
-            {loggedIn && (
-              <Button
-                type="text"
-                onClick={() => {
-                  toggleFavorites(data.favorites);
-                }}
-              >
-                {data.favorites
-                  ? "Удалить из избранного"
-                  : "Добавить в избранное"}
-              </Button>
-            )}
+            <Button
+              type="text"
+              onClick={() => {
+                loggedIn
+                  ? toggleFavorites(data.favorites)
+                  : handleOpenSnackBar();
+              }}
+            >
+              {data.favorites
+                ? "Удалить из избранного"
+                : "Добавить в избранное"}
+            </Button>
             <Button type="text" onClick={copyUrlToClipboard}>
               Скопировать ссылку
             </Button>
@@ -159,14 +226,14 @@ const MaterialDetail = () => {
               </>
             )}
           </Stack>
-          <Typography
-            color="text.secondary"
+          <Box
             sx={{
               display: "flex",
               gap: 4,
             }}
           >
             <Typography
+              color="text.secondary"
               sx={{
                 display: "flex",
                 alignItems: "center",
@@ -175,8 +242,8 @@ const MaterialDetail = () => {
             >
               Просмотры:&nbsp;{data.showCount}
             </Typography>{" "}
-            {data.date}
-          </Typography>
+            <Typography color="text.secondary">{data.date}</Typography>
+          </Box>
         </Box>
 
         <Box
@@ -207,24 +274,24 @@ const MaterialDetail = () => {
           direction="row"
           divider={<Divider orientation="vertical" flexItem />}
         >
-          {loggedIn && (
-            <IconButton
-              onClick={() => {
-                toggleFavorites(data.favorites);
-              }}
-            >
-              {data.favorites ? (
-                <FavoriteOutlinedIcon />
-              ) : (
-                <FavoriteBorderOutlinedIcon />
-              )}
-            </IconButton>
-          )}
-          <IconButton onClick={copyUrlToClipboard}>
+          <IconButton
+            sx={{ m: 1 }}
+            onClick={() => {
+              loggedIn ? toggleFavorites(data.favorites) : handleOpenSnackBar();
+            }}
+          >
+            {data.favorites ? (
+              <FavoriteOutlinedIcon />
+            ) : (
+              <FavoriteBorderOutlinedIcon />
+            )}
+          </IconButton>
+          <IconButton sx={{ m: 1 }} onClick={copyUrlToClipboard}>
             <ContentCopyOutlinedIcon />
           </IconButton>
           {filters.my && (
             <IconButton
+              sx={{ m: 1 }}
               component={RouterLink}
               to={`/edit-material/${materialDetailId}`}
             >
@@ -232,7 +299,7 @@ const MaterialDetail = () => {
             </IconButton>
           )}
           {filters.my && (
-            <IconButton onClick={handleDeleteMaterial}>
+            <IconButton sx={{ m: 1 }} onClick={handleDeleteMaterial}>
               <DeleteForeverOutlinedIcon />
             </IconButton>
           )}
@@ -259,8 +326,8 @@ const MaterialDetail = () => {
             <Typography color="text.secondary">{data.date}</Typography>
           </Box>
         </Stack>
-
         <Divider />
+
         <Stack
           direction={{ xs: "column", md: "row" }}
           divider={<Divider orientation="vertical" flexItem />}
