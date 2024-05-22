@@ -80,7 +80,7 @@ const LogIn = () => {
           flexDirection: "column",
           gap: 2,
           alignItems: { xs: "center", sm: "flex-start" },
-          width: { xs: "100%", md: "450px" },
+          width: { xs: "100%", md: "460px" },
         }}
       >
         {fields.map((field, i) => (

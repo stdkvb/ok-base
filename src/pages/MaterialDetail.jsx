@@ -9,9 +9,10 @@ import {
   ListItemText,
   ListItemIcon,
   Link,
+  Chip,
 } from "@mui/material";
 import ArrowOutwardOutlinedIcon from "@mui/icons-material/ArrowOutwardOutlined";
-import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
+import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import { useParams } from "react-router-dom";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -154,7 +155,7 @@ const MaterialDetail = () => {
                 gap: 1,
               }}
             >
-              <RemoveRedEyeIcon /> {data.showCount}
+              <VisibilityOutlinedIcon /> {data.showCount}
             </Typography>{" "}
             {data.date}
           </Typography>
@@ -174,39 +175,122 @@ const MaterialDetail = () => {
         {loggedIn && (filters.my || filters.favorites) && (
           <Note initialValue={data.note} materialId={materialDetailId} />
         )}
-
-        {!filters.my && (
-          <List disablePadding sx={{ pb: 2 }}>
+        {/* {!filters.my && (
+          <List disablePadding sx={{ pb: 2 }} >
             <ListItem sx={{ p: { xs: 2, md: 4 }, pt: { xs: 1.5, md: 4 } }}>
               <Typography variant="h3">Другие материалы:</Typography>
             </ListItem>
             {data.recommendation.length == 0 ? (
               <ListItem sx={{ p: { xs: 2, md: 4 } }}>
-                <ListItemText primary={"Ничего не найдено :("}></ListItemText>
+                <ListItemText primary={"Пока материалов нет"}></ListItemText>
               </ListItem>
             ) : (
               data.recommendation.map((item, i) => (
                 <div key={i}>
                   <ListItem
-                    item
+                    key={i}
                     sx={{
                       p: { xs: 2, md: 4 },
+                      flexDirection: "column",
                       gap: 2,
-                      justifyContent: "space-between",
                     }}
                   >
-                    <Link component={RouterLink} to={`/material/${item.id}`}>
-                      <Typography variant="h5">{item.name}</Typography>
-                    </Link>
-                    <ListItemIcon sx={{ minWidth: "unset" }}>
-                      <ArrowOutwardOutlinedIcon />
-                    </ListItemIcon>
+                    <Box
+                      sx={{
+                        width: "100%",
+                        display: "flex",
+                        gap: 2,
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Link component={RouterLink} to={`/material/${item.id}`}>
+                        <Typography variant="h5">
+                          {item.name !== "" ? item.name : item.link}
+                        </Typography>
+                      </Link>
+                      <ListItemIcon sx={{ minWidth: "unset" }}>
+                        <ArrowOutwardOutlinedIcon />
+                      </ListItemIcon>
+                    </Box>
+                    <Box
+                      sx={{
+                        width: "100%",
+                        display: "flex",
+                        gap: 1,
+                        alignItems: "center",
+                        flexWrap: "wrap",
+                      }}
+                    >
+                      {item.tags.map((tag, i) => (
+                        <Chip key={i} label={tag} />
+                      ))}
+                    </Box>
                   </ListItem>
                   <Divider />
                 </div>
               ))
             )}
           </List>
+        )} */}
+        {!filters.my && (
+          <Stack sx={{ pb: 2 }} divider={<Divider flexItem />}>
+            <Typography
+              sx={{ p: { xs: 2, md: 4 }, pt: { xs: 1.5, md: 4 } }}
+              variant="h3"
+            >
+              Другие материалы:
+            </Typography>
+            {data.recommendation.length == 0 ? (
+              <Typography sx={{ p: { xs: 2, md: 4 } }}>
+                Пока материалов нет
+              </Typography>
+            ) : (
+              data.recommendation.map((item, i) => (
+                <Box
+                  key={i}
+                  sx={{
+                    p: { xs: 2, md: 4 },
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 2,
+                  }}
+                >
+                  <Box
+                    sx={{
+                      width: "100%",
+                      display: "flex",
+                      gap: 2,
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Link component={RouterLink} to={`/material/${item.id}`}>
+                      <Typography variant="h5">
+                        {item.name !== "" ? item.name : item.link}
+                      </Typography>
+                    </Link>
+                    <ListItemIcon sx={{ minWidth: "unset" }}>
+                      <ArrowOutwardOutlinedIcon />
+                    </ListItemIcon>
+                  </Box>
+                  <Box
+                    sx={{
+                      width: "100%",
+                      display: "flex",
+                      gap: 1,
+                      alignItems: "center",
+                      flexWrap: "wrap",
+                    }}
+                  >
+                    {item.tags.map((tag, i) => (
+                      <Chip key={i} label={tag} />
+                    ))}
+                  </Box>
+                </Box>
+              ))
+            )}
+          </Stack>
         )}
       </>
     );

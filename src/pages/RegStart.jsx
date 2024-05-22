@@ -13,22 +13,21 @@ import {
 } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 
-import { useRegStartMutation } from "../redux/okBaseApi";
+import {
+  useRegStartMutation,
+  useGetPrivacyPolicyQuery,
+} from "../redux/okBaseApi";
 import RegConfirmCode from "../components/RegConfirmCode";
 
 const fields = [
   { label: "Email", name: "email", type: "input" },
   { label: "Имя", name: "firstName", type: "input" },
   { label: "Фамилия", name: "lastName", type: "input" },
-  {
-    label: "Я соглашаюсь с политикой конфиденциальности",
-    name: "policy",
-    type: "checbox",
-  },
 ];
 
 const RegStart = () => {
-  //query
+  const { data: privacyData, isLoading: privacyLoading } =
+    useGetPrivacyPolicyQuery();
   const [startReg, { error, isSuccess, data }] = useRegStartMutation();
 
   const validationSchema = yup.object({
@@ -47,7 +46,7 @@ const RegStart = () => {
       email: "",
       firstName: "",
       lastName: "",
-      policy: false,
+      policy: true,
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
@@ -95,7 +94,7 @@ const RegStart = () => {
               flexDirection: "column",
               gap: 2,
               alignItems: { xs: "center", sm: "flex-start" },
-              width: { xs: "100%", md: "450px" },
+              width: { xs: "100%", md: "460px" },
             }}
           >
             {fields.map((field, i) => {
@@ -121,31 +120,49 @@ const RegStart = () => {
                   />
                 );
               }
-              if (field.type == "checbox") {
-                return (
-                  <FormGroup>
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          id={field.name}
-                          name={field.name}
-                          checked={formik.values[field.name]}
-                          onChange={formik.handleChange}
-                          required={field.required}
-                        />
-                      }
-                      label={field.label}
-                    />
-                    {formik.touched[field.name] &&
-                      formik.errors[field.name] && (
-                        <Typography color="error">
-                          {formik.errors[field.name]}
-                        </Typography>
-                      )}
-                  </FormGroup>
-                );
-              }
             })}
+            <FormGroup>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    id="policy"
+                    name="policy"
+                    checked={formik.values.policy}
+                    onChange={formik.handleChange}
+                    required={true}
+                  />
+                }
+                label={
+                  <Typography component="span" fontSize="14px">
+                    Cоглаcен с{" "}
+                    <Link
+                      href={!privacyLoading && privacyData[2].file}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(event) => {
+                        event.stopPropagation();
+                      }}
+                    >
+                      Правилами
+                    </Link>{" "}
+                    и{" "}
+                    <Link
+                      href={!privacyLoading && privacyData[0].file}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(event) => {
+                        event.stopPropagation();
+                      }}
+                    >
+                      Политикой конфиденциальности
+                    </Link>
+                  </Typography>
+                }
+              />
+              {formik.touched.policy && formik.errors.policy && (
+                <Typography color="error">{formik.errors.policy}</Typography>
+              )}
+            </FormGroup>
             {error && (
               <Typography color="error">{error.data.message}</Typography>
             )}

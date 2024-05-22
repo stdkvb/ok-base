@@ -103,7 +103,6 @@ const MaterialForm = ({ initialValues }) => {
         display: "flex",
         flexDirection: "column",
         gap: 2,
-        alignItems: { xs: "center", sm: "flex-start" },
         width: { md: "100%", lg: "70%" },
         p: { xs: 2, md: 4 },
       }}
