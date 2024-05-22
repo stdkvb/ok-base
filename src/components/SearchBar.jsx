@@ -64,7 +64,7 @@ const SearchBar = () => {
               px: { xs: 2, md: 4 },
             }}
           >
-            Поиск&nbsp;по&nbsp;сайту
+            Поиск&nbsp;по&nbsp;названию
           </Typography>
           <Box
             sx={{
@@ -81,7 +81,7 @@ const SearchBar = () => {
               fullWidth
               id="search"
               name="search"
-              label="Введите запрос"
+              label="Введите название материала"
               value={searchValue}
               onChange={(event) => {
                 setSearchValue(event.target.value);

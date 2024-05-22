@@ -10,9 +10,15 @@ import {
   ListItemIcon,
   Link,
   Chip,
+  IconButton,
 } from "@mui/material";
 import ArrowOutwardOutlinedIcon from "@mui/icons-material/ArrowOutwardOutlined";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
+import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
+import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
+import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import ContentCopyOutlinedIcon from "@mui/icons-material/ContentCopyOutlined";
 import { useParams } from "react-router-dom";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -74,6 +80,12 @@ const MaterialDetail = () => {
   //link click listener
   const [linkClick] = useLinkClickMutation();
 
+  //copy url to clipboard
+  const copyUrlToClipboard = () => {
+    const url = window.location.href; // Получаем текущий URL
+    navigator.clipboard.writeText(url);
+  };
+
   if (isLoading) return;
   if (data)
     return (
@@ -89,7 +101,7 @@ const MaterialDetail = () => {
         </Typography>
         <Box
           sx={{
-            display: "flex",
+            display: { xs: "none", md: "flex" },
             justifyContent: "space-between",
             alignItems: { xs: "flex-start", md: "center" },
             p: { xs: 2, md: 4 },
@@ -102,6 +114,8 @@ const MaterialDetail = () => {
               flexDirection: { xs: "column", md: "row" },
               gap: { xs: 0, md: 2 },
               width: { xs: "100%", sm: "fit-content" },
+
+              flexWrap: "wrap",
             }}
           >
             <Button
@@ -114,7 +128,6 @@ const MaterialDetail = () => {
             >
               {data.linkText == "" ? "Перейти по ссылке" : data.linkText}
             </Button>
-
             {loggedIn && (
               <Button
                 type="text"
@@ -127,6 +140,10 @@ const MaterialDetail = () => {
                   : "Добавить в избранное"}
               </Button>
             )}
+            <Button type="text" onClick={copyUrlToClipboard}>
+              Скопировать ссылку
+            </Button>
+
             {filters.my && (
               <>
                 <Button
@@ -156,11 +173,93 @@ const MaterialDetail = () => {
                 gap: 1,
               }}
             >
-              <VisibilityOutlinedIcon /> {data.showCount}
+              Просмотры:&nbsp;{data.showCount}
             </Typography>{" "}
             {data.date}
           </Typography>
         </Box>
+
+        <Box
+          sx={{
+            display: { xs: "flex", md: "none" },
+            justifyContent: "space-between",
+            alignItems: { xs: "flex-start", md: "center" },
+            p: { xs: 2, md: 4 },
+            flexDirection: { xs: "column", md: "row" },
+            gap: 1,
+          }}
+        >
+          <Button
+            fullWidth
+            variant="contained"
+            component="a"
+            href={data.link}
+            target="_blank"
+            color="primary"
+            onClick={() => linkClick({ id: materialDetailId })}
+          >
+            {data.linkText == "" ? "Перейти по ссылке" : data.linkText}
+          </Button>
+        </Box>
+        <Divider />
+        <Stack
+          sx={{ display: { xs: "flex", md: "none" } }}
+          direction="row"
+          divider={<Divider orientation="vertical" flexItem />}
+        >
+          {loggedIn && (
+            <IconButton
+              onClick={() => {
+                toggleFavorites(data.favorites);
+              }}
+            >
+              {data.favorites ? (
+                <FavoriteOutlinedIcon />
+              ) : (
+                <FavoriteBorderOutlinedIcon />
+              )}
+            </IconButton>
+          )}
+          <IconButton onClick={copyUrlToClipboard}>
+            <ContentCopyOutlinedIcon />
+          </IconButton>
+          {filters.my && (
+            <IconButton
+              component={RouterLink}
+              to={`/edit-material/${materialDetailId}`}
+            >
+              <EditOutlinedIcon />
+            </IconButton>
+          )}
+          {filters.my && (
+            <IconButton onClick={handleDeleteMaterial}>
+              <DeleteForeverOutlinedIcon />
+            </IconButton>
+          )}
+          <Box
+            sx={{
+              width: "100%",
+              display: "flex",
+              gap: 2,
+              alignItems: "center",
+              justifyContent: "flex-end",
+              px: 2,
+            }}
+          >
+            <Typography
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: 1,
+              }}
+              color="text.secondary"
+            >
+              <VisibilityOutlinedIcon /> {data.showCount}
+            </Typography>
+            <Typography color="text.secondary">{data.date}</Typography>
+          </Box>
+        </Stack>
+
         <Divider />
         <Stack
           direction={{ xs: "column", md: "row" }}

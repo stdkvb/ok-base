@@ -90,12 +90,12 @@ const Catalog = () => {
                     flexWrap: "wrap",
                   }}
                 >
-                  {item.tags.all.map((tag, i) => (
-                    <Chip key={i} label={tag} />
-                  ))}
-                  {item.tags.myTags.map((tag, i) => (
-                    <Chip variant="outlined" key={i} label={tag} />
-                  ))}
+                  {item.tags.all &&
+                    item.tags.all.map((tag, i) => <Chip key={i} label={tag} />)}
+                  {item.tags.myTags &&
+                    item.tags.myTags.map((tag, i) => (
+                      <Chip variant="outlined" key={i} label={tag} />
+                    ))}
                 </Box>
               </ListItem>
               <Divider />
