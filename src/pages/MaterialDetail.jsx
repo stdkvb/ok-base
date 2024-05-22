@@ -114,6 +114,7 @@ const MaterialDetail = () => {
             >
               {data.linkText == "" ? "Перейти по ссылке" : data.linkText}
             </Button>
+
             {loggedIn && (
               <Button
                 type="text"
