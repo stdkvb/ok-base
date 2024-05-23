@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef } from "react";
 import {
   Typography,
   Divider,
@@ -9,8 +9,6 @@ import {
   Link,
   Chip,
   IconButton,
-  Snackbar,
-  SnackbarContent,
 } from "@mui/material";
 import ArrowOutwardOutlinedIcon from "@mui/icons-material/ArrowOutwardOutlined";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
@@ -22,12 +20,11 @@ import ContentCopyOutlinedIcon from "@mui/icons-material/ContentCopyOutlined";
 import { useParams } from "react-router-dom";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { Helmet } from "react-helmet";
-import CloseIcon from "@mui/icons-material/Close";
 
-import metaImage from "../assets/images/ok-base.jpg";
+import MetaTags from "../components/MetaTags";
 import Tags from "../components/Tags";
 import Note from "../components/Note";
+import Notification from "../components/Notification";
 
 import {
   useGetMaterialDetailQuery,
@@ -89,74 +86,20 @@ const MaterialDetail = () => {
     navigator.clipboard.writeText(url);
   };
 
-  //snackbar for auth
-  const [openSnackBar, setOpenSnackBar] = useState(false);
-  const handleOpenSnackBar = () => {
-    setOpenSnackBar(true);
-  };
-  const handleCloseSnackBar = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
+  //notification
+  const notificationRef = useRef();
+  const handleOpenNotification = (message) => {
+    if (notificationRef.current) {
+      notificationRef.current.openNotification(message);
     }
-    setOpenSnackBar(false);
   };
 
   if (isLoading) return;
   if (data)
     return (
       <>
-        <Helmet>
-          <title>{data.name}</title>
-          <meta name="description" content={data.description} />
-          <meta
-            name="keywords"
-            content={Object.values(data.tags).flat().filter(Boolean).join(", ")}
-          />
-          <meta name="apple-mobile-web-app-title" content="ok-base.ru" />
-          <meta name="application-name" content="ok-base.ru" />
-          <meta property="og:title" content={data.name} />
-          <meta property="og:description" content={data.description} />
-          <meta property="og:type" content="website" />
-          <meta property="og:url" content="https://ok-base.ru" />
-          <meta
-            property="og:image"
-            content={`https://ok-base.ru${metaImage}`}
-          />
-          <meta
-            property="og:image:secure_url"
-            content={`https://ok-base.ru${metaImage}`}
-          />
-          <meta property="og:image:type" content="image/jpg" />
-          <meta property="og:image:width" content="400" />
-          <meta property="og:image:height" content="300" />
-        </Helmet>
-        <Snackbar
-          anchorOrigin={{ vertical: "top", horizontal: "center" }}
-          open={openSnackBar}
-          onClose={handleCloseSnackBar}
-          autoHideDuration={3000}
-        >
-          <SnackbarContent
-            message={
-              <Typography>
-                Необходимо{" "}
-                <Link component={RouterLink} to="/log-in" color="primary.main">
-                  авторизоваться
-                </Link>{" "}
-              </Typography>
-            }
-            action={
-              <IconButton
-                size="small"
-                aria-label="close"
-                color="inherit"
-                onClick={handleCloseSnackBar}
-              >
-                <CloseIcon fontSize="small" />
-              </IconButton>
-            }
-          />
-        </Snackbar>
+        <MetaTags title={data.name} description={data.description} />
+        <Notification ref={notificationRef} />
         <Typography
           variant="h3"
           sx={{
@@ -200,14 +143,31 @@ const MaterialDetail = () => {
               onClick={() => {
                 loggedIn
                   ? toggleFavorites(data.favorites)
-                  : handleOpenSnackBar();
+                  : handleOpenNotification(
+                      <Typography>
+                        Необходимо{" "}
+                        <Link
+                          component={RouterLink}
+                          to="/log-in"
+                          color="primary.main"
+                        >
+                          авторизоваться
+                        </Link>{" "}
+                      </Typography>
+                    );
               }}
             >
               {data.favorites
                 ? "Удалить из избранного"
                 : "Добавить в избранное"}
             </Button>
-            <Button type="text" onClick={copyUrlToClipboard}>
+            <Button
+              type="text"
+              onClick={() => {
+                copyUrlToClipboard();
+                handleOpenNotification("Ссылка скопирована");
+              }}
+            >
               Скопировать ссылку
             </Button>
 
@@ -277,7 +237,20 @@ const MaterialDetail = () => {
           <IconButton
             sx={{ m: 1 }}
             onClick={() => {
-              loggedIn ? toggleFavorites(data.favorites) : handleOpenSnackBar();
+              loggedIn
+                ? toggleFavorites(data.favorites)
+                : handleOpenNotification(
+                    <Typography>
+                      Необходимо{" "}
+                      <Link
+                        component={RouterLink}
+                        to="/log-in"
+                        color="primary.main"
+                      >
+                        авторизоваться
+                      </Link>{" "}
+                    </Typography>
+                  );
             }}
           >
             {data.favorites ? (

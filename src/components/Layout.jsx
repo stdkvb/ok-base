@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Outlet, Link as RouterLink } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -12,8 +12,6 @@ import {
   Toolbar,
   Typography,
   Stack,
-  Snackbar,
-  SnackbarContent,
   Link,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -29,6 +27,7 @@ import { toggleDarkMode } from "../redux/slices/themeSlice";
 import SearchBar from "./SearchBar";
 import Categories from "./Categories";
 import Footer from "./Footer";
+import Notification from "./Notification";
 
 const drawerWidth = 200;
 
@@ -53,16 +52,12 @@ function Layout() {
     }
   };
 
-  //snackbar for auth
-  const [openSnackBar, setOpenSnackBar] = useState(false);
-  const handleOpenSnackBar = () => {
-    setOpenSnackBar(true);
-  };
-  const handleCloseSnackBar = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
+  //notification
+  const notificationRef = useRef();
+  const handleOpenNotification = (message) => {
+    if (notificationRef.current) {
+      notificationRef.current.openNotification(message);
     }
-    setOpenSnackBar(false);
   };
 
   const drawer = (
@@ -128,7 +123,20 @@ function Layout() {
                     dispatch(resetFilters());
                     dispatch(setFilter({ name: "favorites", value: true }));
                   }
-                : handleOpenSnackBar
+                : () => {
+                    handleOpenNotification(
+                      <Typography>
+                        Необходимо{" "}
+                        <Link
+                          component={RouterLink}
+                          to="/log-in"
+                          color="primary.main"
+                        >
+                          авторизоваться
+                        </Link>{" "}
+                      </Typography>
+                    );
+                  }
             }
           >
             Избранное
@@ -166,6 +174,7 @@ function Layout() {
           backgroundImage: "unset",
         }}
       >
+        <Notification ref={notificationRef} />
         <Toolbar
           sx={{
             height: { xs: "50px", md: "90px" },
@@ -229,41 +238,24 @@ function Layout() {
             sx={{ mx: { xs: 1.1, md: 4 } }}
             component={RouterLink}
             to={loggedIn && "/create-material"}
-            onClick={!loggedIn && handleOpenSnackBar}
+            onClick={() => {
+              !loggedIn &&
+                handleOpenNotification(
+                  <Typography>
+                    Необходимо{" "}
+                    <Link
+                      component={RouterLink}
+                      to="/log-in"
+                      color="primary.main"
+                    >
+                      авторизоваться
+                    </Link>{" "}
+                  </Typography>
+                );
+            }}
           >
             <AddIcon />
           </IconButton>
-          <Snackbar
-            anchorOrigin={{ vertical: "top", horizontal: "center" }}
-            open={openSnackBar}
-            onClose={handleCloseSnackBar}
-            autoHideDuration={3000}
-          >
-            <SnackbarContent
-              message={
-                <Typography>
-                  Необходимо{" "}
-                  <Link
-                    component={RouterLink}
-                    to="/log-in"
-                    color="primary.main"
-                  >
-                    авторизоваться
-                  </Link>{" "}
-                </Typography>
-              }
-              action={
-                <IconButton
-                  size="small"
-                  aria-label="close"
-                  color="inherit"
-                  onClick={handleCloseSnackBar}
-                >
-                  <CloseIcon fontSize="small" />
-                </IconButton>
-              }
-            />
-          </Snackbar>
         </Toolbar>
         <Divider />
       </AppBar>

@@ -1,8 +1,6 @@
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { okBaseApi } from "../redux/okBaseApi";
 
-const APP_VERSION = "1.0.22"; //update version on each release!!
+const APP_VERSION = "1.0.27"; //update version on each release!!
 
 const useCheckAppVersion = () => {
   useEffect(() => {
