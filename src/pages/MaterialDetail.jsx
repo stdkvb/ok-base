@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import {
   Typography,
   Divider,
@@ -9,7 +9,10 @@ import {
   Link,
   Chip,
   IconButton,
+  Menu,
+  MenuItem,
 } from "@mui/material";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ArrowOutwardOutlinedIcon from "@mui/icons-material/ArrowOutwardOutlined";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
@@ -92,6 +95,16 @@ const MaterialDetail = () => {
     if (notificationRef.current) {
       notificationRef.current.openNotification(message);
     }
+  };
+
+  //edit menu
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  const openMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const closeMenu = () => {
+    setAnchorEl(null);
   };
 
   if (isLoading) return;
@@ -259,22 +272,52 @@ const MaterialDetail = () => {
               <FavoriteBorderOutlinedIcon />
             )}
           </IconButton>
-          <IconButton sx={{ m: 1 }} onClick={copyUrlToClipboard}>
+          <IconButton
+            sx={{ m: 1 }}
+            onClick={() => {
+              copyUrlToClipboard();
+              handleOpenNotification("Ссылка скопирована");
+            }}
+          >
             <ContentCopyOutlinedIcon />
           </IconButton>
+          {}
           {filters.my && (
-            <IconButton
-              sx={{ m: 1 }}
-              component={RouterLink}
-              to={`/edit-material/${materialDetailId}`}
-            >
-              <EditOutlinedIcon />
-            </IconButton>
-          )}
-          {filters.my && (
-            <IconButton sx={{ m: 1 }} onClick={handleDeleteMaterial}>
-              <DeleteForeverOutlinedIcon />
-            </IconButton>
+            <>
+              <IconButton
+                sx={{ m: 1 }}
+                aria-label="more"
+                id="long-button"
+                aria-controls={open ? "long-menu" : undefined}
+                aria-expanded={open ? "true" : undefined}
+                aria-haspopup="true"
+                onClick={openMenu}
+              >
+                <MoreVertIcon />
+              </IconButton>
+              <Menu
+                anchorEl={anchorEl}
+                open={open}
+                onClose={closeMenu}
+                MenuListProps={{
+                  "aria-labelledby": "long-button",
+                }}
+              >
+                <MenuItem
+                  sx={{ py: 0 }}
+                  component={RouterLink}
+                  to={`/edit-material/${materialDetailId}`}
+                >
+                  <EditOutlinedIcon sx={{ mr: 1 }} />
+                  Редактировать
+                </MenuItem>
+                <Divider />
+                <MenuItem sx={{ py: 0 }} onClick={handleDeleteMaterial}>
+                  <DeleteForeverOutlinedIcon sx={{ mr: 1 }} />
+                  Удалить
+                </MenuItem>
+              </Menu>
+            </>
           )}
           <Box
             sx={{

@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-const APP_VERSION = "1.0.27"; //update version on each release!!
+const APP_VERSION = "1.0.30"; //update version on each release!!
 
 const useCheckAppVersion = () => {
   useEffect(() => {
