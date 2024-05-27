@@ -1,13 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 import { TextField, Divider, Box, Button, Typography } from "@mui/material";
 import { useFormik } from "formik";
 import * as yup from "yup";
 
 import { useAddNoteMutation, useChangeNoteMutation } from "../redux/okBaseApi";
+import Notification from "../components/Notification";
 
 const Note = ({ initialValue, materialId }) => {
-  // console.log(initialValue);
-  // console.log(initialValue.length <= 0);
   const [saveNote, { error, isSuccess }] =
     initialValue.length <= 0 ? useAddNoteMutation() : useChangeNoteMutation();
 
@@ -32,8 +31,23 @@ const Note = ({ initialValue, materialId }) => {
     }
   }, [initialValue]);
 
+  //notification
+  const notificationRef = useRef();
+  const handleOpenNotification = (message) => {
+    if (notificationRef.current) {
+      notificationRef.current.openNotification(message);
+    }
+  };
+
+  useEffect(() => {
+    if (isSuccess) {
+      handleOpenNotification("Заметка сохранена");
+    }
+  }, [isSuccess]);
+
   return (
     <>
+      <Notification ref={notificationRef} />
       <Box
         component="form"
         noValidate
@@ -59,9 +73,6 @@ const Note = ({ initialValue, materialId }) => {
           onChange={formik.handleChange}
           error={formik.touched.text && Boolean(formik.errors.text)}
         />
-        {isSuccess && (
-          <Typography color="success.main">Заметка сохранена</Typography>
-        )}
         {error && (
           <Typography color="error" variant="caption">
             {error.data.message}

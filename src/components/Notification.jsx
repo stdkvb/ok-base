@@ -39,7 +39,6 @@ const Notification = forwardRef((props, ref) => {
       open={openSnackBar}
       onClose={handleCloseSnackBar}
       autoHideDuration={1000}
-      ref={ref}
     >
       <SnackbarContent
         message={message}

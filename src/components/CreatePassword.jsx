@@ -1,12 +1,13 @@
 import { Button, TextField, Box, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-
+import { useFormik } from "formik";
+import * as yup from "yup";
+import { useDispatch } from "react-redux";
+import { setToken } from "../redux/slices/authSlice";
 import {
   useRegFinishMutation,
   useRecoveryPassFinishMutation,
 } from "../redux/okBaseApi";
-import { useFormik } from "formik";
-import * as yup from "yup";
 
 const fields = [
   { label: "Пароль", name: "password" },
@@ -14,10 +15,10 @@ const fields = [
 ];
 
 const CreatePassword = ({ urlParams, endpoint }) => {
-  //navigate
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const [createPassword, { error, isSuccess }] =
+  const [createPassword, { error, isSuccess, data }] =
     endpoint === "reg"
       ? useRegFinishMutation()
       : useRecoveryPassFinishMutation();
@@ -47,7 +48,8 @@ const CreatePassword = ({ urlParams, endpoint }) => {
   });
 
   if (isSuccess) {
-    navigate("/log-in");
+    dispatch(setToken(data.token));
+    endpoint === "reg" ? navigate("/") : navigate("/profile");
   }
 
   return (

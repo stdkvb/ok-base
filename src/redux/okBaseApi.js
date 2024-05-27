@@ -4,7 +4,7 @@ export const okBaseApi = createApi({
   reducerPath: "okBaseApi",
   tagTypes: ["Materials", "Material", "Categories"],
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://ok-base.ru/api/",
+    baseUrl: "https://ok-base.wptt.ru/api/",
     prepareHeaders: (headers, { getState }) => {
       const token = getState().authSlice.token;
       if (token) {
@@ -77,7 +77,11 @@ export const okBaseApi = createApi({
         method: "POST",
         body,
       }),
-      invalidatesTags: [{ type: "Materials", id: "LIST" }],
+      invalidatesTags: [
+        { type: "Materials", id: "LIST" },
+        { type: "Categories", id: "LIST" },
+        { type: "Material", id: "LIST" },
+      ],
     }),
 
     logOut: build.query({
@@ -129,6 +133,7 @@ export const okBaseApi = createApi({
               { type: "Material", id: "LIST" },
             ]
           : [{ type: "Material", id: "LIST" }],
+      invalidatesTags: [{ type: "Categories", id: "LIST" }],
     }),
 
     getAbout: build.query({
