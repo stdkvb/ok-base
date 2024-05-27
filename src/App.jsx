@@ -19,6 +19,7 @@ import Favorites from "./pages/Favorites";
 import About from "./pages/About";
 import CreateMaterial from "./pages/CreateMaterial";
 import EditMaterial from "./pages/EditMaterial";
+import ErrorPage from "./pages/ErrorPage";
 
 export default function App() {
   useCheckAppVersion();
@@ -50,6 +51,7 @@ export default function App() {
             path="/edit-material/:materialDetailId"
             element={<EditMaterial />}
           />
+          <Route path="*" element={<ErrorPage />} />
         </Route>
       </Routes>
     </ThemeProvider>

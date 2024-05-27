@@ -1,6 +1,7 @@
 import { Typography, Divider, Box } from "@mui/material";
 
 import { useGetAboutQuery } from "../redux/okBaseApi";
+import config from "../config";
 
 const About = () => {
   //get data
@@ -23,15 +24,22 @@ const About = () => {
     );
   return (
     <>
-      <Typography
-        variant="h2"
+      <Box
         sx={{
           py: { xs: 2, md: 8 },
           px: { xs: 2, md: 4 },
         }}
       >
-        {data.name}
-      </Typography>
+        <Typography variant="h2" component="h1">
+          {" "}
+          {data.name}
+        </Typography>
+
+        <Typography variant="span" color="text.secondary">
+          v.{config.appVersion}
+        </Typography>
+      </Box>
+
       <Divider />
       <Box
         sx={{

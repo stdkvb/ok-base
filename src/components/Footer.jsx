@@ -25,7 +25,7 @@ const Footer = () => {
           gap: { xs: 1, md: 3 },
         }}
       >
-        <Typography>© 2024 OK-BASE</Typography>
+        <Typography fontSize="14px">© 2024 OK-BASE</Typography>
         {!isLoading &&
           data &&
           data.map((item, i) => (
@@ -34,11 +34,12 @@ const Footer = () => {
               href={item.file}
               target="_blank"
               color="text.secondary"
+              fontSize="14px"
             >
               {item.name}
             </Link>
           ))}
-        <Link href="https://wptt.ru/" target="_blank">
+        <Link href="https://wptt.ru/" target="_blank" fontSize="14px">
           Разработка - Вебпространство
         </Link>
       </Box>

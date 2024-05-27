@@ -49,7 +49,7 @@ const CreatePassword = ({ urlParams, endpoint }) => {
 
   if (isSuccess) {
     dispatch(setToken(data.token));
-    endpoint === "reg" ? navigate("/") : navigate("/profile");
+    navigate("/profile");
   }
 
   return (

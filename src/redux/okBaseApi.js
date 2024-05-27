@@ -1,10 +1,11 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import config from "../config";
 
 export const okBaseApi = createApi({
   reducerPath: "okBaseApi",
   tagTypes: ["Materials", "Material", "Categories"],
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://ok-base.wptt.ru/api/",
+    baseUrl: `${config.baseURL}`,
     prepareHeaders: (headers, { getState }) => {
       const token = getState().authSlice.token;
       if (token) {

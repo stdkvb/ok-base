@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { Typography } from "@mui/material";
+import { Typography, Divider } from "@mui/material";
 import MetaTags from "./MetaTags";
 
 const PageTitle = () => {
@@ -17,7 +17,7 @@ const PageTitle = () => {
     } else if (filters.my) {
       return "Мои материалы";
     }
-    return null;
+    return "Ваша база знаний для ИТ";
   };
 
   const title = renderTitle();
@@ -42,6 +42,7 @@ const PageTitle = () => {
           {title}
         </Typography>
       )}
+      <Divider />
     </>
   );
 };

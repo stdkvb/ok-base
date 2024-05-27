@@ -505,7 +505,7 @@ const MaterialDetail = () => {
                     }}
                   >
                     {item.tags.map((tag, i) => (
-                      <Chip key={i} label={tag} />
+                      <Chip key={i} label={tag} sx={{ opacity: "0.7" }} />
                     ))}
                   </Box>
                 </Box>

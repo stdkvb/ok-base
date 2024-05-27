@@ -85,7 +85,7 @@ const Filters = () => {
           </IconButton>
           Назад
         </Typography>
-        <Divider />
+
         <Stack
           direction={{ xs: "column", lg: "row" }}
           divider={<Divider orientation="vertical" flexItem />}

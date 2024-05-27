@@ -91,10 +91,17 @@ const Catalog = () => {
                   }}
                 >
                   {item.tags.all &&
-                    item.tags.all.map((tag, i) => <Chip key={i} label={tag} />)}
+                    item.tags.all.map((tag, i) => (
+                      <Chip key={i} label={tag} sx={{ opacity: "0.7" }} />
+                    ))}
                   {item.tags.myTags &&
                     item.tags.myTags.map((tag, i) => (
-                      <Chip variant="outlined" key={i} label={tag} />
+                      <Chip
+                        variant="outlined"
+                        key={i}
+                        label={tag}
+                        sx={{ opacity: "0.7" }}
+                      />
                     ))}
                 </Box>
               </ListItem>

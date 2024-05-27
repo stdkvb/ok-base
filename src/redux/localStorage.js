@@ -1,5 +1,4 @@
-const APP_VERSION = "1.0.34"; // update version on each release!!
-
+import config from "../config";
 export const loadState = () => {
   try {
     const serializedState = localStorage.getItem("state");
@@ -8,7 +7,7 @@ export const loadState = () => {
     }
     const state = JSON.parse(serializedState);
 
-    if (state.appVersion !== APP_VERSION) {
+    if (state.appVersion !== config.appVersion) {
       return undefined;
     }
 
@@ -24,7 +23,7 @@ export const saveState = (state) => {
   try {
     const stateToSave = {
       ...state,
-      appVersion: APP_VERSION,
+      appVersion: config.appVersion,
     };
     const serializedState = JSON.stringify(stateToSave);
     localStorage.setItem("state", serializedState);
