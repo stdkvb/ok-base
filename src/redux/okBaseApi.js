@@ -162,7 +162,10 @@ export const okBaseApi = createApi({
         method: "POST",
         body,
       }),
-      invalidatesTags: [{ type: "Material", id: "LIST" }],
+      invalidatesTags: [
+        { type: "Material", id: "LIST" },
+        { type: "Categories", id: "LIST" },
+      ],
     }),
 
     deleteMaterial: build.mutation({
@@ -171,6 +174,10 @@ export const okBaseApi = createApi({
         method: "POST",
         body,
       }),
+      invalidatesTags: [
+        { type: "Material", id: "LIST" },
+        { type: "Categories", id: "LIST" },
+      ],
     }),
 
     getPrivacyPolicy: build.query({
@@ -186,6 +193,7 @@ export const okBaseApi = createApi({
       invalidatesTags: [
         { type: "Materials", id: "LIST" },
         { type: "Material", id: "LIST" },
+        { type: "Categories", id: "LIST" },
       ],
     }),
 
@@ -198,6 +206,33 @@ export const okBaseApi = createApi({
       invalidatesTags: [
         { type: "Materials", id: "LIST" },
         { type: "Material", id: "LIST" },
+        { type: "Categories", id: "LIST" },
+      ],
+    }),
+
+    addRead: build.mutation({
+      query: (body) => ({
+        url: "user/add-read",
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: [
+        { type: "Materials", id: "LIST" },
+        { type: "Material", id: "LIST" },
+        { type: "Categories", id: "LIST" },
+      ],
+    }),
+
+    removeRead: build.mutation({
+      query: (body) => ({
+        url: "user/remove-read",
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: [
+        { type: "Materials", id: "LIST" },
+        { type: "Material", id: "LIST" },
+        { type: "Categories", id: "LIST" },
       ],
     }),
 
@@ -255,4 +290,6 @@ export const {
   useAddNoteMutation,
   useChangeNoteMutation,
   useLinkClickMutation,
+  useAddReadMutation,
+  useRemoveReadMutation,
 } = okBaseApi;

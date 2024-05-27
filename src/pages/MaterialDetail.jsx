@@ -11,6 +11,8 @@ import {
   IconButton,
   Menu,
   MenuItem,
+  Switch,
+  FormControlLabel,
 } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ArrowOutwardOutlinedIcon from "@mui/icons-material/ArrowOutwardOutlined";
@@ -35,6 +37,8 @@ import {
   useAddFavoritesMutation,
   useRemoveFavoritesMutation,
   useLinkClickMutation,
+  useAddReadMutation,
+  useRemoveReadMutation,
 } from "../redux/okBaseApi";
 
 const MaterialDetail = () => {
@@ -97,6 +101,15 @@ const MaterialDetail = () => {
     }
   };
 
+  const goAuthNotification = (
+    <Typography>
+      Необходимо{" "}
+      <Link component={RouterLink} to="/log-in" color="primary.main">
+        авторизоваться
+      </Link>{" "}
+    </Typography>
+  );
+
   //edit menu
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -106,6 +119,38 @@ const MaterialDetail = () => {
   const closeMenu = () => {
     setAnchorEl(null);
   };
+
+  //check as readed
+  const [addRead] = useAddReadMutation();
+  const [removeRead] = useRemoveReadMutation();
+
+  const toggleRead = (isRead) => {
+    isRead
+      ? removeRead({ id: materialDetailId })
+      : addRead({ id: materialDetailId });
+  };
+
+  const readSwitch = (
+    <FormControlLabel
+      control={
+        <Switch
+          checked={data && data.read}
+          onChange={() => {
+            loggedIn
+              ? toggleRead(data && data.read)
+              : handleOpenNotification(goAuthNotification);
+          }}
+        />
+      }
+      label="Изучил"
+      sx={{
+        m: { xs: 1, md: 0 },
+        "& .MuiFormControlLabel-label": {
+          color: "#9b9b9b",
+        },
+      }}
+    />
+  );
 
   if (isLoading) return;
   if (data)
@@ -156,18 +201,7 @@ const MaterialDetail = () => {
               onClick={() => {
                 loggedIn
                   ? toggleFavorites(data.favorites)
-                  : handleOpenNotification(
-                      <Typography>
-                        Необходимо{" "}
-                        <Link
-                          component={RouterLink}
-                          to="/log-in"
-                          color="primary.main"
-                        >
-                          авторизоваться
-                        </Link>{" "}
-                      </Typography>
-                    );
+                  : handleOpenNotification(goAuthNotification);
               }}
             >
               {data.favorites
@@ -183,6 +217,8 @@ const MaterialDetail = () => {
             >
               Скопировать ссылку
             </Button>
+
+            {!filters.my && readSwitch}
 
             {filters.my && (
               <>
@@ -252,18 +288,7 @@ const MaterialDetail = () => {
             onClick={() => {
               loggedIn
                 ? toggleFavorites(data.favorites)
-                : handleOpenNotification(
-                    <Typography>
-                      Необходимо{" "}
-                      <Link
-                        component={RouterLink}
-                        to="/log-in"
-                        color="primary.main"
-                      >
-                        авторизоваться
-                      </Link>{" "}
-                    </Typography>
-                  );
+                : handleOpenNotification(goAuthNotification);
             }}
           >
             {data.favorites ? (
@@ -281,7 +306,7 @@ const MaterialDetail = () => {
           >
             <ContentCopyOutlinedIcon />
           </IconButton>
-          {}
+
           {filters.my && (
             <>
               <IconButton
@@ -319,6 +344,7 @@ const MaterialDetail = () => {
               </Menu>
             </>
           )}
+
           <Box
             sx={{
               width: "100%",
@@ -342,7 +368,19 @@ const MaterialDetail = () => {
             <Typography color="text.secondary">{data.date}</Typography>
           </Box>
         </Stack>
-        <Divider />
+        <Divider sx={{ display: { xs: "flex", md: "none" } }} />
+        {!filters.my && (
+          <>
+            <Stack
+              sx={{ display: { xs: "flex", md: "none" } }}
+              direction="row"
+              divider={<Divider orientation="vertical" flexItem />}
+            >
+              {readSwitch}
+            </Stack>
+            <Divider sx={{ display: { xs: "flex", md: "none" } }} />
+          </>
+        )}
 
         <Stack
           direction={{ xs: "column", md: "row" }}
