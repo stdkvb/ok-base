@@ -13,6 +13,7 @@ import {
   MenuItem,
   Switch,
   FormControlLabel,
+  Rating,
 } from "@mui/material";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import ArrowOutwardOutlinedIcon from "@mui/icons-material/ArrowOutwardOutlined";
@@ -31,7 +32,6 @@ import MetaTags from "../components/MetaTags";
 import Tags from "../components/Tags";
 import Note from "../components/Note";
 import Notification from "../components/Notification";
-import Rating from "../components/Rating";
 import ErrorPage from "./ErrorPage";
 
 import {
@@ -42,14 +42,13 @@ import {
   useLinkClickMutation,
   useAddReadMutation,
   useRemoveReadMutation,
+  useAddRatingMutation,
 } from "../redux/okBaseApi";
 
 const MaterialDetail = () => {
   const navigate = useNavigate();
   const filters = useSelector((state) => state.filtersSlice.filters);
   const loggedIn = useSelector((state) => state.authSlice.loggedIn);
-
-  //get detail page id
   let { materialDetailId } = useParams();
 
   //get data
@@ -66,6 +65,7 @@ const MaterialDetail = () => {
   const handleDeleteMaterial = () => {
     deleteMaterial({ id: materialDetailId });
   };
+
   //redirect after delete
   if (successDeleteMaterial) {
     navigate("/my-materials");
@@ -125,7 +125,7 @@ const MaterialDetail = () => {
     }
   }, [successRemoveFavorites]);
 
-  //edit menu
+  //edit&rating menu
   const [anchorEl, setAnchorEl] = useState(null);
   const [menuId, setMenuId] = useState(null);
 
@@ -147,6 +147,16 @@ const MaterialDetail = () => {
     isRead
       ? removeRead({ id: materialDetailId })
       : addRead({ id: materialDetailId });
+  };
+
+  //rate material
+  const [addRating] = useAddRatingMutation();
+
+  const handleAddRating = (event, newValue) => {
+    loggedIn
+      ? addRating({ id: materialDetailId, score: newValue })
+      : handleOpenNotification(goAuthNotification);
+    closeMenu();
   };
 
   if (isLoading) return;
@@ -185,6 +195,7 @@ const MaterialDetail = () => {
               target="_blank"
               color="primary"
               onClick={() => linkClick({ id: materialDetailId })}
+              sx={{ display: { xs: "none", md: "inline-flex" } }}
             >
               {data.linkText == "" ? "Перейти по ссылке" : data.linkText}
             </Button>
@@ -231,25 +242,6 @@ const MaterialDetail = () => {
               </IconButton>
             </>
           )}
-          <FormControlLabel
-            control={
-              <Switch
-                checked={data && data.read}
-                onChange={() => {
-                  loggedIn
-                    ? toggleRead(data && data.read)
-                    : handleOpenNotification(goAuthNotification);
-                }}
-              />
-            }
-            label="Изучил"
-            sx={{
-              m: { xs: 1, md: 3 },
-              "& .MuiFormControlLabel-label": {
-                color: "#9b9b9b",
-              },
-            }}
-          />
           <IconButton
             sx={{
               m: { xs: 1, md: 3 },
@@ -272,7 +264,21 @@ const MaterialDetail = () => {
             }}
           >
             <Box sx={{ display: { xs: "none", md: "flex" } }}>
-              <Rating value={data.rating} materialDetailId={materialDetailId} />
+              <Stack
+                sx={{
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Typography component="legend" color="text.secondary">
+                  {data.rating ? data.rating : "0"}/5
+                </Typography>
+                <Rating
+                  name="half-rating"
+                  defaultValue={data.rating ? Number(data.rating) : 0}
+                  onChange={handleAddRating}
+                />
+              </Stack>
             </Box>
 
             <Typography
@@ -310,88 +316,49 @@ const MaterialDetail = () => {
               </>
             )}
             {menuId === "ratingMenu" && (
-              <Rating value={data.rating} materialDetailId={materialDetailId} />
+              <MenuItem>
+                <Rating
+                  name="half-rating"
+                  defaultValue={data.rating ? Number(data.rating) : 0}
+                  onChange={handleAddRating}
+                />
+              </MenuItem>
             )}
           </Menu>
         </Stack>
         <Divider />
-        {/* <Box
-          sx={{
-            display: { xs: "none", md: "flex" },
-            justifyContent: "space-between",
-            alignItems: { xs: "flex-start", md: "center" },
-            p: { xs: 2, md: 4 },
-            flexDirection: { xs: "column-reverse", md: "row" },
-            gap: 1,
-          }}
-        >
-          <Stack
-            sx={{
-              flexDirection: { xs: "column", md: "row" },
-              gap: { xs: 0, md: 2 },
-              width: { xs: "100%", sm: "fit-content" },
-
-              flexWrap: "wrap",
-            }}
-          >
-            <Button
-              type="text"
-              onClick={() => {
+        <FormControlLabel
+          control={
+            <Switch
+              checked={data && data.read}
+              onChange={() => {
                 loggedIn
-                  ? toggleFavorites(data.favorites)
+                  ? toggleRead(data && data.read)
                   : handleOpenNotification(goAuthNotification);
               }}
-            >
-              {data.favorites
-                ? "Удалить из избранного"
-                : "Добавить в избранное"}
-            </Button>
-            <Button
-              type="text"
-              onClick={() => {
-                copyUrlToClipboard();
-                handleOpenNotification("Ссылка скопирована");
-              }}
-            >
-              Скопировать ссылку
-            </Button>
-
-            {!filters.my && readSwitch}
-
-            {filters.my && (
-              <>
-                <Button
-                  type="text"
-                  component={RouterLink}
-                  to={`/edit-material/${materialDetailId}`}
-                >
-                  Редактировать
-                </Button>
-                <Button type="text" onClick={handleDeleteMaterial}>
-                  Удалить
-                </Button>
-              </>
-            )}
-          </Stack>
-          <Box
-            sx={{
-              display: "flex",
-              gap: 4,
-            }}
-          >
-            <Typography
-              color="text.secondary"
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                gap: 1,
-              }}
-            >
-              Просмотры:&nbsp;{data.showCount}
-            </Typography>{" "}
-          </Box>
-        </Box>
-        <Divider /> */}
+            />
+          }
+          label="Изучил"
+          sx={{
+            m: { xs: 1, md: 3 },
+            "& .MuiFormControlLabel-label": {
+              color: "#9b9b9b",
+            },
+          }}
+        />
+        <Divider />
+        <Button
+          variant="contained"
+          component="a"
+          href={data.link}
+          target="_blank"
+          color="primary"
+          onClick={() => linkClick({ id: materialDetailId })}
+          sx={{ display: { xs: "flex", md: "none" }, m: 2 }}
+        >
+          {data.linkText == "" ? "Перейти по ссылке" : data.linkText}
+        </Button>
+        <Divider />
         {loggedIn && (filters.my || filters.favorites) && (
           <Note initialValue={data.note} materialId={materialDetailId} />
         )}
