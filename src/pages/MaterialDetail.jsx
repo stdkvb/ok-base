@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import {
   Typography,
   Divider,
@@ -14,7 +14,7 @@ import {
   Switch,
   FormControlLabel,
 } from "@mui/material";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import ArrowOutwardOutlinedIcon from "@mui/icons-material/ArrowOutwardOutlined";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
@@ -22,6 +22,7 @@ import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
 import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import ContentCopyOutlinedIcon from "@mui/icons-material/ContentCopyOutlined";
+import StarBorderIcon from "@mui/icons-material/StarBorder";
 import { useParams } from "react-router-dom";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -30,6 +31,8 @@ import MetaTags from "../components/MetaTags";
 import Tags from "../components/Tags";
 import Note from "../components/Note";
 import Notification from "../components/Notification";
+import Rating from "../components/Rating";
+import ErrorPage from "./ErrorPage";
 
 import {
   useGetMaterialDetailQuery,
@@ -50,7 +53,7 @@ const MaterialDetail = () => {
   let { materialDetailId } = useParams();
 
   //get data
-  const { data, isLoading } = useGetMaterialDetailQuery({
+  const { data, isLoading, error } = useGetMaterialDetailQuery({
     materialDetailId,
     filters,
   });
@@ -110,14 +113,30 @@ const MaterialDetail = () => {
     </Typography>
   );
 
+  useEffect(() => {
+    if (successAddFavorites) {
+      handleOpenNotification("Материал добавлен в избранное");
+    }
+  }, [successAddFavorites]);
+
+  useEffect(() => {
+    if (successRemoveFavorites) {
+      handleOpenNotification("Материал удалён из избранного");
+    }
+  }, [successRemoveFavorites]);
+
   //edit menu
   const [anchorEl, setAnchorEl] = useState(null);
-  const open = Boolean(anchorEl);
-  const openMenu = (event) => {
+  const [menuId, setMenuId] = useState(null);
+
+  const openMenu = (event, id) => {
     setAnchorEl(event.currentTarget);
+    setMenuId(id);
   };
+
   const closeMenu = () => {
     setAnchorEl(null);
+    setMenuId(null);
   };
 
   //check as readed
@@ -130,44 +149,173 @@ const MaterialDetail = () => {
       : addRead({ id: materialDetailId });
   };
 
-  const readSwitch = (
-    <FormControlLabel
-      control={
-        <Switch
-          checked={data && data.read}
-          onChange={() => {
-            loggedIn
-              ? toggleRead(data && data.read)
-              : handleOpenNotification(goAuthNotification);
-          }}
-        />
-      }
-      label="Изучил"
-      sx={{
-        m: { xs: 1, md: 0 },
-        "& .MuiFormControlLabel-label": {
-          color: "#9b9b9b",
-        },
-      }}
-    />
-  );
-
   if (isLoading) return;
+  if (error) return <ErrorPage />;
   if (data)
     return (
       <>
         <MetaTags title={data.name} description={data.description} />
         <Notification ref={notificationRef} />
-        <Typography
-          variant="h3"
-          sx={{
-            py: { xs: 2, md: 8 },
-            px: { xs: 2, md: 4 },
-          }}
+        <Box sx={{ p: { xs: 2, md: 4 } }}>
+          <Typography
+            variant="h3"
+            sx={{
+              lineHeight: 1,
+              mb: { xs: 2, md: 4 },
+            }}
+          >
+            {data.name}
+          </Typography>
+          <Typography color="text.secondary">{data.date}</Typography>
+        </Box>
+        <Divider />
+        <Stack
+          direction={{ xs: "column", md: "row" }}
+          divider={<Divider orientation="vertical" flexItem />}
+          spacing={0}
         >
-          {data.name}
-        </Typography>
-        <Box
+          <Box sx={{ width: "100%", p: { xs: 2, md: 4 } }}>
+            <Typography sx={{ mb: { xs: 2, md: 4 } }}>
+              {data.description}
+            </Typography>
+            <Button
+              variant="contained"
+              component="a"
+              href={data.link}
+              target="_blank"
+              color="primary"
+              onClick={() => linkClick({ id: materialDetailId })}
+            >
+              {data.linkText == "" ? "Перейти по ссылке" : data.linkText}
+            </Button>
+          </Box>
+          <Tags data={data} />
+        </Stack>
+        <Divider />
+        <Stack
+          sx={{ display: "flex" }}
+          direction="row"
+          divider={<Divider orientation="vertical" flexItem />}
+        >
+          <IconButton
+            sx={{ m: { xs: 1, md: 3 } }}
+            onClick={() => {
+              loggedIn
+                ? toggleFavorites(data.favorites)
+                : handleOpenNotification(goAuthNotification);
+            }}
+          >
+            {data.favorites ? (
+              <FavoriteOutlinedIcon />
+            ) : (
+              <FavoriteBorderOutlinedIcon />
+            )}
+          </IconButton>
+          <IconButton
+            sx={{ m: { xs: 1, md: 3 } }}
+            onClick={() => {
+              copyUrlToClipboard();
+              handleOpenNotification("Ссылка скопирована");
+            }}
+          >
+            <ContentCopyOutlinedIcon />
+          </IconButton>
+          {filters.my && (
+            <>
+              <IconButton
+                sx={{ m: { xs: 1, md: 3 } }}
+                aria-haspopup="true"
+                onClick={(event) => openMenu(event, "editMenu")}
+              >
+                <MoreHorizIcon />
+              </IconButton>
+            </>
+          )}
+          <FormControlLabel
+            control={
+              <Switch
+                checked={data && data.read}
+                onChange={() => {
+                  loggedIn
+                    ? toggleRead(data && data.read)
+                    : handleOpenNotification(goAuthNotification);
+                }}
+              />
+            }
+            label="Изучил"
+            sx={{
+              m: { xs: 1, md: 3 },
+              "& .MuiFormControlLabel-label": {
+                color: "#9b9b9b",
+              },
+            }}
+          />
+          <IconButton
+            sx={{
+              m: { xs: 1, md: 3 },
+              display: { xs: "flex", md: "none" },
+              gap: 1,
+            }}
+            aria-haspopup="true"
+            onClick={(event) => openMenu(event, "ratingMenu")}
+          >
+            <StarBorderIcon />
+            <Typography color="text.secondary">
+              {data.rating ? data.rating : "0"}/5
+            </Typography>
+          </IconButton>
+
+          <Stack
+            direction="row"
+            sx={{
+              ml: "auto",
+            }}
+          >
+            <Box sx={{ display: { xs: "none", md: "flex" } }}>
+              <Rating value={data.rating} materialDetailId={materialDetailId} />
+            </Box>
+
+            <Typography
+              sx={{
+                p: { xs: 2, md: 4 },
+                display: "flex",
+                alignItems: "center",
+                gap: 1,
+              }}
+              color="text.secondary"
+            >
+              <VisibilityOutlinedIcon /> {data.showCount}
+            </Typography>
+          </Stack>
+          <Menu
+            anchorEl={anchorEl}
+            open={Boolean(anchorEl)}
+            onClose={closeMenu}
+          >
+            {menuId === "editMenu" && (
+              <>
+                <MenuItem
+                  sx={{ py: 0 }}
+                  component={RouterLink}
+                  to={`/edit-material/${materialDetailId}`}
+                >
+                  <EditOutlinedIcon sx={{ mr: 1 }} />
+                  Редактировать
+                </MenuItem>
+                <Divider />
+                <MenuItem sx={{ py: 0 }} onClick={handleDeleteMaterial}>
+                  <DeleteForeverOutlinedIcon sx={{ mr: 1 }} />
+                  Удалить
+                </MenuItem>
+              </>
+            )}
+            {menuId === "ratingMenu" && (
+              <Rating value={data.rating} materialDetailId={materialDetailId} />
+            )}
+          </Menu>
+        </Stack>
+        <Divider />
+        {/* <Box
           sx={{
             display: { xs: "none", md: "flex" },
             justifyContent: "space-between",
@@ -186,16 +334,6 @@ const MaterialDetail = () => {
               flexWrap: "wrap",
             }}
           >
-            <Button
-              variant="contained"
-              component="a"
-              href={data.link}
-              target="_blank"
-              color="primary"
-              onClick={() => linkClick({ id: materialDetailId })}
-            >
-              {data.linkText == "" ? "Перейти по ссылке" : data.linkText}
-            </Button>
             <Button
               type="text"
               onClick={() => {
@@ -251,209 +389,12 @@ const MaterialDetail = () => {
             >
               Просмотры:&nbsp;{data.showCount}
             </Typography>{" "}
-            <Typography color="text.secondary">{data.date}</Typography>
           </Box>
         </Box>
-
-        <Box
-          sx={{
-            display: { xs: "flex", md: "none" },
-            justifyContent: "space-between",
-            alignItems: { xs: "flex-start", md: "center" },
-            p: { xs: 2, md: 4 },
-            flexDirection: { xs: "column", md: "row" },
-            gap: 1,
-          }}
-        >
-          <Button
-            fullWidth
-            variant="contained"
-            component="a"
-            href={data.link}
-            target="_blank"
-            color="primary"
-            onClick={() => linkClick({ id: materialDetailId })}
-          >
-            {data.linkText == "" ? "Перейти по ссылке" : data.linkText}
-          </Button>
-        </Box>
-        <Divider />
-        <Stack
-          sx={{ display: { xs: "flex", md: "none" } }}
-          direction="row"
-          divider={<Divider orientation="vertical" flexItem />}
-        >
-          <IconButton
-            sx={{ m: 1 }}
-            onClick={() => {
-              loggedIn
-                ? toggleFavorites(data.favorites)
-                : handleOpenNotification(goAuthNotification);
-            }}
-          >
-            {data.favorites ? (
-              <FavoriteOutlinedIcon />
-            ) : (
-              <FavoriteBorderOutlinedIcon />
-            )}
-          </IconButton>
-          <IconButton
-            sx={{ m: 1 }}
-            onClick={() => {
-              copyUrlToClipboard();
-              handleOpenNotification("Ссылка скопирована");
-            }}
-          >
-            <ContentCopyOutlinedIcon />
-          </IconButton>
-
-          {filters.my && (
-            <>
-              <IconButton
-                sx={{ m: 1 }}
-                aria-label="more"
-                id="long-button"
-                aria-controls={open ? "long-menu" : undefined}
-                aria-expanded={open ? "true" : undefined}
-                aria-haspopup="true"
-                onClick={openMenu}
-              >
-                <MoreVertIcon />
-              </IconButton>
-              <Menu
-                anchorEl={anchorEl}
-                open={open}
-                onClose={closeMenu}
-                MenuListProps={{
-                  "aria-labelledby": "long-button",
-                }}
-              >
-                <MenuItem
-                  sx={{ py: 0 }}
-                  component={RouterLink}
-                  to={`/edit-material/${materialDetailId}`}
-                >
-                  <EditOutlinedIcon sx={{ mr: 1 }} />
-                  Редактировать
-                </MenuItem>
-                <Divider />
-                <MenuItem sx={{ py: 0 }} onClick={handleDeleteMaterial}>
-                  <DeleteForeverOutlinedIcon sx={{ mr: 1 }} />
-                  Удалить
-                </MenuItem>
-              </Menu>
-            </>
-          )}
-
-          <Box
-            sx={{
-              width: "100%",
-              display: "flex",
-              gap: 2,
-              alignItems: "center",
-              justifyContent: "flex-end",
-              px: 2,
-            }}
-          >
-            <Typography
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                gap: 1,
-              }}
-              color="text.secondary"
-            >
-              <VisibilityOutlinedIcon /> {data.showCount}
-            </Typography>
-            <Typography color="text.secondary">{data.date}</Typography>
-          </Box>
-        </Stack>
-        <Divider sx={{ display: { xs: "flex", md: "none" } }} />
-        {!filters.my && (
-          <>
-            <Stack
-              sx={{ display: { xs: "flex", md: "none" } }}
-              direction="row"
-              divider={<Divider orientation="vertical" flexItem />}
-            >
-              {readSwitch}
-            </Stack>
-            <Divider sx={{ display: { xs: "flex", md: "none" } }} />
-          </>
-        )}
-
-        <Stack
-          direction={{ xs: "column", md: "row" }}
-          divider={<Divider orientation="vertical" flexItem />}
-          spacing={0}
-        >
-          <Typography sx={{ p: { xs: 2, md: 4 }, width: "100%" }}>
-            {data.description}
-          </Typography>
-          <Tags data={data} />
-        </Stack>
-        <Divider />
+        <Divider /> */}
         {loggedIn && (filters.my || filters.favorites) && (
           <Note initialValue={data.note} materialId={materialDetailId} />
         )}
-        {/* {!filters.my && (
-          <List disablePadding sx={{ pb: 2 }} >
-            <ListItem sx={{ p: { xs: 2, md: 4 }, pt: { xs: 1.5, md: 4 } }}>
-              <Typography variant="h3">Другие материалы:</Typography>
-            </ListItem>
-            {data.recommendation.length == 0 ? (
-              <ListItem sx={{ p: { xs: 2, md: 4 } }}>
-                <ListItemText primary={"Пока материалов нет"}></ListItemText>
-              </ListItem>
-            ) : (
-              data.recommendation.map((item, i) => (
-                <div key={i}>
-                  <ListItem
-                    key={i}
-                    sx={{
-                      p: { xs: 2, md: 4 },
-                      flexDirection: "column",
-                      gap: 2,
-                    }}
-                  >
-                    <Box
-                      sx={{
-                        width: "100%",
-                        display: "flex",
-                        gap: 2,
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                      }}
-                    >
-                      <Link component={RouterLink} to={`/material/${item.id}`}>
-                        <Typography variant="h5">
-                          {item.name !== "" ? item.name : item.link}
-                        </Typography>
-                      </Link>
-                      <ListItemIcon sx={{ minWidth: "unset" }}>
-                        <ArrowOutwardOutlinedIcon />
-                      </ListItemIcon>
-                    </Box>
-                    <Box
-                      sx={{
-                        width: "100%",
-                        display: "flex",
-                        gap: 1,
-                        alignItems: "center",
-                        flexWrap: "wrap",
-                      }}
-                    >
-                      {item.tags.map((tag, i) => (
-                        <Chip key={i} label={tag} />
-                      ))}
-                    </Box>
-                  </ListItem>
-                  <Divider />
-                </div>
-              ))
-            )}
-          </List>
-        )} */}
         {!filters.my && (
           <Stack sx={{ pb: 2 }} divider={<Divider flexItem />}>
             <Typography

@@ -89,7 +89,7 @@ const Filters = () => {
         <Stack
           direction={{ xs: "column", lg: "row" }}
           divider={<Divider orientation="vertical" flexItem />}
-          sx={{ p: 0, gap: 0 }}
+          sx={{ p: 0, gap: 1 }}
         >
           {data &&
             data.map((filter, i) => (

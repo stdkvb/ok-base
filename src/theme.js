@@ -59,16 +59,6 @@ export let darkTheme = createTheme({
         },
       },
     },
-    // MuiAutocomplete: {
-    //   styleOverrides: {
-    //     root: {
-    //       "&.Mui-Expanded .MuiFormLabel-root.MuiInputLabel-root.MuiInputLabel-formControl.MuiInputLabel-animated.MuiInputLabel-standard.MuiFormLabel-colorPrimary.MuiInputLabel-root.MuiInputLabel-formControl.MuiInputLabel-animated.MuiInputLabel-standard":
-    //         {
-    //           color: "#9b9b9b",
-    //         },
-    //     },
-    //   },
-    // },
     MuiTextField: {
       styleOverrides: {
         root: {
@@ -114,13 +104,13 @@ export let darkTheme = createTheme({
         },
       },
     },
-    MuiPaper: {
-      styleOverrides: {
-        root: {
-          backgroundImage: "unset",
-        },
-      },
-    },
+    // MuiPaper: {
+    //   styleOverrides: {
+    //     root: {
+    //       backgroundImage: "unset",
+    //     },
+    //   },
+    // },
     MuiToggleButton: {
       styleOverrides: {
         root: {
@@ -128,6 +118,14 @@ export let darkTheme = createTheme({
           borderRadius: "4px !important",
           width: "32px",
           height: "32px",
+        },
+      },
+    },
+    MuiAutocomplete: {
+      styleOverrides: {
+        paper: {
+          backgroundColor: "#353535",
+          borderRadius: 0,
         },
       },
     },
@@ -243,6 +241,13 @@ export let lightTheme = createTheme({
           borderRadius: "4px !important",
           width: "32px",
           height: "32px",
+        },
+      },
+    },
+    MuiAutocomplete: {
+      styleOverrides: {
+        paper: {
+          borderRadius: 0,
         },
       },
     },

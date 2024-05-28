@@ -35,8 +35,8 @@ const PageTitle = () => {
           component="h1"
           variant="h2"
           sx={{
-            py: { xs: 2, md: 8 },
-            px: { xs: 2, md: 4 },
+            p: { xs: 2, md: 4 },
+            lineHeight: 1,
           }}
         >
           {title}

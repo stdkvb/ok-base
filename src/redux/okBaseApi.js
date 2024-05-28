@@ -237,6 +237,15 @@ export const okBaseApi = createApi({
       ],
     }),
 
+    addRating: build.mutation({
+      query: (body) => ({
+        url: "knowledge-base/add-rating",
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: [{ type: "Material", id: "LIST" }],
+    }),
+
     addNote: build.mutation({
       query: (body) => ({
         url: "knowledge-base/add-note",
@@ -293,4 +302,5 @@ export const {
   useLinkClickMutation,
   useAddReadMutation,
   useRemoveReadMutation,
+  useAddRatingMutation,
 } = okBaseApi;
