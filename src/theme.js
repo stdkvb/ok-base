@@ -104,13 +104,6 @@ export let darkTheme = createTheme({
         },
       },
     },
-    // MuiPaper: {
-    //   styleOverrides: {
-    //     root: {
-    //       backgroundImage: "unset",
-    //     },
-    //   },
-    // },
     MuiToggleButton: {
       styleOverrides: {
         root: {

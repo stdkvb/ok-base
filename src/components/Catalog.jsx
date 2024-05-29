@@ -16,11 +16,13 @@ import { useSelector } from "react-redux";
 
 import PageTitle from "./PageTitle";
 import Filters from "./Filters";
+import Sort from "./Sort";
 import Pagination from "./Pagination";
 import { useGetListQuery } from "../redux/okBaseApi";
 
 const Catalog = () => {
   const filters = useSelector((state) => state.filtersSlice.filters);
+  const loggedIn = useSelector((state) => state.authSlice.loggedIn);
 
   const { data, isLoading } = useGetListQuery(filters);
 
@@ -29,6 +31,8 @@ const Catalog = () => {
     <>
       <PageTitle />
       <Filters />
+      {loggedIn && <Sort />}
+
       <List disablePadding>
         {data.totalCount == 0 ? (
           <>

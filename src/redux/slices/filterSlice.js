@@ -4,6 +4,7 @@ const initialState = {
   filters: {
     my: false,
     favorites: false,
+    read: "Все",
     search: "",
     category: "",
     company: "",
