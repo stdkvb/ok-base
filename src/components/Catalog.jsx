@@ -22,7 +22,6 @@ import { useGetListQuery } from "../redux/okBaseApi";
 
 const Catalog = () => {
   const filters = useSelector((state) => state.filtersSlice.filters);
-  const loggedIn = useSelector((state) => state.authSlice.loggedIn);
 
   const { data, isLoading } = useGetListQuery(filters);
 
@@ -31,7 +30,7 @@ const Catalog = () => {
     <>
       <PageTitle />
       <Filters />
-      {loggedIn && <Sort />}
+      <Sort />
 
       <List disablePadding>
         {data.totalCount == 0 ? (

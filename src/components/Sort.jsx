@@ -1,18 +1,22 @@
-import { useState } from "react";
+import { useRef } from "react";
 import {
   Stack,
-  InputLabel,
   MenuItem,
   FormControl,
   Select,
   Divider,
+  Link,
+  Typography,
 } from "@mui/material";
+import { Link as RouterLink } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
+import Notification from "./Notification";
 import { setFilter } from "../redux/slices/filterSlice";
 
 const Sort = () => {
   const filters = useSelector((state) => state.filtersSlice.filters);
+  const loggedIn = useSelector((state) => state.authSlice.loggedIn);
 
   const dispatch = useDispatch();
 
@@ -20,8 +24,26 @@ const Sort = () => {
     dispatch(setFilter({ name: event.target.name, value: event.target.value }));
   };
 
+  //notification
+  const notificationRef = useRef();
+  const handleOpenNotification = (message) => {
+    if (notificationRef.current) {
+      notificationRef.current.openNotification(message);
+    }
+  };
+
+  const goAuthNotification = (
+    <Typography>
+      Необходимо{" "}
+      <Link component={RouterLink} to="/log-in" color="primary.main">
+        авторизоваться
+      </Link>{" "}
+    </Typography>
+  );
+
   return (
     <>
+      <Notification ref={notificationRef} />
       <Stack
         direction="row"
         divider={<Divider orientation="vertical" flexItem />}
@@ -36,7 +58,11 @@ const Sort = () => {
             variant="standard"
             disableUnderline
             value={filters.read}
-            onChange={handleChange}
+            onChange={(event, target) => {
+              loggedIn
+                ? handleChange(event)
+                : handleOpenNotification(goAuthNotification);
+            }}
             name="read"
             sx={{
               ".MuiSelect-select-MuiInputBase-input-MuiInput-input:focus": {
