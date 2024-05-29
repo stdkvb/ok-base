@@ -274,8 +274,9 @@ const MaterialDetail = () => {
                   {data.rating ? data.rating : "0"}/5
                 </Typography>
                 <Rating
+                  readOnly={!data.rate}
                   name="half-rating"
-                  defaultValue={data.rating ? Number(data.rating) : 0}
+                  defaultValue={data.rating !== null ? Number(data.rating) : 0}
                   onChange={handleAddRating}
                 />
               </Stack>
@@ -318,6 +319,7 @@ const MaterialDetail = () => {
             {menuId === "ratingMenu" && (
               <MenuItem>
                 <Rating
+                  readOnly={!data.rate}
                   name="half-rating"
                   defaultValue={data.rating ? Number(data.rating) : 0}
                   onChange={handleAddRating}
