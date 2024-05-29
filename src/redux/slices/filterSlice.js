@@ -5,6 +5,7 @@ const initialState = {
     my: false,
     favorites: false,
     read: "Все",
+    sort: "date",
     search: "",
     category: "",
     company: "",

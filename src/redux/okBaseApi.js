@@ -98,15 +98,10 @@ export const okBaseApi = createApi({
       providesTags: (result) =>
         result
           ? [
-              { type: "Categories", id: result.id },
+              ...result.map(({ count }) => ({ type: "Categories", id: count })),
               { type: "Categories", id: "LIST" },
             ]
           : [{ type: "Categories", id: "LIST" }],
-    }),
-
-    getFilters: build.query({
-      query: (category) => `knowledge-base/get-filter?category=${category}`,
-      invalidatesTags: [{ type: "Materials", id: "LIST" }],
     }),
 
     getList: build.query({
@@ -122,6 +117,14 @@ export const okBaseApi = createApi({
             ]
           : [{ type: "Materials", id: "LIST" }],
       invalidatesTags: [{ type: "Categories", id: "LIST" }],
+    }),
+
+    getFilters: build.query({
+      query: (category) => `knowledge-base/get-filter?category=${category}`,
+      invalidatesTags: [
+        { type: "Materials", id: "LIST" },
+        { type: "Categories", id: "LIST" },
+      ],
     }),
 
     getMaterialDetail: build.query({

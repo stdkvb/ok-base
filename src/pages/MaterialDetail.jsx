@@ -1,4 +1,5 @@
 import { useRef, useState, useEffect } from "react";
+import { Helmet } from "react-helmet";
 import {
   Typography,
   Divider,
@@ -28,7 +29,6 @@ import { useParams } from "react-router-dom";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-import MetaTags from "../components/MetaTags";
 import Tags from "../components/Tags";
 import Note from "../components/Note";
 import Notification from "../components/Notification";
@@ -164,7 +164,12 @@ const MaterialDetail = () => {
   if (data)
     return (
       <>
-        <MetaTags title={data.name} description={data.description} />
+        <Helmet>
+          <title>{data.name}</title>
+          <meta name="description" content={data.description} />
+          <meta property="og:title" content={data.name} />
+          <meta property="og:description" content={data.description} />
+        </Helmet>
         <Notification ref={notificationRef} />
         <Box sx={{ p: { xs: 2, md: 4 } }}>
           <Typography

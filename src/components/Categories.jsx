@@ -1,11 +1,4 @@
-import {
-  List,
-  ListItem,
-  Badge,
-  Typography,
-  LinearProgress,
-  Link,
-} from "@mui/material";
+import { List, ListItem, Badge, LinearProgress, Link } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
@@ -17,10 +10,11 @@ const Categories = () => {
   const dispatch = useDispatch();
 
   //get data
-  const { data, isLoading } = useGetCategoriesQuery();
+  const { data, isLoading, refetch } = useGetCategoriesQuery();
 
   //change category
   const onChangeCategory = (value) => {
+    refetch();
     dispatch(resetFilters());
     dispatch(setFilter({ name: "category", value }));
   };

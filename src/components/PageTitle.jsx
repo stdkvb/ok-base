@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { Typography, Divider } from "@mui/material";
-import MetaTags from "./MetaTags";
+import { Helmet } from "react-helmet";
 
 const PageTitle = () => {
   const filters = useSelector((state) => state.filtersSlice.filters);
@@ -24,12 +24,9 @@ const PageTitle = () => {
 
   return (
     <>
-      <MetaTags
-        title={title ? title : "OK-BASE"}
-        description={
-          "Открытая база знаний для руководителей и менеджеров ИТ-проектов"
-        }
-      />
+      <Helmet>
+        <title>{title}</title>
+      </Helmet>
       {title && (
         <Typography
           component="h1"
