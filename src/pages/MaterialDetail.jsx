@@ -181,7 +181,62 @@ const MaterialDetail = () => {
           >
             {data.name}
           </Typography>
-          <Typography color="text.secondary">{data.date}</Typography>
+        </Box>
+        <Box
+          sx={{
+            p: { xs: 2, md: 4 },
+            display: "flex",
+            alignItems: "center",
+            gap: { xs: 2, md: 4 },
+            flexDirection: { xs: "column", md: "row" },
+          }}
+        >
+          <Button
+            sx={{ width: { xs: "100%", md: "fit-content" } }}
+            variant="contained"
+            component="a"
+            href={data.link}
+            target="_blank"
+            color="primary"
+            onClick={() => linkClick({ id: materialDetailId })}
+          >
+            {data.linkText == "" ? "Перейти по ссылке" : data.linkText}
+          </Button>
+          <Stack
+            sx={{
+              flexDirection: "row",
+              gap: 4,
+              alignItems: "center",
+              justifyContent: "space-between",
+              width: { xs: "100%", md: "unset" },
+            }}
+          >
+            <Typography color="text.secondary">{data.date}</Typography>
+            <IconButton
+              sx={{
+                p: 0,
+                gap: 1,
+                display: { xs: "flex", md: "none" },
+              }}
+              aria-haspopup="true"
+              onClick={(event) => openMenu(event, "ratingMenu")}
+            >
+              <StarBorderIcon />
+              <Typography color="text.secondary">
+                {data.rating ? data.rating : "0"}
+              </Typography>
+            </IconButton>
+            <Typography
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: 1,
+              }}
+              color="text.secondary"
+            >
+              <VisibilityOutlinedIcon /> {data.showCount}
+            </Typography>
+          </Stack>
         </Box>
         <Divider />
         <Stack
@@ -193,17 +248,6 @@ const MaterialDetail = () => {
             <Typography sx={{ mb: { xs: 2, md: 4 } }}>
               {data.description}
             </Typography>
-            <Button
-              variant="contained"
-              component="a"
-              href={data.link}
-              target="_blank"
-              color="primary"
-              onClick={() => linkClick({ id: materialDetailId })}
-              sx={{ display: { xs: "none", md: "inline-flex" } }}
-            >
-              {data.linkText == "" ? "Перейти по ссылке" : data.linkText}
-            </Button>
           </Box>
           <Tags data={data} />
         </Stack>
@@ -250,121 +294,69 @@ const MaterialDetail = () => {
           <IconButton
             sx={{
               m: { xs: 1, md: 3 },
-              display: { xs: "flex", md: "none" },
               gap: 1,
+              display: { xs: "none", md: "flex" },
             }}
             aria-haspopup="true"
             onClick={(event) => openMenu(event, "ratingMenu")}
           >
             <StarBorderIcon />
             <Typography color="text.secondary">
-              {data.rating ? data.rating : "0"}/5
+              {data.rating ? data.rating : "0"}
             </Typography>
           </IconButton>
 
-          <Stack
-            direction="row"
-            sx={{
-              ml: "auto",
-            }}
-          >
-            <Box sx={{ display: { xs: "none", md: "flex" } }}>
-              <Stack
-                sx={{
-                  alignItems: "center",
-                  justifyContent: "center",
+          <FormControlLabel
+            control={
+              <Switch
+                checked={data && data.read}
+                onChange={() => {
+                  loggedIn
+                    ? toggleRead(data && data.read)
+                    : handleOpenNotification(goAuthNotification);
                 }}
-              >
-                <Typography component="legend" color="text.secondary">
-                  {data.rating ? data.rating : "0"}/5
-                </Typography>
-                <Rating
-                  readOnly={!data.rate}
-                  name="half-rating"
-                  defaultValue={data.rating !== null ? Number(data.rating) : 0}
-                  onChange={handleAddRating}
-                />
-              </Stack>
-            </Box>
-
-            <Typography
-              sx={{
-                p: { xs: 2, md: 4 },
-                display: "flex",
-                alignItems: "center",
-                gap: 1,
-              }}
-              color="text.secondary"
-            >
-              <VisibilityOutlinedIcon /> {data.showCount}
-            </Typography>
-          </Stack>
-          <Menu
-            anchorEl={anchorEl}
-            open={Boolean(anchorEl)}
-            onClose={closeMenu}
-          >
-            {menuId === "editMenu" && (
-              <>
-                <MenuItem
-                  sx={{ py: 0 }}
-                  component={RouterLink}
-                  to={`/edit-material/${materialDetailId}`}
-                >
-                  <EditOutlinedIcon sx={{ mr: 1 }} />
-                  Редактировать
-                </MenuItem>
-                <Divider />
-                <MenuItem sx={{ py: 0 }} onClick={handleDeleteMaterial}>
-                  <DeleteForeverOutlinedIcon sx={{ mr: 1 }} />
-                  Удалить
-                </MenuItem>
-              </>
-            )}
-            {menuId === "ratingMenu" && (
-              <MenuItem>
-                <Rating
-                  readOnly={!data.rate}
-                  name="half-rating"
-                  defaultValue={data.rating ? Number(data.rating) : 0}
-                  onChange={handleAddRating}
-                />
-              </MenuItem>
-            )}
-          </Menu>
+              />
+            }
+            label="Изучил"
+            sx={{
+              my: { xs: 1, md: 3 },
+              ml: "auto",
+              mr: { xs: 2, md: 4 },
+              "& .MuiFormControlLabel-label": {
+                color: "#9b9b9b",
+              },
+            }}
+          />
         </Stack>
-        <Divider />
-        <FormControlLabel
-          control={
-            <Switch
-              checked={data && data.read}
-              onChange={() => {
-                loggedIn
-                  ? toggleRead(data && data.read)
-                  : handleOpenNotification(goAuthNotification);
-              }}
-            />
-          }
-          label="Изучил"
-          sx={{
-            m: { xs: 1, md: 3 },
-            "& .MuiFormControlLabel-label": {
-              color: "#9b9b9b",
-            },
-          }}
-        />
-        <Divider />
-        <Button
-          variant="contained"
-          component="a"
-          href={data.link}
-          target="_blank"
-          color="primary"
-          onClick={() => linkClick({ id: materialDetailId })}
-          sx={{ display: { xs: "flex", md: "none" }, m: 2 }}
-        >
-          {data.linkText == "" ? "Перейти по ссылке" : data.linkText}
-        </Button>
+        <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={closeMenu}>
+          {menuId === "editMenu" && (
+            <>
+              <MenuItem
+                sx={{ py: 0 }}
+                component={RouterLink}
+                to={`/edit-material/${materialDetailId}`}
+              >
+                <EditOutlinedIcon sx={{ mr: 1 }} />
+                Редактировать
+              </MenuItem>
+              <Divider />
+              <MenuItem sx={{ py: 0 }} onClick={handleDeleteMaterial}>
+                <DeleteForeverOutlinedIcon sx={{ mr: 1 }} />
+                Удалить
+              </MenuItem>
+            </>
+          )}
+          {menuId === "ratingMenu" && (
+            <MenuItem>
+              <Rating
+                readOnly={!data.rate}
+                name="half-rating"
+                defaultValue={data.rating ? Number(data.rating) : 0}
+                onChange={handleAddRating}
+              />
+            </MenuItem>
+          )}
+        </Menu>
         <Divider />
         {loggedIn && (filters.my || filters.favorites) && (
           <Note initialValue={data.note} materialId={materialDetailId} />
