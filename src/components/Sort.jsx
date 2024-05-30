@@ -12,7 +12,7 @@ import {
   OutlinedInput,
   TextField,
 } from "@mui/material";
-import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import ChecklistIcon from "@mui/icons-material/Checklist";
 import { Link as RouterLink } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -65,12 +65,13 @@ const Sort = () => {
             sx={{
               display: { xs: "block", md: "none" },
               position: "absolute",
-              top: "20px",
+              top: "23px",
               zIndex: "-1",
-              fontSize: "2.8rem",
+              fontSize: "2.3rem",
+              left: "3px",
             }}
           >
-            <CheckCircleOutlineIcon fontSize="3.5rem" color="secondary" />
+            <ChecklistIcon fontSize="3.5rem" color="secondary" />
           </InputLabel>
           <Select
             variant="standard"

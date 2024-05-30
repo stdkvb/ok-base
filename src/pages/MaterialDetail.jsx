@@ -92,7 +92,7 @@ const MaterialDetail = () => {
 
   //copy url to clipboard
   const copyUrlToClipboard = () => {
-    const url = window.location.href; // Получаем текущий URL
+    const url = window.location.href;
     navigator.clipboard.writeText(url);
   };
 
