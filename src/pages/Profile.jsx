@@ -1,23 +1,51 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { Typography, Divider, Box, TextField, Button } from "@mui/material";
-import { useNavigate, Link as RouterLink } from "react-router-dom";
+import {
+  Typography,
+  Divider,
+  Box,
+  TextField,
+  Button,
+  Stack,
+  IconButton,
+} from "@mui/material";
+import FolderOpenOutlinedIcon from "@mui/icons-material/FolderOpenOutlined";
+import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
+import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import { Link as RouterLink } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
 import { clearToken } from "../redux/slices/authSlice";
 import { resetFilters, setFilter } from "../redux/slices/filterSlice";
-import { useGetUserQuery, useLogOutQuery } from "../redux/okBaseApi";
+import {
+  useGetUserQuery,
+  useLogOutQuery,
+  useEditUserMutation,
+} from "../redux/okBaseApi";
+
+const fields = [
+  { label: "Email", name: "email", type: "input" },
+  { label: "Имя", name: "name", type: "input" },
+  { label: "Фамилия", name: "lastName", type: "input" },
+];
 
 const Profile = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   //get data
-  const { data, isLoading, error } = useGetUserQuery();
+  const { data, isLoading, error, refetch } = useGetUserQuery();
+
+  const [editUser, { isSuccess: editUserSuccess }] = useEditUserMutation();
 
   const validationSchema = yup.object({
-    name: yup.string("Введите ссылку").required("Введите ссылку"),
+    name: yup.string("Введите имя").required("Введите имя"),
+    lastName: yup.string("Введите имя").required("Введите имя"),
+    email: yup
+      .string("Введите email")
+      .email("Введите корректный email")
+      .required("Введите email"),
   });
 
   const formik = useFormik({
@@ -28,7 +56,8 @@ const Profile = () => {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      createMaterial(values).unwrap();
+      editUser(values).unwrap();
+      setReadOnly(true);
     },
   });
 
@@ -42,6 +71,8 @@ const Profile = () => {
       formik.setValues(newInitialValues);
     }
   }, [data]);
+
+  const [readOnly, setReadOnly] = useState(true);
 
   if (isLoading) return;
   if (error)
@@ -62,9 +93,10 @@ const Profile = () => {
     <>
       <Typography
         variant="h2"
+        component="h1"
         sx={{
-          py: { xs: 2, md: 8 },
-          px: { xs: 2, md: 4 },
+          p: { xs: 2, md: 4 },
+          lineHeight: 1,
         }}
       >
         Профиль
@@ -81,100 +113,166 @@ const Profile = () => {
           alignItems: { xs: "center", sm: "flex-start" },
           width: { md: "100%", lg: "70%" },
           p: { xs: 2, md: 4 },
+          pb: { xs: 2, md: 2 },
         }}
       >
-        {isLoading ? (
-          <CircularProgress></CircularProgress>
-        ) : (
-          data && (
-            <>
+        {fields.map((field, i) => {
+          if (field.type == "input") {
+            return (
               <TextField
-                InputLabelProps={{ shrink: true }}
+                key={i}
                 fullWidth
-                id="name"
-                name="name"
-                label="Имя"
-                disabled
-                value={formik.values.name}
+                id={field.name}
+                name={field.name}
+                label={field.label}
+                value={formik.values[field.name]}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={
+                  formik.touched[field.name] &&
+                  Boolean(formik.errors[field.name])
+                }
+                helperText={
+                  formik.touched[field.name] && formik.errors[field.name]
+                }
+                required
+                disabled={readOnly}
               />
-              <TextField
-                InputLabelProps={{ shrink: true }}
-                fullWidth
-                id="name"
-                name="name"
-                label="Фамилия"
-                disabled
-                value={formik.values.lastName}
-              />
-              <TextField
-                InputLabelProps={{ shrink: true }}
-                fullWidth
-                id="email"
-                name="email"
-                label="Email"
-                disabled
-                value={formik.values.email}
-              />
-            </>
-          )
-        )}
+            );
+          }
+        })}
         {error && <Typography color="error">{error.data.message}</Typography>}
-        {/* <Button
-        color="primary"
-        variant="contained"
-        type="submit"
-        sx={{ width: { xs: "100%", sm: "fit-content" }, mt: 3 }}
-      >
-        Сохранить
-      </Button> */}
+        {!readOnly && (
+          <Button
+            color="primary"
+            variant="contained"
+            type="submit"
+            sx={{ width: { xs: "100%", md: "fit-content" } }}
+          >
+            Сохранить
+          </Button>
+        )}
       </Box>
       <Box
         sx={{
           display: "flex",
-          flexDirection: { xs: "column", md: "row" },
+          flexDirection: "column",
           gap: 2,
-          p: { xs: 2, md: 4 },
+          px: { xs: 0, md: 4 },
+          pt: { xs: 0, md: 0 },
+          pb: { xs: 2, md: 2 },
         }}
       >
+        <Box sx={{ display: { xs: "none", md: "flex" }, gap: 2 }}>
+          {readOnly && (
+            <Button
+              variant="text"
+              onClick={() => {
+                setReadOnly(false);
+              }}
+            >
+              Редактировать
+            </Button>
+          )}
+          <Button
+            variant="text"
+            component={RouterLink}
+            to="/my-materials"
+            onClick={() => {
+              dispatch(resetFilters());
+              dispatch(setFilter({ name: "my", value: true }));
+            }}
+          >
+            Мои материалы
+          </Button>
+          <Button
+            variant="text"
+            component={RouterLink}
+            to="/favorites"
+            onClick={() => {
+              dispatch(resetFilters());
+              dispatch(setFilter({ name: "favorites", value: true }));
+            }}
+          >
+            Избранное
+          </Button>
+          <Button
+            variant="text"
+            component={RouterLink}
+            to="/"
+            onClick={() => {
+              dispatch(clearToken());
+              dispatch(resetFilters());
+            }}
+          >
+            Выйти
+          </Button>
+        </Box>
+        <Box sx={{ display: { xs: "block", md: "none" } }}>
+          <Divider />
+          <Stack
+            direction="row"
+            divider={<Divider orientation="vertical" flexItem />}
+          >
+            {readOnly && (
+              <IconButton
+                sx={{ m: 1 }}
+                onClick={() => {
+                  setReadOnly(false);
+                }}
+              >
+                <EditOutlinedIcon />
+              </IconButton>
+            )}
+            <IconButton
+              sx={{ m: 1 }}
+              component={RouterLink}
+              to="/my-materials"
+              onClick={() => {
+                dispatch(resetFilters());
+                dispatch(setFilter({ name: "my", value: true }));
+              }}
+            >
+              <FolderOpenOutlinedIcon />
+            </IconButton>
+            <IconButton
+              sx={{ m: 1 }}
+              component={RouterLink}
+              to="/favorites"
+              onClick={() => {
+                dispatch(resetFilters());
+                dispatch(setFilter({ name: "favorites", value: true }));
+              }}
+            >
+              <FavoriteBorderOutlinedIcon />
+            </IconButton>
+            <IconButton
+              sx={{ m: 1 }}
+              component={RouterLink}
+              to="/"
+              onClick={() => {
+                dispatch(clearToken());
+                dispatch(resetFilters());
+              }}
+            >
+              <LogoutOutlinedIcon />
+            </IconButton>
+            <Divider />
+          </Stack>
+          <Divider />
+        </Box>
+      </Box>
+      <Box sx={{ px: { xs: 2, md: 4 } }}>
         <Button
+          fullWidth
           variant="contained"
           component={RouterLink}
           to="/create-material"
+          sx={{
+            maxWidth: { xs: "unset", md: "fit-content" },
+          }}
         >
           Добавить материал
-        </Button>
-        <Button
-          variant="text"
-          component={RouterLink}
-          to="/my-materials"
-          onClick={() => {
-            dispatch(resetFilters());
-            dispatch(setFilter({ name: "my", value: true }));
-          }}
-        >
-          Мои материалы
-        </Button>
-        <Button
-          variant="text"
-          component={RouterLink}
-          to="/favorites"
-          onClick={() => {
-            dispatch(resetFilters());
-            dispatch(setFilter({ name: "favorites", value: true }));
-          }}
-        >
-          Избранное
-        </Button>
-        <Button
-          variant="text"
-          component={RouterLink}
-          to="/"
-          onClick={() => {
-            dispatch(clearToken());
-            dispatch(resetFilters());
-          }}
-        >
-          Выйти
         </Button>
       </Box>
     </>

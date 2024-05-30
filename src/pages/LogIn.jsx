@@ -45,7 +45,7 @@ const LogIn = () => {
 
   if (isSuccess) {
     dispatch(setToken(data.token));
-    navigate("/");
+    navigate("/profile");
   }
 
   return (

@@ -15,8 +15,7 @@ const About = () => {
         sx={{
           width: "100%",
           textAlign: "center",
-          py: { xs: 2, md: 8 },
-          px: { xs: 2, md: 4 },
+          p: { xs: 2, md: 4 },
         }}
       >
         {error.data.message}
@@ -26,12 +25,10 @@ const About = () => {
     <>
       <Box
         sx={{
-          py: { xs: 2, md: 8 },
-          px: { xs: 2, md: 4 },
+          p: { xs: 2, md: 4 },
         }}
       >
-        <Typography variant="h2" component="h1">
-          {" "}
+        <Typography variant="h2" component="h1" sx={{ lineHeight: 1 }}>
           {data.name}
         </Typography>
 

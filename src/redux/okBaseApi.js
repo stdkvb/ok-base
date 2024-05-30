@@ -3,7 +3,7 @@ import config from "../config";
 
 export const okBaseApi = createApi({
   reducerPath: "okBaseApi",
-  tagTypes: ["Materials", "Material", "Categories"],
+  tagTypes: ["Materials", "Material", "Categories", "User"],
   baseQuery: fetchBaseQuery({
     baseUrl: `${config.baseURL}`,
     prepareHeaders: (headers, { getState }) => {
@@ -91,6 +91,22 @@ export const okBaseApi = createApi({
 
     getUser: build.query({
       query: () => `user`,
+      providesTags: (result) =>
+        result
+          ? [
+              { type: "User", id: result.id },
+              { type: "User", id: "LIST" },
+            ]
+          : [{ type: "User", id: "LIST" }],
+    }),
+
+    editUser: build.mutation({
+      query: (body) => ({
+        url: "user/change",
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: [{ type: "User", id: "LIST" }],
     }),
 
     getCategories: build.query({
@@ -297,6 +313,7 @@ export const {
   useEditMaterialMutation,
   useDeleteMaterialMutation,
   useGetUserQuery,
+  useEditUserMutation,
   useGetPrivacyPolicyQuery,
   useAddFavoritesMutation,
   useRemoveFavoritesMutation,
