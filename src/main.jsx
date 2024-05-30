@@ -9,7 +9,7 @@ import { initYandexMetrica } from "./utils/yandexMetrica";
 
 const container = document.getElementById("root");
 const root = createRoot(container);
-initYandexMetrica();
+// initYandexMetrica();
 
 root.render(
   <Provider store={store}>

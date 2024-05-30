@@ -17,6 +17,7 @@ const initialState = {
     limit: "10",
     page: 1,
     totalCount: "",
+    myTags: "",
   },
 };
 

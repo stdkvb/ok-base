@@ -171,12 +171,11 @@ const MaterialDetail = () => {
           <meta property="og:description" content={data.description} />
         </Helmet>
         <Notification ref={notificationRef} />
-        <Box sx={{ p: { xs: 2, md: 4 } }}>
+        <Box sx={{ p: { xs: 2, md: 4 }, pb: { xs: 0, md: 0 } }}>
           <Typography
             variant="h3"
             sx={{
               lineHeight: 1,
-              mb: { xs: 2, md: 4 },
             }}
           >
             {data.name}
@@ -188,7 +187,7 @@ const MaterialDetail = () => {
             display: "flex",
             alignItems: "center",
             gap: { xs: 2, md: 4 },
-            flexDirection: { xs: "column", md: "row" },
+            flexDirection: { xs: "column-reverse", md: "row" },
           }}
         >
           <Button
@@ -216,7 +215,6 @@ const MaterialDetail = () => {
               sx={{
                 p: 0,
                 gap: 1,
-                display: { xs: "flex", md: "none" },
               }}
               aria-haspopup="true"
               onClick={(event) => openMenu(event, "ratingMenu")}
@@ -244,10 +242,8 @@ const MaterialDetail = () => {
           divider={<Divider orientation="vertical" flexItem />}
           spacing={0}
         >
-          <Box sx={{ width: "100%", p: { xs: 2, md: 4 } }}>
-            <Typography sx={{ mb: { xs: 2, md: 4 } }}>
-              {data.description}
-            </Typography>
+          <Box sx={{ width: "100%", p: { xs: 2, md: 4 }, pb: { xs: 0 } }}>
+            <Typography>{data.description}</Typography>
           </Box>
           <Tags data={data} />
         </Stack>
@@ -291,20 +287,6 @@ const MaterialDetail = () => {
               </IconButton>
             </>
           )}
-          <IconButton
-            sx={{
-              m: { xs: 1, md: 3 },
-              gap: 1,
-              display: { xs: "none", md: "flex" },
-            }}
-            aria-haspopup="true"
-            onClick={(event) => openMenu(event, "ratingMenu")}
-          >
-            <StarBorderIcon />
-            <Typography color="text.secondary">
-              {data.rating ? data.rating : "0"}
-            </Typography>
-          </IconButton>
 
           <FormControlLabel
             control={

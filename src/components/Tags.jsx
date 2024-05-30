@@ -10,10 +10,15 @@ const Tags = ({ data }) => {
 
   //change filters on tag click
   const onTagClick = (name, tag) => {
-    let value = tag;
+    console.log(name);
     dispatch(resetFilters());
-    dispatch(setFilter({ name, value }));
-    dispatch(setTag(value));
+    if (name == "myTags") {
+      dispatch(setFilter({ name: "my", value: true }));
+      dispatch(setFilter({ name: "tag", value: tag }));
+    } else {
+      dispatch(setFilter({ name: "tag", value: tag }));
+    }
+    dispatch(setFilter({ name: name, value: tag }));
   };
 
   return (

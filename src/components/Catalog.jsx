@@ -9,6 +9,7 @@ import {
   Link,
   Chip,
   Box,
+  Stack,
 } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 import ArrowOutwardOutlinedIcon from "@mui/icons-material/ArrowOutwardOutlined";
@@ -29,9 +30,15 @@ const Catalog = () => {
   return (
     <>
       <PageTitle />
-      <Filters />
-      <Sort />
-
+      <Stack
+        sx={{
+          flexDirection: { xs: "row", md: "column-reverse" },
+        }}
+      >
+        <Sort />
+        <Filters />
+      </Stack>
+      <Divider />
       <List disablePadding>
         {data.totalCount == 0 ? (
           <>

@@ -49,6 +49,7 @@ const Filters = () => {
           alignItems: "center",
           justifyContent: "space-between",
           p: { xs: 2, md: 4 },
+          width: "100%",
         }}
       >
         Фильтры
@@ -114,7 +115,6 @@ const Filters = () => {
             ))}
         </Stack>
       </Drawer>
-      <Divider />
     </>
   );
 };
