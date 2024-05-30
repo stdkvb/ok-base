@@ -73,8 +73,6 @@ const Sort = () => {
             <CheckCircleOutlineIcon fontSize="3.5rem" color="secondary" />
           </InputLabel>
           <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
             variant="standard"
             disableUnderline
             value={filters.read}
@@ -89,13 +87,7 @@ const Sort = () => {
                 backgroundColor: "transparent",
               },
               opacity: { xs: 0, md: 1 },
-              marginTop: 0,
-              "& .MuiInputBase-root": {
-                marginTop: "0 !important",
-              },
-              "& .MuiOutlinedInput-root": {
-                marginTop: "0 !important",
-              },
+              marginTop: { xs: "20px", md: "0 !important" },
             }}
           >
             <MenuItem value="Все">Показывать все</MenuItem>
