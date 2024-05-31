@@ -109,6 +109,14 @@ export const okBaseApi = createApi({
       invalidatesTags: [{ type: "User", id: "LIST" }],
     }),
 
+    changePassword: build.mutation({
+      query: (body) => ({
+        url: "user/change-password",
+        method: "POST",
+        body,
+      }),
+    }),
+
     getCategories: build.query({
       query: () => `knowledge-base/get-categories`,
       providesTags: (result) =>
@@ -314,6 +322,7 @@ export const {
   useDeleteMaterialMutation,
   useGetUserQuery,
   useEditUserMutation,
+  useChangePasswordMutation,
   useGetPrivacyPolicyQuery,
   useAddFavoritesMutation,
   useRemoveFavoritesMutation,

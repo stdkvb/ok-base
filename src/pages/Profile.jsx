@@ -14,6 +14,7 @@ import FolderOpenOutlinedIcon from "@mui/icons-material/FolderOpenOutlined";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import KeyIcon from "@mui/icons-material/Key";
 import { Link as RouterLink } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
@@ -24,6 +25,7 @@ import {
   useLogOutQuery,
   useEditUserMutation,
 } from "../redux/okBaseApi";
+import CreatePassword from "../components/CreatePassword";
 
 const fields = [
   { label: "Email", name: "email", type: "input" },
@@ -74,6 +76,12 @@ const Profile = () => {
 
   const [readOnly, setReadOnly] = useState(true);
 
+  const [passwordChange, setPasswordChange] = useState(false);
+
+  const onPasswordChangeSuccess = () => {
+    setPasswordChange(false);
+  };
+
   if (isLoading) return;
   if (error)
     return (
@@ -102,57 +110,67 @@ const Profile = () => {
         Профиль
       </Typography>
       <Divider />
-      <Box
-        component="form"
-        noValidate
-        onSubmit={formik.handleSubmit}
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          gap: 2,
-          alignItems: { xs: "center", sm: "flex-start" },
-          width: { md: "100%", lg: "70%" },
-          p: { xs: 2, md: 4 },
-          pb: { xs: 2, md: 2 },
-        }}
-      >
-        {fields.map((field, i) => {
-          if (field.type == "input") {
-            return (
-              <TextField
-                key={i}
-                fullWidth
-                id={field.name}
-                name={field.name}
-                label={field.label}
-                value={formik.values[field.name]}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                error={
-                  formik.touched[field.name] &&
-                  Boolean(formik.errors[field.name])
-                }
-                helperText={
-                  formik.touched[field.name] && formik.errors[field.name]
-                }
-                required
-                disabled={readOnly}
-              />
-            );
-          }
-        })}
-        {error && <Typography color="error">{error.data.message}</Typography>}
-        {!readOnly && (
-          <Button
-            color="primary"
-            variant="contained"
-            type="submit"
-            sx={{ width: { xs: "100%", md: "fit-content" } }}
-          >
-            Сохранить
-          </Button>
-        )}
-      </Box>
+      {passwordChange ? (
+        <Box sx={{ p: { xs: 2, md: 4 }, pb: { xs: 2, md: 2 } }}>
+          <CreatePassword
+            endpoint={"change"}
+            onSuccess={onPasswordChangeSuccess}
+          />
+        </Box>
+      ) : (
+        <Box
+          component="form"
+          noValidate
+          onSubmit={formik.handleSubmit}
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 2,
+            alignItems: { xs: "center", sm: "flex-start" },
+            width: { xs: "100%", md: "480px" },
+            p: { xs: 2, md: 4 },
+            pb: { xs: 2, md: 2 },
+          }}
+        >
+          {fields.map((field, i) => {
+            if (field.type == "input") {
+              return (
+                <TextField
+                  key={i}
+                  fullWidth
+                  id={field.name}
+                  name={field.name}
+                  label={field.label}
+                  value={formik.values[field.name]}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  error={
+                    formik.touched[field.name] &&
+                    Boolean(formik.errors[field.name])
+                  }
+                  helperText={
+                    formik.touched[field.name] && formik.errors[field.name]
+                  }
+                  required
+                  disabled={readOnly}
+                />
+              );
+            }
+          })}
+          {error && <Typography color="error">{error.data.message}</Typography>}
+          {!readOnly && (
+            <Button
+              color="primary"
+              variant="contained"
+              type="submit"
+              sx={{ width: { xs: "100%", md: "fit-content" } }}
+            >
+              Сохранить
+            </Button>
+          )}
+        </Box>
+      )}
+
       <Box
         sx={{
           display: "flex",
@@ -168,10 +186,22 @@ const Profile = () => {
             <Button
               variant="text"
               onClick={() => {
+                setPasswordChange(false);
                 setReadOnly(false);
               }}
             >
               Редактировать
+            </Button>
+          )}
+          {!passwordChange && (
+            <Button
+              variant="text"
+              onClick={() => {
+                setReadOnly(true);
+                setPasswordChange(true);
+              }}
+            >
+              Изменить пароль
             </Button>
           )}
           <Button
@@ -218,10 +248,22 @@ const Profile = () => {
               <IconButton
                 sx={{ m: 1 }}
                 onClick={() => {
+                  setPasswordChange(false);
                   setReadOnly(false);
                 }}
               >
                 <EditOutlinedIcon />
+              </IconButton>
+            )}
+            {!passwordChange && (
+              <IconButton
+                sx={{ m: 1 }}
+                onClick={() => {
+                  setReadOnly(true);
+                  setPasswordChange(true);
+                }}
+              >
+                <KeyIcon />
               </IconButton>
             )}
             <IconButton

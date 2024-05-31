@@ -52,6 +52,7 @@ const RegFinish = () => {
         <Typography variant="h2" component="h1">
           Регистрация
         </Typography>
+        <Typography>Задайте пароль для вашего аккаунта</Typography>
         <CreatePassword urlParams={urlParams} endpoint={"reg"} />
       </Container>
     );
