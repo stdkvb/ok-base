@@ -1,9 +1,18 @@
 import { Toolbar, Typography, Link, Box } from "@mui/material";
 import { useGetPrivacyPolicyQuery } from "../redux/okBaseApi";
 
+const links = [
+  {
+    name: "Политика конфиденциальности",
+    file: "https://ok-base.ru/privacy.pdf",
+  },
+  { name: "Юридическая информация", file: "https://ok-base.ru/passport.pdf" },
+  { name: "Правила пользования", file: "https://ok-base.ru/terms.pdf" },
+];
+
 const Footer = () => {
   //get data
-  const { data, isLoading } = useGetPrivacyPolicyQuery();
+  // const { data, isLoading } = useGetPrivacyPolicyQuery();
   return (
     <Toolbar
       sx={{
@@ -26,7 +35,7 @@ const Footer = () => {
         }}
       >
         <Typography fontSize="14px">© 2024 OK-BASE</Typography>
-        {!isLoading &&
+        {/* {!isLoading &&
           data &&
           data.map((item, i) => (
             <Link
@@ -38,7 +47,18 @@ const Footer = () => {
             >
               {item.name}
             </Link>
-          ))}
+          ))} */}
+        {links.map((item, i) => (
+          <Link
+            key={i}
+            href={item.file}
+            target="_blank"
+            color="text.secondary"
+            fontSize="14px"
+          >
+            {item.name}
+          </Link>
+        ))}
         <Link href="https://wptt.ru/" target="_blank" fontSize="14px">
           Разработка - Вебпространство
         </Link>
