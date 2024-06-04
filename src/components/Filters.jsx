@@ -48,7 +48,8 @@ const Filters = () => {
           gap: 1,
           alignItems: "center",
           justifyContent: "space-between",
-          p: { xs: 2, md: 4 },
+          px: { xs: 2, md: 4 },
+          py: { xs: 2, md: 3, lg: 4 },
           width: "100%",
         }}
       >
@@ -86,11 +87,21 @@ const Filters = () => {
           </IconButton>
           Назад
         </Typography>
+        <Divider
+          sx={{
+            display: { xs: "flex", lg: "none" },
+          }}
+        />
 
         <Stack
           direction={{ xs: "column", lg: "row" }}
-          divider={<Divider orientation="vertical" flexItem />}
-          sx={{ p: 0, gap: 1 }}
+          divider={
+            <>
+              <Divider orientation="horizontal" flexItem />
+              <Divider orientation="vertical" flexItem />
+            </>
+          }
+          sx={{ p: 0, gap: { xs: 0, md: 1 } }}
         >
           {data &&
             data.map((filter, i) => (
@@ -98,6 +109,7 @@ const Filters = () => {
                 key={i}
                 fullWidth
                 id={filter.name}
+                noOptionsText="Не найдено"
                 options={filter.value}
                 onChange={(event, newValue) => {
                   onChangeFilter(filter.name, newValue ?? "");
@@ -114,6 +126,11 @@ const Filters = () => {
               />
             ))}
         </Stack>
+        <Divider
+          sx={{
+            display: { xs: "flex", lg: "none" },
+          }}
+        />
       </Drawer>
     </>
   );
