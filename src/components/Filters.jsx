@@ -114,7 +114,7 @@ const Filters = () => {
                 onChange={(event, newValue) => {
                   onChangeFilter(filter.name, newValue ?? "");
                 }}
-                sx={{ py: 1, ml: 0, px: { xs: 2, md: 4 } }}
+                sx={{ py: { xs: 0, md: 1 }, ml: 0, px: { xs: 2, md: 4 } }}
                 renderInput={(params) => (
                   <TextField
                     {...params}

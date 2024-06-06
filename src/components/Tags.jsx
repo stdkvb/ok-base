@@ -10,7 +10,6 @@ const Tags = ({ data }) => {
 
   //change filters on tag click
   const onTagClick = (name, tag) => {
-    console.log(name);
     dispatch(resetFilters());
     if (name == "myTags") {
       dispatch(setFilter({ name: "my", value: true }));
@@ -43,7 +42,7 @@ const Tags = ({ data }) => {
             component={RouterLink}
             to={{
               pathname: "/",
-              search: `${tag}`,
+              search: `?${encodeURIComponent(key)}=${encodeURIComponent(tag)}`,
             }}
             onClick={() => onTagClick(key, tag)}
           />

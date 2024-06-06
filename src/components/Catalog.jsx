@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import {
   Typography,
   Divider,
@@ -11,20 +12,34 @@ import {
   Box,
   Stack,
 } from "@mui/material";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useSearchParams } from "react-router-dom";
 import ArrowOutwardOutlinedIcon from "@mui/icons-material/ArrowOutwardOutlined";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import PageTitle from "./PageTitle";
 import Filters from "./Filters";
 import Sort from "./Sort";
 import Pagination from "./Pagination";
 import { useGetListQuery } from "../redux/okBaseApi";
+import { setFilter } from "../redux/slices/filterSlice";
 
 const Catalog = () => {
   const filters = useSelector((state) => state.filtersSlice.filters);
 
   const { data, isLoading } = useGetListQuery(filters);
+
+  const [searchParams] = useSearchParams();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const key = Array.from(searchParams.keys())[0];
+    const value = searchParams.get(key);
+
+    if (key && value) {
+      dispatch(setFilter({ name: key, value: value }));
+      dispatch(setFilter({ name: "tag", value: value }));
+    }
+  }, []);
 
   if (isLoading) return;
   return (
