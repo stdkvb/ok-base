@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Outlet, Link as RouterLink } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -24,6 +24,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { clearToken } from "../redux/slices/authSlice";
 import { setFilter, resetFilters } from "../redux/slices/filterSlice";
 import { toggleDarkMode } from "../redux/slices/themeSlice";
+import { showNotificationDeleteMaterial } from "../redux/slices/notificationSlice";
 import SearchBar from "./SearchBar";
 import Categories from "./Categories";
 import Footer from "./Footer";
@@ -35,6 +36,7 @@ function Layout() {
   const dispatch = useDispatch();
   const loggedIn = useSelector((state) => state.authSlice.loggedIn);
   const darkMode = useSelector((state) => state.themeSlice.darkMode);
+  const showNotificationMaterialDelete = useSelector((state) => state.notificationSlice.deleteMatarial);
 
   //nav drawer
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -51,6 +53,13 @@ function Layout() {
       setMobileOpen(!mobileOpen);
     }
   };
+
+  useEffect(() => {
+    if (showNotificationMaterialDelete) {
+      handleOpenNotification("Материал удалён");
+      dispatch(showNotificationDeleteMaterial(false));
+    }
+  }, [showNotificationMaterialDelete]);
 
   //notification
   const notificationRef = useRef();

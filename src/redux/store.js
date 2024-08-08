@@ -5,6 +5,7 @@ import { saveState, loadState } from "./localStorage";
 import filtersSlice from "./slices/filterSlice";
 import authSlice from "./slices/authSlice";
 import themeSlice from "./slices/themeSlice";
+import notificationSlice from "./slices/notificationSlice";
 
 const preloadedState = loadState() || {};
 
@@ -14,6 +15,7 @@ const store = configureStore({
     filtersSlice,
     authSlice,
     themeSlice,
+    notificationSlice
   },
   preloadedState,
   middleware: (getDefaultMiddleware) =>

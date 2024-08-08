@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState, useRef } from "react";
 import {
   Typography,
   Divider,
@@ -19,6 +19,7 @@ import { useSelector, useDispatch } from "react-redux";
 import PageTitle from "./PageTitle";
 import Filters from "./Filters";
 import Sort from "./Sort";
+import FilterTags from "./FilterTags";
 import Pagination from "./Pagination";
 import { useGetListQuery } from "../redux/okBaseApi";
 import { setFilter } from "../redux/slices/filterSlice";
@@ -51,9 +52,11 @@ const Catalog = () => {
         }}
       >
         <Sort />
-        <Filters />
+        <Filters filters={filters} />
       </Stack>
+
       <Divider />
+      <FilterTags />
       <List disablePadding>
         {data.totalCount == 0 ? (
           <>

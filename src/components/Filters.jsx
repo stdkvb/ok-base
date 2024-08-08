@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Autocomplete,
   TextField,
@@ -16,7 +16,9 @@ import { useSelector, useDispatch } from "react-redux";
 import { useGetFiltersQuery } from "../redux/okBaseApi";
 import { setFilter } from "../redux/slices/filterSlice";
 
-const Filters = () => {
+const Filters = ({filters}) => {
+  const [open, setOpen] = useState(false);
+
   //redux states
   const category = useSelector((state) => state.filtersSlice.filters.category);
   const dispatch = useDispatch();
@@ -28,14 +30,24 @@ const Filters = () => {
 
   //get data
   const { data, isLoading } = useGetFiltersQuery(category);
-
+  const [filterdata, setFilterdata] = useState([]);
   //user device
   const desktop = useMediaQuery("(min-width:1200px)");
 
-  const [open, setOpen] = useState(false);
   const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen);
   };
+
+  useEffect(() => {
+    if (data) {
+        const newFilterData = data.map(filter => ({
+          ...filter,
+          selected: filters[filter.name]
+        })
+      ) 
+      setFilterdata(newFilterData)
+    }
+  },[filters, data]) 
 
   if (isLoading) return;
   return (
@@ -58,6 +70,7 @@ const Filters = () => {
           <ArrowForwardIosIcon fontSize="small" />
         </IconButton>
       </Typography>
+
       <Drawer
         variant={desktop && "permanent"}
         open={open}
@@ -103,8 +116,8 @@ const Filters = () => {
           }
           sx={{ p: 0, gap: { xs: 0, md: 1 } }}
         >
-          {data &&
-            data.map((filter, i) => (
+          {filterdata &&
+            filterdata.map((filter, i) => (
               <Autocomplete
                 key={i}
                 fullWidth
@@ -113,7 +126,9 @@ const Filters = () => {
                 options={filter.value}
                 onChange={(event, newValue) => {
                   onChangeFilter(filter.name, newValue ?? "");
+       
                 }}
+                value={filter.selected}
                 sx={{ py: { xs: 0, md: 1 }, ml: 0, px: { xs: 2, md: 4 } }}
                 renderInput={(params) => (
                   <TextField
