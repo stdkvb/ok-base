@@ -201,7 +201,7 @@ const MaterialDetail = () => {
             color="primary"
             onClick={() => linkClick({ id: materialDetailId })}
           >
-            {data.linkText == "" ? "Перейти по ссылке" : data.linkText}
+            {data.linkText.trim() === "" ? "Перейти по ссылке" : data.linkText}
           </Button>
           <Stack
             sx={{

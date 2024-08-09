@@ -14,9 +14,9 @@ const Categories = () => {
 
   //change category
   const onChangeCategory = (value) => {
-    refetch();
     dispatch(resetFilters());
     dispatch(setFilter({ name: "category", value }));
+    refetch();
   };
 
   if (isLoading) return <LinearProgress color="secondary" />;

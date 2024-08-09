@@ -8,6 +8,7 @@ import {
   Link,
   Container,
 } from "@mui/material";
+import { useEffect } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
@@ -43,10 +44,12 @@ const LogIn = () => {
     },
   });
 
-  if (isSuccess) {
-    dispatch(setToken(data.token));
-    navigate("/profile");
-  }
+  useEffect(() => {
+    if (isSuccess) {
+      dispatch(setToken(data.token));
+      navigate("/profile");
+    }
+  }, [isSuccess, data, dispatch, navigate]);
 
   return (
     <Container
