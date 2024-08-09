@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Helmet } from "react-helmet";
 import {
   Typography,
@@ -30,9 +30,9 @@ import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { showNotificationDeleteMaterial } from "../redux/slices/notificationSlice";
 
+import { addNotification } from "../redux/slices/notificationSlice";
 import Tags from "../components/Tags";
 import Note from "../components/Note";
-import Notification from "../components/Notification";
 import ErrorPage from "./ErrorPage";
 
 import {
@@ -47,6 +47,7 @@ import {
 } from "../redux/okBaseApi";
 
 const MaterialDetail = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const filters = useSelector((state) => state.filtersSlice.filters);
   const loggedIn = useSelector((state) => state.authSlice.loggedIn);
@@ -99,14 +100,6 @@ const MaterialDetail = () => {
     navigator.clipboard.writeText(url);
   };
 
-  //notification
-  const notificationRef = useRef();
-  const handleOpenNotification = (message) => {
-    if (notificationRef.current) {
-      notificationRef.current.openNotification(message);
-    }
-  };
-
   const goAuthNotification = (
     <Typography>
       Необходимо{" "}
@@ -118,17 +111,24 @@ const MaterialDetail = () => {
 
   useEffect(() => {
     if (successAddFavorites) {
-      handleOpenNotification("Материал добавлен в избранное");
+      dispatch(addNotification("Материал добавлен в избранное"));
     }
   }, [successAddFavorites]);
 
   useEffect(() => {
     if (successRemoveFavorites) {
-      handleOpenNotification("Материал удалён из избранного");
+      dispatch(addNotification("Материал удалён из избранного"));
     }
   }, [successRemoveFavorites]);
 
-  //edit&rating menu
+  useEffect(() => {
+    if (successDeleteMaterial) {
+      dispatch(addNotification("Материал удалён"));
+      navigate("/my-materials");
+    }
+  }, [successDeleteMaterial]);
+
+  //edit&rate menu
   const [anchorEl, setAnchorEl] = useState(null);
   const [menuId, setMenuId] = useState(null);
 
@@ -158,7 +158,7 @@ const MaterialDetail = () => {
   const handleAddRating = (event, newValue) => {
     loggedIn
       ? addRating({ id: materialDetailId, score: newValue })
-      : handleOpenNotification(goAuthNotification);
+      : dispatch(addNotification(goAuthNotification));
     closeMenu();
   };
 
@@ -173,7 +173,6 @@ const MaterialDetail = () => {
           <meta property="og:title" content={data.name} />
           <meta property="og:description" content={data.description} />
         </Helmet>
-        <Notification ref={notificationRef} />
         <Box sx={{ p: { xs: 2, md: 4 }, pb: { xs: 0, md: 0 } }}>
           <Typography
             variant="h3"
@@ -261,7 +260,7 @@ const MaterialDetail = () => {
             onClick={() => {
               loggedIn
                 ? toggleFavorites(data.favorites)
-                : handleOpenNotification(goAuthNotification);
+                : dispatch(addNotification(goAuthNotification));
             }}
           >
             {data.favorites ? (
@@ -274,7 +273,7 @@ const MaterialDetail = () => {
             sx={{ m: { xs: 1, md: 3 } }}
             onClick={() => {
               copyUrlToClipboard();
-              handleOpenNotification("Ссылка скопирована");
+              dispatch(addNotification("Ссылка скопирована"));
             }}
           >
             <ContentCopyOutlinedIcon />
@@ -290,7 +289,6 @@ const MaterialDetail = () => {
               </IconButton>
             </>
           )}
-
           <FormControlLabel
             control={
               <Switch
@@ -298,7 +296,7 @@ const MaterialDetail = () => {
                 onChange={() => {
                   loggedIn
                     ? toggleRead(data && data.read)
-                    : handleOpenNotification(goAuthNotification);
+                    : dispatch(addNotification(goAuthNotification));
                 }}
               />
             }

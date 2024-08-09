@@ -48,7 +48,7 @@ const Sort = () => {
 
   return (
     <>
-      <Notification ref={notificationRef} />
+      {/* <Notification ref={notificationRef} /> */}
       <Stack
         direction="row"
         divider={<Divider orientation="vertical" flexItem />}

@@ -20,6 +20,7 @@ import About from "./pages/About";
 import CreateMaterial from "./pages/CreateMaterial";
 import EditMaterial from "./pages/EditMaterial";
 import ErrorPage from "./pages/ErrorPage";
+import Notification from "./components/Notification";
 
 export default function App() {
   useCheckAppVersion();
@@ -54,6 +55,7 @@ export default function App() {
           <Route path="*" element={<ErrorPage />} />
         </Route>
       </Routes>
+      <Notification />
     </ThemeProvider>
   );
 }

@@ -47,7 +47,7 @@ const Note = ({ initialValue, materialId }) => {
 
   return (
     <>
-      <Notification ref={notificationRef} />
+      {/* <Notification ref={notificationRef} /> */}
       <Box
         component="form"
         noValidate

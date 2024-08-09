@@ -183,7 +183,7 @@ function Layout() {
           backgroundImage: "unset",
         }}
       >
-        <Notification ref={notificationRef} />
+        {/* <Notification ref={notificationRef} /> */}
         <Toolbar
           sx={{
             height: { xs: "50px", md: "90px" },
