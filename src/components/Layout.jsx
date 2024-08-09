@@ -24,11 +24,13 @@ import CloseIcon from "@mui/icons-material/Close";
 import { clearToken } from "../redux/slices/authSlice";
 import { setFilter, resetFilters } from "../redux/slices/filterSlice";
 import { toggleDarkMode } from "../redux/slices/themeSlice";
-import { showNotificationDeleteMaterial } from "../redux/slices/notificationSlice";
+import {
+  addNotification,
+  showNotificationDeleteMaterial,
+} from "../redux/slices/notificationSlice";
 import SearchBar from "./SearchBar";
 import Categories from "./Categories";
 import Footer from "./Footer";
-import Notification from "./Notification";
 
 const drawerWidth = 200;
 
@@ -36,7 +38,9 @@ function Layout() {
   const dispatch = useDispatch();
   const loggedIn = useSelector((state) => state.authSlice.loggedIn);
   const darkMode = useSelector((state) => state.themeSlice.darkMode);
-  const showNotificationMaterialDelete = useSelector((state) => state.notificationSlice.deleteMatarial);
+  const showNotificationMaterialDelete = useSelector(
+    (state) => state.notificationSlice.deleteMatarial
+  );
 
   //nav drawer
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -54,20 +58,21 @@ function Layout() {
     }
   };
 
+  const goAuthNotification = (
+    <Typography>
+      Необходимо{" "}
+      <Link component={RouterLink} to="/log-in" color="primary.main">
+        авторизоваться
+      </Link>{" "}
+    </Typography>
+  );
+
   useEffect(() => {
     if (showNotificationMaterialDelete) {
-      handleOpenNotification("Материал удалён");
+      dispatch(addNotification("Материал удалён"));
       dispatch(showNotificationDeleteMaterial(false));
     }
   }, [showNotificationMaterialDelete]);
-
-  //notification
-  const notificationRef = useRef();
-  const handleOpenNotification = (message) => {
-    if (notificationRef.current) {
-      notificationRef.current.openNotification(message);
-    }
-  };
 
   const drawer = (
     <Stack sx={{ height: "100%" }} onClick={() => handleDrawerClose()}>
@@ -133,18 +138,7 @@ function Layout() {
                     dispatch(setFilter({ name: "favorites", value: true }));
                   }
                 : () => {
-                    handleOpenNotification(
-                      <Typography>
-                        Необходимо{" "}
-                        <Link
-                          component={RouterLink}
-                          to="/log-in"
-                          color="primary.main"
-                        >
-                          авторизоваться
-                        </Link>{" "}
-                      </Typography>
-                    );
+                    dispatch(addNotification(goAuthNotification));
                   }
             }
           >
@@ -183,7 +177,6 @@ function Layout() {
           backgroundImage: "unset",
         }}
       >
-        {/* <Notification ref={notificationRef} /> */}
         <Toolbar
           sx={{
             height: { xs: "50px", md: "90px" },
@@ -248,19 +241,7 @@ function Layout() {
             component={RouterLink}
             to={loggedIn && "/create-material"}
             onClick={() => {
-              !loggedIn &&
-                handleOpenNotification(
-                  <Typography>
-                    Необходимо{" "}
-                    <Link
-                      component={RouterLink}
-                      to="/log-in"
-                      color="primary.main"
-                    >
-                      авторизоваться
-                    </Link>{" "}
-                  </Typography>
-                );
+              !loggedIn && dispatch(addNotification(goAuthNotification));
             }}
           >
             <AddIcon />

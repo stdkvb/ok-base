@@ -28,9 +28,10 @@ import StarBorderIcon from "@mui/icons-material/StarBorder";
 import { useParams } from "react-router-dom";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { showNotificationDeleteMaterial } from "../redux/slices/notificationSlice";
-
-import { addNotification } from "../redux/slices/notificationSlice";
+import {
+  addNotification,
+  showNotificationDeleteMaterial,
+} from "../redux/slices/notificationSlice";
 import Tags from "../components/Tags";
 import Note from "../components/Note";
 import ErrorPage from "./ErrorPage";
@@ -51,7 +52,6 @@ const MaterialDetail = () => {
   const navigate = useNavigate();
   const filters = useSelector((state) => state.filtersSlice.filters);
   const loggedIn = useSelector((state) => state.authSlice.loggedIn);
-  const dispatch = useDispatch();
   let { materialDetailId } = useParams();
 
   //get data

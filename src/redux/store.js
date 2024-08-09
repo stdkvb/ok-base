@@ -15,7 +15,7 @@ const store = configureStore({
     filtersSlice,
     authSlice,
     themeSlice,
-    notificationSlice
+    notificationSlice,
   },
   preloadedState,
   middleware: (getDefaultMiddleware) =>
