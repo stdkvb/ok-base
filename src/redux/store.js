@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { okBaseApi } from "./okBaseApi";
 import { saveState, loadState } from "./localStorage";
+import isTokenExpired from "../utils/checkToken";
 
 import filtersSlice from "./slices/filterSlice";
 import authSlice from "./slices/authSlice";
@@ -8,6 +9,13 @@ import themeSlice from "./slices/themeSlice";
 import notificationSlice from "./slices/notificationSlice";
 
 const preloadedState = loadState() || {};
+//check token
+if (
+  preloadedState.authSlice &&
+  isTokenExpired(preloadedState.authSlice.token)
+) {
+  preloadedState.authSlice = { loggedIn: false, token: null };
+}
 
 const store = configureStore({
   reducer: {
