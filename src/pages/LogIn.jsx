@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import { useEffect } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { useLogInMutation } from "../redux/okBaseApi";
 import { setToken } from "../redux/slices/authSlice";
@@ -23,6 +23,9 @@ const fields = [
 const LogIn = () => {
   //redux states
   const dispatch = useDispatch();
+  const newMaterial = useSelector(
+    (state) => state.newMaterialSlice.newMaterial
+  );
 
   const navigate = useNavigate();
 
@@ -47,7 +50,11 @@ const LogIn = () => {
   useEffect(() => {
     if (isSuccess) {
       dispatch(setToken(data.token));
-      navigate("/profile");
+      if (newMaterial.link !== "") {
+        navigate("/create-material");
+      } else {
+        navigate("/profile");
+      }
     }
   }, [isSuccess, data, dispatch, navigate]);
 

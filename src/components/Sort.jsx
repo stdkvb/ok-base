@@ -16,8 +16,8 @@ import ChecklistIcon from "@mui/icons-material/Checklist";
 import { Link as RouterLink } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
-import Notification from "./Notification";
 import { setFilter } from "../redux/slices/filterSlice";
+import GoAuthNotification from "./GoAuthNotification";
 
 const Sort = () => {
   const filters = useSelector((state) => state.filtersSlice.filters);
@@ -37,18 +37,8 @@ const Sort = () => {
     }
   };
 
-  const goAuthNotification = (
-    <Typography>
-      Необходимо{" "}
-      <Link component={RouterLink} to="/log-in" color="primary.main">
-        авторизоваться
-      </Link>{" "}
-    </Typography>
-  );
-
   return (
     <>
-      {/* <Notification ref={notificationRef} /> */}
       <Stack
         direction="row"
         divider={<Divider orientation="vertical" flexItem />}
@@ -80,7 +70,7 @@ const Sort = () => {
             onChange={(event, target) => {
               loggedIn
                 ? handleChange(event)
-                : handleOpenNotification(goAuthNotification);
+                : handleOpenNotification(GoAuthNotification);
             }}
             name="read"
             sx={{
@@ -92,8 +82,8 @@ const Sort = () => {
             }}
           >
             <MenuItem value="Все">Показывать все</MenuItem>
-            <MenuItem value="Нет">Показывать непрочитанные</MenuItem>
-            <MenuItem value="Да">Показывать прочитанные</MenuItem>
+            <MenuItem value="Нет">Показывать неизученные</MenuItem>
+            <MenuItem value="Да">Показывать изученные</MenuItem>
           </Select>
         </FormControl>
         <Divider />

@@ -31,6 +31,7 @@ import {
 import SearchBar from "./SearchBar";
 import Categories from "./Categories";
 import Footer from "./Footer";
+import GoAuthNotification from "./GoAuthNotification";
 
 const drawerWidth = 200;
 
@@ -57,15 +58,6 @@ function Layout() {
       setMobileOpen(!mobileOpen);
     }
   };
-
-  const goAuthNotification = (
-    <Typography>
-      Необходимо{" "}
-      <Link component={RouterLink} to="/log-in" color="primary.main">
-        авторизоваться
-      </Link>{" "}
-    </Typography>
-  );
 
   useEffect(() => {
     if (showNotificationMaterialDelete) {
@@ -138,7 +130,7 @@ function Layout() {
                     dispatch(setFilter({ name: "favorites", value: true }));
                   }
                 : () => {
-                    dispatch(addNotification(goAuthNotification));
+                    dispatch(addNotification(GoAuthNotification));
                   }
             }
           >
@@ -241,7 +233,7 @@ function Layout() {
             component={RouterLink}
             to={loggedIn && "/create-material"}
             onClick={() => {
-              !loggedIn && dispatch(addNotification(goAuthNotification));
+              !loggedIn && dispatch(addNotification(GoAuthNotification));
             }}
           >
             <AddIcon />

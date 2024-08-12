@@ -7,6 +7,7 @@ import filtersSlice from "./slices/filterSlice";
 import authSlice from "./slices/authSlice";
 import themeSlice from "./slices/themeSlice";
 import notificationSlice from "./slices/notificationSlice";
+import newMaterialSlice from "./slices/newMaterialSlice";
 
 const preloadedState = loadState() || {};
 //check token
@@ -24,6 +25,7 @@ const store = configureStore({
     authSlice,
     themeSlice,
     notificationSlice,
+    newMaterialSlice,
   },
   preloadedState,
   middleware: (getDefaultMiddleware) =>

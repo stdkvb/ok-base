@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Typography,
   Box,
@@ -30,12 +30,21 @@ import {
   useEditMaterialMutation,
 } from "../redux/okBaseApi";
 import { setFilter } from "../redux/slices/filterSlice";
+import {
+  setNewMaterial,
+  resetNewMaterial,
+} from "../redux/slices/newMaterialSlice";
+import { addNotification } from "../redux/slices/notificationSlice";
+import GoAuthNotification from "./GoAuthNotification";
 
 const MaterialForm = ({ initialValues }) => {
   const navigate = useNavigate();
   //redux states
   const dispatch = useDispatch();
-
+  const loggedIn = useSelector((state) => state.authSlice.loggedIn);
+  const newMaterial = useSelector(
+    (state) => state.newMaterialSlice.newMaterial
+  );
   //get data
   const { data, isLoading } = useGetFormPropertiesQuery();
 
@@ -65,10 +74,22 @@ const MaterialForm = ({ initialValues }) => {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      console.log("hey");
-      createMaterial(values).unwrap();
+      if (loggedIn) {
+        createMaterial(values).unwrap();
+        dispatch(resetNewMaterial());
+      } else {
+        dispatch(setNewMaterial(values));
+        dispatch(addNotification(GoAuthNotification));
+      }
     },
   });
+
+  //if material created before login -> fill up form
+  useEffect(() => {
+    if (newMaterial.link !== "") {
+      formik.setValues(newMaterial);
+    }
+  }, []);
 
   useEffect(() => {
     if (initialValues) {
@@ -98,6 +119,7 @@ const MaterialForm = ({ initialValues }) => {
 
   if (isSuccess) {
     dispatch(setFilter({ name: "my", value: true }));
+    dispatch(resetNewMaterial());
     navigate("/my-materials");
   }
   if (isLoading) return;

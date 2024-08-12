@@ -35,6 +35,7 @@ import {
 import Tags from "../components/Tags";
 import Note from "../components/Note";
 import ErrorPage from "./ErrorPage";
+import GoAuthNotification from "../components/GoAuthNotification";
 
 import {
   useGetMaterialDetailQuery,
@@ -100,15 +101,6 @@ const MaterialDetail = () => {
     navigator.clipboard.writeText(url);
   };
 
-  const goAuthNotification = (
-    <Typography>
-      Необходимо{" "}
-      <Link component={RouterLink} to="/log-in" color="primary.main">
-        авторизоваться
-      </Link>{" "}
-    </Typography>
-  );
-
   useEffect(() => {
     if (successAddFavorites) {
       dispatch(addNotification("Материал добавлен в избранное"));
@@ -158,7 +150,7 @@ const MaterialDetail = () => {
   const handleAddRating = (event, newValue) => {
     loggedIn
       ? addRating({ id: materialDetailId, score: newValue })
-      : dispatch(addNotification(goAuthNotification));
+      : dispatch(addNotification(GoAuthNotification));
     closeMenu();
   };
 
@@ -260,7 +252,7 @@ const MaterialDetail = () => {
             onClick={() => {
               loggedIn
                 ? toggleFavorites(data.favorites)
-                : dispatch(addNotification(goAuthNotification));
+                : dispatch(addNotification(GoAuthNotification));
             }}
           >
             {data.favorites ? (
@@ -296,7 +288,7 @@ const MaterialDetail = () => {
                 onChange={() => {
                   loggedIn
                     ? toggleRead(data && data.read)
-                    : dispatch(addNotification(goAuthNotification));
+                    : dispatch(addNotification(GoAuthNotification));
                 }}
               />
             }
