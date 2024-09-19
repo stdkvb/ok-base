@@ -16,7 +16,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useGetFiltersQuery } from "../redux/okBaseApi";
 import { setFilter } from "../redux/slices/filterSlice";
 
-const Filters = ({filters}) => {
+const Filters = ({ filters }) => {
   const [open, setOpen] = useState(false);
 
   //redux states
@@ -40,14 +40,13 @@ const Filters = ({filters}) => {
 
   useEffect(() => {
     if (data) {
-        const newFilterData = data.map(filter => ({
-          ...filter,
-          selected: filters[filter.name]
-        })
-      ) 
-      setFilterdata(newFilterData)
+      const newFilterData = data.map((filter) => ({
+        ...filter,
+        selected: filters[filter.name],
+      }));
+      setFilterdata(newFilterData);
     }
-  },[filters, data]) 
+  }, [filters, data]);
 
   if (isLoading) return;
   return (
@@ -126,7 +125,6 @@ const Filters = ({filters}) => {
                 options={filter.value}
                 onChange={(event, newValue) => {
                   onChangeFilter(filter.name, newValue ?? "");
-       
                 }}
                 value={filter.selected}
                 sx={{ py: { xs: 0, md: 1 }, ml: 0, px: { xs: 2, md: 4 } }}

@@ -1,4 +1,5 @@
 import config from "../config";
+import { filtersSlice } from "./slices/filterSlice";
 
 export const loadState = () => {
   try {
@@ -16,6 +17,7 @@ export const loadState = () => {
 
     return {
       authSlice: state.authSlice || { loggedIn: false, token: null },
+      filtersSlice: state.filtersSlice,
     };
   } catch (err) {
     console.error("Error loading state from localStorage:", err);
@@ -28,6 +30,7 @@ export const saveState = (state) => {
     const stateToSave = {
       appVersion: config.appVersion,
       authSlice: state.authSlice,
+      filtersSlice: state.filtersSlice,
     };
 
     const serializedState = JSON.stringify(stateToSave);

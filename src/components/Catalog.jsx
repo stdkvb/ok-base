@@ -56,7 +56,7 @@ const Catalog = () => {
       </Stack>
 
       <Divider />
-      <FilterTags />
+      <FilterTags totalCount={data.totalCount} />
       <List disablePadding>
         {data.totalCount == 0 ? (
           <>
