@@ -17,7 +17,7 @@ const PageTitle = () => {
     } else if (filters.my) {
       return "Мои материалы";
     }
-    return "Ваша база знаний для ИТ";
+    return "База знаний для ИТ";
   };
 
   const title = renderTitle();

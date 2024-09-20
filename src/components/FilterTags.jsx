@@ -46,7 +46,7 @@ const FilterTags = ({ totalCount }) => {
             gap: 2,
           }}
         >
-          Материалов найдено {totalCount} по выбранным фильтрам:
+          Материалов найдено {totalCount} по фильтрам:
           <Box display="flex" gap={1} flexWrap="wrap">
             {activeFilters.map(({ title, name, selectedValue }) => (
               <Chip
