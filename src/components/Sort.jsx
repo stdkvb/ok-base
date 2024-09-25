@@ -1,20 +1,15 @@
 import { useRef } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import {
   Stack,
   MenuItem,
   FormControl,
   Select,
   Divider,
-  Link,
-  Typography,
   InputLabel,
-  IconButton,
-  OutlinedInput,
-  TextField,
 } from "@mui/material";
 import ChecklistIcon from "@mui/icons-material/Checklist";
-import { Link as RouterLink } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import SortIcon from "@mui/icons-material/Sort";
 
 import { setFilter } from "../redux/slices/filterSlice";
 import GoAuthNotification from "./GoAuthNotification";
@@ -86,14 +81,27 @@ const Sort = () => {
             <MenuItem value="Да">Показывать изученные</MenuItem>
           </Select>
         </FormControl>
-        <Divider />
-        {/* <FormControl
+        <FormControl
           fullWidth
-          sx={{ px: { xs: 2, md: 4 }, py: { xs: 2, md: 3 } }}
+          sx={{
+            px: { xs: 2, md: 4 },
+            py: { xs: 0, md: 3 },
+            maxWidth: { xs: "60px", md: "50%" },
+          }}
         >
+          <InputLabel
+            sx={{
+              display: { xs: "block", md: "none" },
+              position: "absolute",
+              top: "23px",
+              zIndex: "-1",
+              fontSize: "2.3rem",
+              left: "3px",
+            }}
+          >
+            <SortIcon fontSize="3.5rem" color="secondary" />
+          </InputLabel>
           <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
             variant="standard"
             disableUnderline
             value={filters.sort}
@@ -103,12 +111,15 @@ const Sort = () => {
               ".MuiSelect-select-MuiInputBase-input-MuiInput-input:focus": {
                 backgroundColor: "transparent",
               },
+              opacity: { xs: 0, md: 1 },
+              marginTop: { xs: "20px", md: "0 !important" },
             }}
           >
             <MenuItem value="date">Сортировать по дате</MenuItem>
             <MenuItem value="rating">Сортировать по рейтингу</MenuItem>
           </Select>
-        </FormControl> */}
+        </FormControl>
+        <Divider />
       </Stack>
       <Divider />
     </>
