@@ -231,11 +231,11 @@ function Layout() {
           <IconButton
             sx={{ mx: { xs: 1.1, md: 4 } }}
             component={RouterLink}
-            // to="/create-material"
-            to={loggedIn && "/create-material"}
-            onClick={() => {
-              !loggedIn && dispatch(addNotification(GoAuthNotification));
-            }}
+            to="/create-material"
+            // to={loggedIn && "/create-material"}
+            // onClick={() => {
+            //   !loggedIn && dispatch(addNotification(GoAuthNotification));
+            // }}
           >
             <AddIcon />
           </IconButton>
@@ -254,7 +254,7 @@ function Layout() {
           onTransitionEnd={handleDrawerTransitionEnd}
           onClose={handleDrawerClose}
           ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
+            keepMounted: true,
           }}
           sx={{
             display: { xs: "block", sm: "none" },
