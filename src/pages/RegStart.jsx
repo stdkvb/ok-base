@@ -12,11 +12,13 @@ import {
   Checkbox,
 } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 
 import {
   useRegStartMutation,
   useGetPrivacyPolicyQuery,
 } from "../redux/okBaseApi";
+import { resetNewMaterial } from "../redux/slices/newMaterialSlice";
 import RegConfirmCode from "../components/RegConfirmCode";
 
 const fields = [
@@ -26,9 +28,11 @@ const fields = [
 ];
 
 const RegStart = () => {
+  const dispatch = useDispatch();
   const { data: privacyData, isLoading: privacyLoading } =
     useGetPrivacyPolicyQuery();
   const [startReg, { error, isSuccess, data }] = useRegStartMutation();
+  const material = useSelector((state) => state.newMaterialSlice.newMaterial);
 
   const validationSchema = yup.object({
     email: yup
@@ -50,9 +54,16 @@ const RegStart = () => {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      startReg(values).unwrap();
+      const updatedValues =
+        material.link !== "" ? { ...values, material } : values;
+      startReg(updatedValues).unwrap();
     },
   });
+
+  //reset new material after success reg
+  if (isSuccess) {
+    dispatch(resetNewMaterial());
+  }
 
   return (
     <Container

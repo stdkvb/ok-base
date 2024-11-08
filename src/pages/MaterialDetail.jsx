@@ -188,7 +188,11 @@ const MaterialDetail = () => {
             sx={{ width: { xs: "100%", md: "fit-content" } }}
             variant="contained"
             component="a"
-            href={data.link}
+            href={
+              data.link.includes("www.litres.ru")
+                ? `${data.link}?lfrom=652378449`
+                : data.link
+            }
             target="_blank"
             color="primary"
             onClick={() => linkClick({ id: materialDetailId })}

@@ -23,9 +23,6 @@ const fields = [
 const LogIn = () => {
   //redux states
   const dispatch = useDispatch();
-  const newMaterial = useSelector(
-    (state) => state.newMaterialSlice.newMaterial
-  );
 
   const navigate = useNavigate();
 
@@ -50,11 +47,7 @@ const LogIn = () => {
   useEffect(() => {
     if (isSuccess) {
       dispatch(setToken(data.token));
-      if (newMaterial.link !== "") {
-        navigate("/create-material");
-      } else {
-        navigate("/profile");
-      }
+      navigate("/profile");
     }
   }, [isSuccess, data, dispatch, navigate]);
 

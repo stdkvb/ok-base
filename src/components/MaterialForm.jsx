@@ -34,8 +34,6 @@ import {
   setNewMaterial,
   resetNewMaterial,
 } from "../redux/slices/newMaterialSlice";
-import { addNotification } from "../redux/slices/notificationSlice";
-import GoAuthNotification from "./GoAuthNotification";
 
 const MaterialForm = ({ initialValues }) => {
   const navigate = useNavigate();
@@ -79,7 +77,7 @@ const MaterialForm = ({ initialValues }) => {
         dispatch(resetNewMaterial());
       } else {
         dispatch(setNewMaterial(values));
-        dispatch(addNotification(GoAuthNotification));
+        navigate("/log-in");
       }
     },
   });
